@@ -18,7 +18,7 @@ return (
             </div>
 
             <button
-                className="bg-white text-gray-800 font-semibold py-2 px-10 rounded-lg hover:bg-gray-200 transition-colors"
+                className="bg-white text-gray-800 font-semibold py-2 px-10 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
                 onClick={() => navigate('/events')}
             >
                 See All Events
