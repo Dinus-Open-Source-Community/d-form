@@ -77,7 +77,7 @@ const EventDetail = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-[#343434] text-white py-3 rounded-lg hover:bg-[#2a2a2a] transition-colors font-semibold"
+                className="w-full bg-[#343434] text-white py-3 rounded-lg hover:bg-[#2a2a2a] transition-colors font-semibold cursor-pointer"
               >
                 Notify Me!
               </button>
@@ -93,7 +93,7 @@ const EventDetail = () => {
           {/* Tombol Register (Muncul jika input email tidak ditampilkan) */}
           {!showEmailInput && (
             <button
-              className="w-full bg-[#343434] text-white py-3 rounded-lg hover:bg-[#2a2a2a] transition-colors"
+              className="w-full bg-[#343434] text-white py-3 rounded-lg hover:bg-[#2a2a2a] transition-colors cursor-pointer"
               onClick={handleRegisterClick}
             >
               Register
@@ -117,7 +117,7 @@ const EventDetail = () => {
           {/* Tabs Navigation */}
           <div className="flex border-2 rounded-lg border-gray-500 overflow-hidden w-max">
             <button
-              className={`mx-1 my-1 py-2 px-6 text-sm rounded-lg transition-colors ${
+              className={`mx-1 my-1 py-2 px-6 text-sm rounded-lg transition-colors cursor-pointer ${
                 activeTab === "overview"
                   ? "bg-[#343434] text-white"
                   : "bg-white text-[#343434]"
@@ -127,7 +127,7 @@ const EventDetail = () => {
               Overview
             </button>
             <button
-              className={`mx-1 my-1 py-2 px-6 text-sm rounded-lg transition-colors ${
+              className={`mx-1 my-1 py-2 px-6 text-sm rounded-lg transition-colors cursor-pointer ${
                 activeTab === "speakers"
                   ? "bg-[#343434] text-white"
                   : "bg-white text-[#343434]"
