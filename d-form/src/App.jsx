@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Event from "./pages/Event";
 import About from "./pages/About";
-import EventDetail from "./components/Eventdetail";
+import EventDetail from "./components/EventDetail";
 
 const App = () => {
   return (
