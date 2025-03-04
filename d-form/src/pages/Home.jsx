@@ -11,7 +11,7 @@ const Home = () => {
 
 return (
     <>
-        <div className="bg-[#343434] text-white text-center py-40">
+        <div className="mt-22 bg-[#343434] text-white text-center py-40">
             <div className="flex items-center justify-center mb-8">
                 <div className="text-7xl font-bold">WELCOME TO D</div>
                 <div className="text-6xl ml-2">FORM</div>
