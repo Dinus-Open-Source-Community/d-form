@@ -25,24 +25,32 @@ const events = [
     title: "DOSCOM SHARING TIME: Docker", 
     date: "21 October 2024"
   },
+  { 
+    id: 5,
+    category: ["NON-RKT", "Networking"], 
+    title: "DOSCOM SHARING TIME: Docker", 
+    date: "21 October 2024"
+  },
 ];
 
-const todayEvent = events[0];
-const upcomingEvents = events.slice(1);
+const todayEvents = events.slice(0, 2); 
+const upcomingEvents = events.slice(1); 
 
 const TodayEvent = ({ onEventClick }) => (
-  <section className="mb-8">
-    <h2 className="text-xl text-[#343434] mb-5">Today's Event</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <EventCard {...todayEvent} onEventClick={onEventClick} />
+  <section className="mb-6 sm:mb-8">
+    <h2 className="text-lg sm:text-xl text-[#343434] mb-3 sm:mb-5">Today's Events</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {todayEvents.map((event) => (
+        <EventCard key={event.id} {...event} onEventClick={onEventClick} />
+      ))}
     </div>
   </section>
 );
 
 const UpcomingEvents = ({ onEventClick }) => (
   <section>
-    <h2 className="text-xl text-[#343434] mb-5">Upcoming Events</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <h2 className="text-lg sm:text-xl text-[#343434] mb-3 sm:mb-5">Upcoming Events</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {upcomingEvents.map((event) => (
         <EventCard key={event.id} {...event} onEventClick={onEventClick} />
       ))}
@@ -52,7 +60,7 @@ const UpcomingEvents = ({ onEventClick }) => (
 
 const EventList = ({ showToday = true, onEventClick }) => {
   return (
-    <div className="py-8 px-12">
+    <div className="py-6 sm:py-8 px-4 sm:px-8 md:px-12">
       {showToday && <TodayEvent onEventClick={onEventClick} />}
       <UpcomingEvents onEventClick={onEventClick} />
     </div>

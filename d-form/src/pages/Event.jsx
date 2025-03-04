@@ -10,7 +10,7 @@ const Events = () => {
   };
 
   return (
-    <div className="mt-22">
+    <div className="mt-16 sm:mt-20 md:mt-22">
       <EventList showToday={true} onEventClick={handleEventClick} />
     </div>
   );
