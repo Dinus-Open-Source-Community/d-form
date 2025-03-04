@@ -1,6 +1,6 @@
-import React from "react";
-import EventList from "../components/EventList";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import EventList from '../components/EventList';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -12,9 +12,14 @@ const Home = () => {
   return (
     <>
       <div className="mt-16 sm:mt-22 bg-[#343434] text-white text-center py-16 sm:py-24 md:py-32 lg:py-40 px-4">
-        <div className="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-8">
-          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">WELCOME TO D</div>
-          <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl sm:ml-2">FORM</div>
+        <div className="flex flex-col items-center justify-center text-center mb-6 sm:mb-8">
+          <div className="flex items-center text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-widest uppercase gap-3 sm:gap-4 md:gap-5">
+            <span>WELCOME TO</span>
+            <span className="text-6xl sm:text-8xl md:text-9xl lg:text-[100px] font-extrabold leading-none">
+              D
+            </span>
+            <span className="font-normal">FORM</span>
+          </div>
         </div>
 
         <button
