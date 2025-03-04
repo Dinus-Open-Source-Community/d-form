@@ -8,7 +8,7 @@ const Navbar = () => {
             : "text-gray-600 hover:text-black";
 
     return (
-        <nav className="flex items-center justify-between p-5 bg-white shadow-md">
+        <nav className="fixed top-0 left-0 right-0 flex items-center justify-between p-5 bg-white shadow-md z-50">
             <div className="text-[#343434] flex items-center space-x-2">
                 <div className="text-5xl font-bold pl-7">D</div>
                 <div className="text-4xl pl-1"> FORM</div>
