@@ -3,11 +3,11 @@ import React from 'react';
 const EventCard = ({ id, category, title, date, onEventClick }) => {
   return (
     <div 
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105"
+      className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105"
       onClick={() => onEventClick(id)}
     >
       <div className="h-36 sm:h-40 md:h-48 bg-[#343434]"></div>
-      <div className="p-3 sm:p-4">
+      <div className="p-3 sm:p-4 border-x-2 border-b-2 rounded-b-xl border-gray-400">
         <div className="flex flex-wrap gap-1 sm:gap-2 mb-2">
           {category.map((cat, index) => (
             <span 
