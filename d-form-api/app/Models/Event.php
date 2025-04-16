@@ -27,6 +27,20 @@ class Event extends Model
         'division',
     ];
 
+    protected $casts = [
+        'duration_days' => 'integer',
+        'participants' => 'integer',
+    ];
+
+    public function getCoverEventAttribute($value)
+    {
+        if (!$value)
+            return null;
+
+        return url($value);
+    }
+
+
     public function user()
     {
         return $this->belongsTo(User::class);
