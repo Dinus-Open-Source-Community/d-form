@@ -14,18 +14,33 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $per_page = $request->query('per_page', 10);
+        $current_page = $request->query('current_page', 1);
+
         $events = Event::query()
             ->when($request->query('search'), function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })
             ->with(['user'])
-            ->paginate($per_page);
+            ->paginate($per_page, ['*'], 'page', $current_page);
 
+        if ($events->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No events found',
+            ], 404);
+        }
+        
         return response()->json([
             'success' => true,
             'message' => 'Events retrieved successfully',
-            'data' => $events,
+            'data' => $events->items(),
+            'meta' => [
+                'current_page' => $events->currentPage(),
+                'last_page' => $events->lastPage(),
+                'per_page' => $events->perPage(),
+                'total' => $events->total(),
+            ],
         ]);
     }
 
@@ -34,6 +49,13 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -116,6 +138,13 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if ($request->user()->role !== 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
+        }
+
         $event = Event::find($id);
 
         if (!$event) {
@@ -123,6 +152,13 @@ class EventController extends Controller
                 'success' => false,
                 'message' => 'Event not found',
             ], 404);
+        }
+
+        if ($event->user_id !== $request->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
         }
 
         $validated = $request->validate([
@@ -160,8 +196,15 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
+        if ($request->user()->role !== 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
+        }
+
         $event = Event::find($id);
 
         if (!$event) {
@@ -169,6 +212,24 @@ class EventController extends Controller
                 'success' => false,
                 'message' => 'Event not found',
             ], 404);
+        }
+
+        if ($event->user_id !== $request->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 403);
+        }
+
+        if ($event->participants()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot delete event with participants',
+            ], 403);
+        }
+
+        if ($event->cover_event && file_exists(public_path($event->cover_event))) {
+            unlink(public_path($event->cover_event));
         }
 
         $event->delete();
