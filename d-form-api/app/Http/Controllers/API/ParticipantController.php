@@ -13,6 +13,25 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ParticipantController extends Controller
 {
+    public function showByEvent($eventId)
+    {
+        $participants = Participant::where('event_id', $eventId)->get();
+
+        if ($participants->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No participants found',
+                'code' => 404,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Participant retrieved successfully',
+            'data' => $participants
+        ]);
+    }
+
     public function uploadParticipants(Request $request, $eventId)
     {
         $event = Event::find($eventId);
@@ -50,6 +69,10 @@ class ParticipantController extends Controller
 
     public function handleBarcodeDownload($eventId, $participantId = null)
     {
+        if ($participantId === 'null') {
+            $participantId = null;
+        }
+
         // Generate barcode(s) first
         $generateResult = $this->generateBarcodes($eventId, $participantId);
         if (!$generateResult['success']) {
@@ -104,7 +127,8 @@ class ParticipantController extends Controller
 
         $participants = $participantId
             ? $event->participants()->where('id', $participantId)->get()
-            : $event->participants;
+            : $event->participants()->get();
+
 
         if ($participants->isEmpty()) {
             return [
