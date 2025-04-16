@@ -12,10 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('participants', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('event_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->string('token');
             $table->string('school')->nullable();
             $table->boolean('is_presence')->default(false);
             $table->dateTime('presence_at')->nullable();
