@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('participants')->group(function () {
+            Route::get('showByEvent/{eventId}', [ParticipantController::class, 'showByEvent']);
             Route::post('upload/{eventId}', [ParticipantController::class, 'uploadParticipants']);
             Route::get('download/{eventId}/{participantId?}', [ParticipantController::class, 'handleBarcodeDownload']);
             Route::post('check-in', [ParticipantController::class, 'checkIn']);
