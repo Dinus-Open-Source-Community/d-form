@@ -1,6 +1,7 @@
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const EventDetail = () => {
   const [showEmailInput, setShowEmailInput] = useState(false);
@@ -115,22 +116,27 @@ const EventDetail = () => {
           <h1 className="text-xl sm:text-2xl text-[#343434] font-bold mb-4 sm:mb-6">Open Source on The School</h1>
 
           {/* Tabs Navigation */}
-          <div className="flex border-2 rounded-lg border-gray-500 overflow-hidden w-max">
+          <div className="relative flex border-2 rounded-lg border-gray-500 w-max p-1">
+            {/* Animated Slider */}
+            <motion.div
+              layout
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              className="absolute top-1 h-[calc(100%-0.5rem)] w-27 bg-[#343434] rounded-lg z-0"
+              style={{
+                left: activeTab === "overview" ? "0.25rem" : "calc(50% + 0.25rem)"
+              }}
+            />
             <button
-              className={`mx-1 my-1 py-1 sm:py-2 px-4 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors cursor-pointer ${
-                activeTab === "overview"
-                  ? "bg-[#343434] text-white"
-                  : "bg-white text-[#343434]"
+              className={`relative z-10 py-1 sm:py-2 px-4 sm:px-6 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
+                activeTab === "overview" ? "text-white" : "text-[#343434]"
               }`}
               onClick={() => setActiveTab("overview")}
             >
               Overview
             </button>
             <button
-              className={`mx-1 my-1 py-1 sm:py-2 px-4 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors cursor-pointer ${
-                activeTab === "speakers"
-                  ? "bg-[#343434] text-white"
-                  : "bg-white text-[#343434]"
+              className={`relative z-10 py-1 sm:py-2 px-4 sm:px-6 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
+                activeTab === "speakers" ? "text-white" : "text-[#343434]"
               }`}
               onClick={() => setActiveTab("speakers")}
             >

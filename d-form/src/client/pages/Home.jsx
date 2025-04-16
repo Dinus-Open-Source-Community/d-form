@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import EventList from '../components/EventList';
 import BlurText from '../components/BlurText';
+import Magnet from '../components/Magnet';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -34,12 +35,18 @@ const Home = () => {
           </div>
         </div>
 
-        <button
-          className="bg-white text-gray-800 font-semibold py-2 px-6 sm:px-8 md:px-10 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
+        {/* Apply Magnet effect to the button */}
+        <Magnet
+          padding={100}
+          magnetStrength={2}
+          activeTransition="transform 0.3s ease-out"
+          inactiveTransition="transform 0.5s ease-in-out"
+          wrapperClassName="inline-block"
+          innerClassName="bg-white text-gray-800 font-semibold py-2 px-6 sm:px-8 md:px-10 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
           onClick={() => navigate('/events')}
         >
           See All Events
-        </button>
+        </Magnet>
       </div>
 
       <EventList showToday={false} onEventClick={handleEventClick} />
