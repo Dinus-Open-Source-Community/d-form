@@ -4,8 +4,9 @@ namespace App\Imports;
 
 use App\Models\Participant;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ParticipantsImport implements ToModel
+class ParticipantsImport implements ToModel, WithHeadingRow
 {
     /**
      * @var string
@@ -31,8 +32,8 @@ class ParticipantsImport implements ToModel
     {
         return new Participant([
             'event_id' => $this->eventId,
-            'name' => $row[0],
-            'school' => $row[1],
+            'name' => $row['name'],
+            'school' => $row['school'],
             'is_presence' => false,
             'presence_at' => null,
         ]);
