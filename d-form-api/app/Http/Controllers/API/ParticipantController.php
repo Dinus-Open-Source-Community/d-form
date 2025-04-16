@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Imports\ParticipantsImport;
 use App\Models\Event;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
@@ -133,5 +134,38 @@ class ParticipantController extends Controller
             'message' => 'Barcodes generated successfully',
             'code' => 200,
         ];
+    }
+
+    public function checkIn(Request $request)
+    {
+        $validated = $request->validate([
+            'barcode' => 'required|string',
+        ]);
+
+        $participant = Participant::where('id', $validated['barcode'])
+            ->first();
+
+        if (!$participant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Participant not found',
+            ], 404);
+        }
+
+        if ($participant->is_presence === false) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Participant already checked in',
+            ], 400);
+        }
+
+        $participant->is_presence = true;
+        $participant->presence_at = now();
+        $participant->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Participant checked in successfully',
+            'data' => $participant,
+        ]);
     }
 }
