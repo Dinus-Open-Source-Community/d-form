@@ -25,6 +25,8 @@ class Event extends Model
         'participants',
         'type',
         'division',
+
+        'start_date'
     ];
 
     protected $casts = [

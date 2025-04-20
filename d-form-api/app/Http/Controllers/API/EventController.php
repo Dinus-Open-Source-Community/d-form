@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -11,18 +12,70 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function count(string $timestamp)
+    {
+
+
+        $filters = "";
+        switch($timestamp)
+        {
+            case "completed" :
+                $filters="NOW() > DATE_ADD(start_date, INTERVAL duration_days DAY)";
+                break;
+            case "ongoing" :
+                $filters="NOW() >= start_date AND NOW() <= DATE_ADD(start_date, INTERVAL duration_days DAY)";
+                break;
+            case "upcoming" :
+                $filters="NOW() < start_date";
+                break;
+        }
+        $count=Event::query()
+        ->select('id')
+        ->whereRaw($filters)
+        ->count();
+
+        
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Events count retrieved successfully',
+            'data' => $count,
+
+        ]);
+    }
     public function index(Request $request)
     {
         $per_page = $request->query('per_page', 10);
         $current_page = $request->query('current_page', 1);
+
+
+
 
         $events = Event::query()
             ->when($request->query('search'), function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })
+            // GROUPING LOGIC START
+            // Fetch events based on timestamp parameter value. If none of timestamp
+            // values [upcoming, ongoing, today] was sent to controller, it will fetch all
+            // events.
+            // Author : Felix
+            ->when($request->query('timestamp') == 'today', function($query) {
+                return $query->where('start_date', '=', Carbon::now());
+            })
+            ->when($request->query('timestamp') == 'upcoming', function($query) {
+                return $query->where('start_date', '>', Carbon::now());
+            })
+            ->when($request->query('timestamp') == 'ongoing', function($query) {
+                return $query->where('start_date', '<=', Carbon::now())
+                ->whereRaw('DATE_ADD(start_date, INTERVAL duration_days DAY) >= NOW()');
+            })
+            // GROUPING LOGIC END
             ->with(['user'])
             ->paginate($per_page, ['*'], 'page', $current_page);
+
+
 
         if ($events->isEmpty()) {
             return response()->json([
@@ -30,7 +83,7 @@ class EventController extends Controller
                 'message' => 'No events found',
             ], 404);
         }
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Events retrieved successfully',

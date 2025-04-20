@@ -49,7 +49,7 @@ const Home = () => {
         </Magnet>
       </div>
 
-      <EventList showToday={false} onEventClick={handleEventClick} />
+      <EventList showToday={true} onEventClick={handleEventClick} />
     </>
   );
 };

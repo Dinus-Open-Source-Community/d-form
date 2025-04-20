@@ -10,17 +10,17 @@ Route::prefix('v1')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 
+    Route::prefix('events')->group(function () {
+        Route::get('/', [EventController::class, 'index']);
+        Route::post('/', [EventController::class, 'store']);
+        Route::get('{id}', [EventController::class, 'show']);
+        Route::get('/count/{timestamp}', [EventController::class, 'count']);
+        Route::put('{id}', [EventController::class, 'update']);
+        Route::delete('{id}', [EventController::class, 'destroy']);
+    });
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('user', [AuthController::class, 'user']);
         Route::post('logout', [AuthController::class, 'logout']);
-
-        Route::prefix('events')->group(function () {
-            Route::get('/', [EventController::class, 'index']);
-            Route::post('/', [EventController::class, 'store']);
-            Route::get('{id}', [EventController::class, 'show']);
-            Route::put('{id}', [EventController::class, 'update']);
-            Route::delete('{id}', [EventController::class, 'destroy']);
-        });
 
         Route::prefix('participants')->group(function () {
             Route::get('showByEvent/{eventId}', [ParticipantController::class, 'showByEvent']);
