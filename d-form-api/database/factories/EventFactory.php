@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,6 +32,7 @@ class EventFactory extends Factory
             'participants' => fake()->numberBetween(1, 100),
             'type' => fake()->randomElement(['rkt', 'non-rkt']),
             'division' => fake()->randomElement(['general', 'programming', 'multimedia', 'networking']),
+            'start_date'=> Carbon::now()->subDays(fake()->numberBetween(1, 5))->addDays(fake()->numberBetween(0, 10))
         ];
     }
 }

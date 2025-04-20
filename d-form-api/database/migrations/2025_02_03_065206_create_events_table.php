@@ -27,6 +27,8 @@ return new class extends Migration
             $table->integer('participants');
             $table->enum('type', ['rkt', 'non-rkt']);
             $table->enum('division', ['general', 'programming', 'multimedia', 'networking'])->default('general');
+
+            $table->date("start_date");
             $table->timestamps();
         });
     }

@@ -2,9 +2,11 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import MenuItem from "../navigation/MenuItem";
 import UserInfo from "../common/UserInfo";
+import { useAuth } from "./AuthContext";
 
 function Sidebar() {
   const location = useLocation();
+  const {user} = useAuth();
 
   return (
     <div className="fixed top-0 left-0 h-full w-60 bg-[#343434] text-white flex flex-col z-40">
@@ -42,7 +44,7 @@ function Sidebar() {
 
       {/* User Info */}
       <div className="mt-auto">
-        <UserInfo username="Username" email="email@gmail.com" />
+        <UserInfo username={user.name} email={user.email} />
       </div>
     </div>
   );

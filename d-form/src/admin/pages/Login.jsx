@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState, useContext, createContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/layout/AuthContext";
+
 
 const SignUpForm = () => {
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
+  const {login} = useAuth();
   return (
     <div className="flex min-h-screen">
       {/* Left side - Dark background */}
@@ -25,7 +26,7 @@ const SignUpForm = () => {
           <div className="mt-12">
             <h2 className="text-3xl font-bold text-center mb-8">Log In</h2>
 
-            <form>
+            <form onSubmit={login}>
               <div className="mb-6">
                 <label htmlFor="email" className="block mb-2">
                   E-Mail
@@ -33,6 +34,7 @@ const SignUpForm = () => {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   placeholder="emailexample@gmail.com"
                   className="w-full px-4 py-3 border-2 border-[#343434] rounded-xl"
                 />
@@ -45,6 +47,7 @@ const SignUpForm = () => {
                 <input
                   type="password"
                   id="password"
+                  name="password"
                   className="w-full px-4 py-3 border-2 border-[#343434] rounded-xl"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -54,7 +57,6 @@ const SignUpForm = () => {
               <div className="mb-6">
                 <button
                   type="submit"
-                  onClick={() => navigate("/admin/dashboard")}
                   className="w-full bg-[#343434] text-white py-3 rounded-xl font-medium hover:bg-gray-800"
                 >
                   Log In
@@ -84,6 +86,7 @@ const SignUpForm = () => {
         </div>
       </div>
     </div>
+      
   );
 };
 
