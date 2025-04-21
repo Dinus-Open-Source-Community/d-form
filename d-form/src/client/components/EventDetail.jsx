@@ -1,42 +1,41 @@
-import { Calendar, Clock, MapPin, Users } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
-import { formatRangedDate } from "../../utils/DateHelper";
-import { addDays, format } from "date-fns";
+import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion'; // Import Framer Motion
+import { formatRangedDate } from '../../utils/DateHelper';
+import { addDays, format } from 'date-fns';
 
-const fetchEvent = async (eventID, setData, setError, setCode)=>{
+const fetchEvent = async (eventID, setData, setError, setCode) => {
   const baseURL = import.meta.env.VITE_API_URL;
   const apiURL = `${baseURL}/events/${eventID}`;
 
   const res = await fetch(apiURL, {
     mode: 'cors',
-    method: 'GET', 
-    headers: {'Content-Type': 'application/json'}
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
   });
   let data;
-  switch(res.status)
-  {
-    case(200) :
+  switch (res.status) {
+    case 200:
       data = await res.json();
-      
+
       setError(false);
       setData(data.data);
       break;
-    case 404 :
+    case 404:
       setError(true);
       setData({});
       break;
   }
-}
+};
 const EventDetail = () => {
   const [data, setData] = useState({});
   const [eventDate, setEventDate] = useState({});
   const [error, setError] = useState(false);
   const [showEmailInput, setShowEmailInput] = useState(false);
-  const [email, setEmail] = useState("");
-  const [activeTab, setActiveTab] = useState("overview");
-  const {eventId} = useParams();
+  const [email, setEmail] = useState('');
+  const [activeTab, setActiveTab] = useState('overview');
+  const { eventId } = useParams();
 
   const handleRegisterClick = () => {
     setShowEmailInput(true);
@@ -44,24 +43,27 @@ const EventDetail = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Email submitted:", email);
+    console.log('Email submitted:', email);
     setShowEmailInput(false);
   };
-  useEffect(()=>{fetchEvent(eventId, setData, setError, null)},[eventId]);
-  useEffect(()=>{
-    if(Object.keys(data)?.length)
-    {
-      const formatted = formatRangedDate(data.start_date, addDays(data.start_date, data.duration_days))
+  useEffect(() => {
+    fetchEvent(eventId, setData, setError, null);
+  }, [eventId]);
+  useEffect(() => {
+    if (Object.keys(data)?.length) {
+      const formatted = formatRangedDate(
+        data.start_date,
+        addDays(data.start_date, data.duration_days),
+      );
       setEventDate(formatted);
-      
     }
-  }, [data])
-  useEffect(()=>{
+  }, [data]);
+  useEffect(() => {
     console.log(eventDate.days);
-  }, [eventDate])
+  }, [eventDate]);
 
   return (
-    (Object.keys(data || {})?.length && (
+    Object.keys(data || {})?.length && (
       <div className="px-4 sm:px-8 md:px-12 py-6 sm:py-8 mt-16 sm:mt-20">
         {/* Breadcrumb Navigation */}
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-4 sm:mb-6 overflow-x-auto pb-2">
@@ -73,7 +75,9 @@ const EventDetail = () => {
             Events
           </Link>
           <span>/</span>
-          <span className="font-bold text-[#343434] whitespace-nowrap">{data.name}</span>
+          <span className="font-bold text-[#343434] whitespace-nowrap">
+            {data.name}
+          </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -86,24 +90,40 @@ const EventDetail = () => {
               <div className="flex items-center gap-3">
                 <Calendar className="w-5 h-5 flex-shrink-0" />
                 <span className="text-sm sm:text-base">
-                  <span className="font-semibold">{Object.keys(eventDate || {}).length ? eventDate.days : ""}</span> {Object.keys(eventDate || {}).length ? eventDate.months : ""}
+                  <span className="font-semibold">
+                    {Object.keys(eventDate || {}).length ? eventDate.days : ''}
+                  </span>{' '}
+                  {Object.keys(eventDate || {}).length ? eventDate.months : ''}
                 </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 flex-shrink-0" />
-                <span className="font-semibold text-sm sm:text-base">{format(new Date().toLocaleDateString()+" "+data.start_time, "HH:mm")} - {format(new Date().toLocaleDateString()+" "+data.end_time, "HH:mm")}</span>
+                <span className="font-semibold text-sm sm:text-base">
+                  {format(
+                    new Date().toLocaleDateString() + ' ' + data.start_time,
+                    'HH:mm',
+                  )}{' '}
+                  -{' '}
+                  {format(
+                    new Date().toLocaleDateString() + ' ' + data.end_time,
+                    'HH:mm',
+                  )}
+                </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <MapPin className="w-5 h-5 flex-shrink-0" />
-                <span className="font-semibold text-sm sm:text-base">{data.address}</span>
+                <span className="font-semibold text-sm sm:text-base">
+                  {data.address}
+                </span>
               </div>
 
               <div className="flex items-center gap-3">
                 <Users className="w-5 h-5 flex-shrink-0" />
                 <span className="text-sm sm:text-base">
-                  <span className="font-semibold">{data.participants}</span> Participant
+                  <span className="font-semibold">{data.participants}</span>{' '}
+                  Participant
                 </span>
               </div>
             </div>
@@ -132,7 +152,10 @@ const EventDetail = () => {
                       section below wont work until that's fixed
                   */}
                   <span className="text-[#343434] text-sm sm:text-base font-bold">
-                    <span className="text-gray-500 font-semibold">Registration Opens in</span> 5 days!
+                    <span className="text-gray-500 font-semibold">
+                      Registration Opens in
+                    </span>{' '}
+                    5 days!
                   </span>
                 </div>
               </form>
@@ -160,32 +183,39 @@ const EventDetail = () => {
               </span> */}
             </div>
 
-            <h1 className="text-xl sm:text-2xl text-[#343434] font-bold mb-4 sm:mb-6">{data.name}</h1>
+            <h1 className="text-xl sm:text-2xl text-[#343434] font-bold mb-4 sm:mb-6">
+              {data.name}
+            </h1>
 
             {/* Tabs Navigation */}
-            <div className="relative flex border-2 rounded-lg border-gray-500 w-max p-1">
+            <div className="relative flex border-2 rounded-lg border-gray-500 w-full sm:w-max p-1">
               {/* Animated Slider */}
               <motion.div
                 layout
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="absolute top-1 h-[calc(100%-0.5rem)] w-27 bg-[#343434] rounded-lg z-0"
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                className="absolute top-1 h-[calc(100%-0.5rem)] w-[calc(50%-0.5rem)] sm:w-[calc(50%-0.5rem)] bg-[#343434] rounded-lg z-0"
                 style={{
-                  left: activeTab === "overview" ? "0.25rem" : "calc(50% + 0.25rem)"
+                  left:
+                    activeTab === 'overview'
+                      ? '0.25rem'
+                      : 'calc(50% + 0.25rem)',
                 }}
               />
+
               <button
-                className={`relative z-10 py-1 sm:py-2 px-4 sm:px-6 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
-                  activeTab === "overview" ? "text-white" : "text-[#343434]"
+                className={`relative z-10 py-1 sm:py-2 px-2 sm:px-6 text-xs sm:text-sm font-medium rounded-lg transition-colors w-1/2 sm:w-28 text-center ${
+                  activeTab === 'overview' ? 'text-white' : 'text-[#343434]'
                 }`}
-                onClick={() => setActiveTab("overview")}
+                onClick={() => setActiveTab('overview')}
               >
                 Overview
               </button>
+
               <button
-                className={`relative z-10 py-1 sm:py-2 px-4 sm:px-6 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
-                  activeTab === "speakers" ? "text-white" : "text-[#343434]"
+                className={`relative z-10 py-1 sm:py-2 px-2 sm:px-6 text-xs sm:text-sm font-medium rounded-lg transition-colors w-1/2 sm:w-28 text-center ${
+                  activeTab === 'speakers' ? 'text-white' : 'text-[#343434]'
                 }`}
-                onClick={() => setActiveTab("speakers")}
+                onClick={() => setActiveTab('speakers')}
               >
                 Speakers
               </button>
@@ -193,7 +223,7 @@ const EventDetail = () => {
 
             {/* Tabs Content */}
             <div className="space-y-3 sm:space-y-4 text-[#000000] mt-4 text-sm sm:text-base">
-              {activeTab === "overview" && (
+              {activeTab === 'overview' && (
                 <>
                   {/* <p>Hallo Doscomers!!!</p>
                   <p>
@@ -202,14 +232,11 @@ const EventDetail = () => {
                     kalian. Dijamin, tahun ini lebih seru daripada sebelumnya!
                   </p>
                   <p>Pemateri dan materi yang akan dibawakan:</p> */}
-                  <p>
-                    {data.description}
-                  </p>
+                  <p>{data.description}</p>
                 </>
               )}
 
-              
-              {activeTab === "speakers" && (
+              {activeTab === 'speakers' && (
                 <>
                   <h2 className="text-lg sm:text-xl font-bold">Speakers</h2>
                   <p>- Wildan - "Tailwind"</p>
@@ -224,14 +251,19 @@ const EventDetail = () => {
                 Need to add contact information column or relation in the database for this section to functioning.
             */}
             <div className="mt-6">
-              <p className="mb-2 text-sm sm:text-base">Informasi lebih lanjut :</p>
+              <p className="mb-2 text-sm sm:text-base">
+                Informasi lebih lanjut :
+              </p>
               <p className="text-sm sm:text-base"> +62 899-5873-658 (wildan)</p>
-              <p className="text-sm sm:text-base"> +62 877-0031-3085 (sulthan)</p>
+              <p className="text-sm sm:text-base">
+                {' '}
+                +62 877-0031-3085 (sulthan)
+              </p>
             </div>
           </div>
         </div>
       </div>
-    ))
+    )
   );
 };
 
