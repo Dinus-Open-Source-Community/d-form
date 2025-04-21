@@ -14,7 +14,7 @@ function PageHeader() {
     return (
         <div className="px-8 py-6 fixed w-[calc(100%-15rem)] left-60 bg-white z-10">
             <div className="flex items-center">
-                <Link to="/admin/dashboard" className="text-gray-500">Pages /</Link>
+                <Link to="/admin/dashboard" className="text-gray-500"></Link>
                 {pathnames.map((name, index) => {
                     const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
                     const isLast = index === pathnames.length - 1;
