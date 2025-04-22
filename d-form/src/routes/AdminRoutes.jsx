@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../admin/pages/Dashboard";
 import Events from "../admin/pages/Events";
 import EventDetail from "../admin/pages/EventDetail";
+import AddEvent from "../admin/pages/AddEvent";
 import Login from "../admin/pages/Login";
 import Register from "../admin/pages/Register";
 import AuthElement from '../admin/components/layout/AuthElement'
@@ -18,6 +19,7 @@ const AdminRoutes = () => {
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/events" element={<Events />} />
         <Route path="/admin/events/:id" element={<EventDetail />} />
+        <Route path="/admin/addevents" element={<AddEvent />} />
         {/* Redirect rute admin yang tidak ditemukan ke dashboard */}
         <Route path="/admin/*" element={<Navigate to="/admin/dashboard" />} />
       </Route>
