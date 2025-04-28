@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calendar, Clock, Upload, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { FaCheck } from 'react-icons/fa';
 
 const AddEvent = () => {
   const navigate = useNavigate();
@@ -63,7 +64,6 @@ const AddEvent = () => {
             value={formData.name}
             onChange={handleChange}
             className="w-full border border-[#343434] rounded-lg px-4 py-2 placeholder-[#343434]"
-            required
           />
           <input
             type="url"
@@ -72,7 +72,6 @@ const AddEvent = () => {
             value={formData.googleFormUrl}
             onChange={handleChange}
             className="w-full border border-[#343434] rounded-lg px-4 py-2 placeholder-[#343434]"
-            required
           />
 
           <div className="grid grid-cols-2 gap-4">
@@ -86,7 +85,6 @@ const AddEvent = () => {
                 value={formData.registrationDate}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
-                required
               />
             </div>
             <div className="relative">
@@ -99,7 +97,6 @@ const AddEvent = () => {
                 value={formData.eventDate}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
-                required
               />
             </div>
           </div>
@@ -115,7 +112,6 @@ const AddEvent = () => {
                 value={formData.startTime}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
-                required
               />
             </div>
             <div className="relative flex-2">
@@ -126,7 +122,6 @@ const AddEvent = () => {
                 value={formData.endTime}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
-                required
               />
             </div>
           </div>
@@ -219,7 +214,6 @@ const AddEvent = () => {
             value={formData.address}
             onChange={handleChange}
             className="w-full border border-[#343434] rounded-lg px-4 py-2 placeholder-[#343434]"
-            required
           />
           <input
             type="url"
@@ -228,7 +222,6 @@ const AddEvent = () => {
             value={formData.googleMapsUrl}
             onChange={handleChange}
             className="w-full border border-[#343434] rounded-lg px-4 py-2 placeholder-[#343434]"
-            required
           />
           <textarea
             name="description"
@@ -237,7 +230,6 @@ const AddEvent = () => {
             value={formData.description}
             onChange={handleChange}
             className="w-full border border-[#343434] rounded-lg px-4 py-2 placeholder-[#343434] resize-none"
-            required
           ></textarea>
           <label
             htmlFor="file-upload"
@@ -273,17 +265,17 @@ const AddEvent = () => {
 
       {/* SUCCESS MODAL */}
       {showSuccessModal && (
-        <div className="fixed inset-0 bg-white/50 flex items-center justify-center z-50">
-          <div className="bg-[#343434]/80 text-white rounded-lg p-6 w-full max-w-md relative shadow-lg">
-            {/* Ikon sukses */}
-            <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-green-500 text-green-500 text-2xl">
-                ✓
+        <div className="fixed inset-0 bg-[#343434]/80 flex items-center justify-center z-50">
+          <div className="bg-white text-white rounded-lg p-6 w-full max-w-md relative">
+            {/* Success checkmark */}
+            <div className="flex justify-center pt-2 pb-4">
+              <div className="bg-[#343434] rounded-full p-4">
+                <FaCheck className="text-white text-2xl" />
               </div>
             </div>
 
             {/* Teks konfirmasi */}
-            <h3 className="text-center text-lg font-medium mb-6">
+            <h3 className="text-center text-[#343434] text-lg font-medium mb-6">
               New event has been successfully added!
             </h3>
 
@@ -291,7 +283,7 @@ const AddEvent = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={goToDashboard}
-                className="bg-white/50 hover:bg-[#343434] text-white font-semibold px-5 py-2 rounded-lg cursor-pointer"
+                className="bg-[#343434] hover:bg-gray-700 text-white font-semibold px-5 py-2 rounded-lg cursor-pointer"
               >
                 Back to Dashboard
               </button>

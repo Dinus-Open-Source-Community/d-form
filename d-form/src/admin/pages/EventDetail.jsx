@@ -1,6 +1,6 @@
 import { Calendar, Clock, MapPin, Users, Copy as CopyIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { format, addDays } from 'date-fns';
 import { formatRangedDate } from '../../utils/DateHelper';
 
@@ -248,9 +248,11 @@ const EventDetail = () => {
 
               {/* Always show Scan QR and Registration URL buttons */}
               <div className="flex justify-center">
+              <Link to="/admin/scanqr">
                 <button className="w-48 bg-white border-2 border-black text-black py-2 rounded-xl font-medium hover:bg-gray-200">
                   Scan QR
                 </button>
+              </Link>
               </div>
               <div className="flex justify-center">
                 <button
