@@ -1,27 +1,112 @@
-import React, { useState } from 'react';
-import { FaCog, FaArrowLeft, FaTimes } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from 'react';
+import { FaCog, FaArrowLeft, FaCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const ScanQR = () => {
   const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [inputSource, setInputSource] = useState('Logitech C270');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [scannedUser, setScannedUser] = useState('Lorem Ipsum');
+  const [hasPermission, setHasPermission] = useState(null);
+  const [isScanning, setIsScanning] = useState(false);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
 
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  // Function to request camera access and start video stream
+  const startCamera = async () => {
+    try {
+      const constraints = {
+        video: {
+          facingMode: 'environment', // Use back camera if available
+          deviceId: inputSource !== 'Logitech C270' ? { exact: inputSource } : undefined
+        }
+      };
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setHasPermission(true);
+        setIsScanning(true);
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      setHasPermission(false);
+    }
+  };
+
+  // Stop camera when component unmounts or when not scanning
+  const stopCamera = () => {
+    if (streamRef.current) {
+      const tracks = streamRef.current.getTracks();
+      tracks.forEach(track => track.stop());
+      streamRef.current = null;
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+      setIsScanning(false);
+    }
+  };
+
+  // Effect to handle camera changes when input source changes
+  useEffect(() => {
+    if (isScanning) {
+      stopCamera();
+      startCamera();
+    }
+  }, [inputSource]);
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  // Function to simulate a successful scan
+  const handleScan = () => {
+    if (!isScanning) {
+      startCamera();
+    } else {
+      // In a real implementation, you would use a barcode detection library here
+      // For now, we'll simulate a successful scan after a short delay
+      setTimeout(() => {
+        setShowSuccessModal(true);
+        // Optionally stop the camera after successful scan
+        // stopCamera();
+      }, 1500);
+    }
+  };
+
+  // Function to close success modal
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowSuccessModal(false);
   };
 
   return (
     <div className="fixed inset-0 bg-white text-[#343434] z-50 flex flex-col items-center">
       {/* Header */}
       <header className="w-full flex justify-between items-center px-10 py-4 border-b border-gray-200">
-        <div className="flex items-center space-x-2">
+        <div
+          onClick={() => navigate('/admin/dashboard')}
+          className="flex items-center space-x-2 cursor-pointer"
+        >
           <div className="font-extrabold text-4xl text-[#343434]">D</div>
           <div className="text-3xl font-normal text-[#343434]">FORM</div>
         </div>
         <button
           aria-label="Settings"
-          className="text-[#343434] text-2xl focus:outline-none"
+          className="text-[#343434] text-2xl focus:outline-none cursor-pointer hover:text-gray-600"
           onClick={toggleSettings}
         >
           <FaCog />
@@ -68,21 +153,56 @@ const ScanQR = () => {
             </div>
           </div>
 
-          {/* QR Code Scanner Area */}
-          <div className="bg-[#343434] rounded-lg aspect-square flex flex-col items-center justify-center overflow-hidden">
-            <div className="relative w-full h-full flex flex-col items-center justify-center">
-              <div className="absolute inset-0 bg-[#343434] opacity-70"></div>
-
-              <div className="absolute inset-0 flex items-center justify-center z-10">
-                <div className="w-7/8 h-7/8 border-2 border-white border-opacity-60 rounded-lg flex flex-col items-center justify-center">
-                  <div className="w-full h-1 bg-gray-300 opacity-70 animate-pulse"></div>
+          {/* QR Code Scanner Area with Camera Access */}
+          <div className="bg-[#343434] rounded-lg aspect-square flex flex-col items-center justify-center overflow-hidden relative">
+            {hasPermission === false && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#343434] z-20 p-4">
+                <p className="text-white text-center mb-4">Camera access denied</p>
+                <button
+                  onClick={startCamera}
+                  className="bg-white text-[#343434] px-4 py-2 rounded-lg font-medium"
+                >
+                  Allow Camera Access
+                </button>
+              </div>
+            )}
+            
+            {hasPermission === null && !isScanning && (
+              <div 
+                className="absolute inset-0 flex flex-col items-center justify-center bg-[#343434] z-20 cursor-pointer hover:bg-[#2a2a2a] transition duration-300"
+                onClick={handleScan}
+              >
+                <p className="text-white text-center mb-4">Tap to scan QR code</p>
+                <div className="w-16 h-14 border-2 border-white rounded-lg flex items-center justify-center">
+                  <p className="text-white text-2xl">QR</p>
                 </div>
               </div>
-
-              <div className="absolute bottom-0 left-0 right-0 text-center text-white z-20">
-                <p className="text-[11px]">Center QR code in frame</p>
-              </div>
-            </div>
+            )}
+            
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              playsInline
+              muted
+            />
+            
+            {isScanning && (
+              <>
+                <div className="absolute inset-0 z-10">
+                  <div className="relative w-full h-full">
+                    {/* Scanning line animation */}
+                    <div className="absolute left-0 w-full h-1 bg-white opacity-70 animate-pulse" 
+                         style={{top: '50%', animation: 'scan 2s linear infinite'}}></div>
+                    
+                    {/* Scanner frame overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-4/5 h-4/5 border-2 border-white border-opacity-60 rounded-lg"></div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Latest Participants box */}
@@ -117,14 +237,6 @@ const ScanQR = () => {
           </div>
         </section>
       </main>
-
-      {/* Back button positioned at bottom left */}
-      <button
-        onClick={() => navigate('/admin/dashboard')}
-        className="absolute bottom-6 left-6 flex items-center text-[#343434] text-lg cursor-pointer"
-      >
-        <FaArrowLeft className="mr-2" />
-      </button>
 
       {/* Settings Modal */}
       {isSettingsOpen && (
@@ -180,6 +292,48 @@ const ScanQR = () => {
           </div>
         </div>
       )}
+
+      {/* Success Modal - Appears after scanning */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-[#343434]/80 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-4 relative overflow-hidden">
+            {/* Close button (top right) */}
+            <button
+              onClick={handleCancel}
+              className="absolute top-2 right-4 text-black hover:text-[#343434] text-xl cursor-pointer"
+            >
+              &times;
+            </button>
+            {/* Success checkmark */}
+            <div className="flex justify-center pt-8 pb-4">
+              <div className="bg-[#343434] rounded-full p-4">
+                <FaCheck className="text-white text-2xl" />
+              </div>
+            </div>
+
+            {/* Success message */}
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                You're Already Here!
+              </h2>
+              {/* Small Triangle */}
+              <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rotate-45"></div>
+              <div className="bg-[#343434] py-8 px-6 text-white text-xl text-center font-normal">
+                {scannedUser}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add a style for the scanning animation */}
+      <style jsx>{`
+        @keyframes scan {
+          0% { top: 20%; }
+          50% { top: 80%; }
+          100% { top: 20%; }
+        }
+      `}</style>
     </div>
   );
 };
