@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -7,22 +7,22 @@ import { useNavigate } from 'react-router-dom';
 // to {id, event}
 // Author : Felix
 const EventCard = ({ id, event }) => {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(false);
   const navigate = useNavigate();
   
   const handleClick = useCallback(() => {
     navigate(`/admin/events/${id}`);
   }, [id, navigate]);
 
-
   return (
     <div 
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105"
+      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105 flex flex-col h-full"
       onClick={handleClick}
     >
+      {/* Image placeholder - can be replaced with actual event image */}
       <div className="h-36 sm:h-40 md:h-48 bg-[#343434]"></div>
-      <div className="p-3 sm:p-4 border-x-2 border-b-2 rounded-b-lg border-gray-400"> 
+      
+      {/* Card content area - grows to fill space */}
+      <div className="p-3 sm:p-4 border-x-2 border-b-2 rounded-b-lg border-gray-400 flex flex-col flex-grow"> 
         <div className="flex flex-wrap gap-2 mb-2">
           
           {/* TEMPORARY DISABLE CARDS' ITERATION 
@@ -50,8 +50,16 @@ const EventCard = ({ id, event }) => {
             </span>
           ))} */}
         </div>
-        <h3 className="text-base font-medium mb-2">{event.name}</h3>
-        <p className="text-sm text-gray-600">{event.start_date}</p>
+        
+        {/* Event title - fixed height to prevent layout shifts */}
+        <h3 className="text-base font-medium mb-2 min-h-[2.5rem]">
+          {event.name}
+        </h3>
+        
+        {/* Date section - always at bottom */}
+        <p className="text-sm text-gray-600 mt-auto">
+          {event.start_date}
+        </p>
       </div>
     </div>
   );
