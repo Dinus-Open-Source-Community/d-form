@@ -16,7 +16,7 @@
 
   {{-- Menu Items --}}
   <div class="flex-grow overflow-y-auto">
-    <a href="{{ route('admin.dashboard') }}"wire:navigate>
+    <a href="{{ route('admin.dashboard') }}" wire:navigate>
       <div
         class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/dashboard') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer">
         <span class="material-icons mr-2">menu</span>
