@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\EventsAdmin;
 use App\Livewire\Admin\LoginForm;
 use App\Livewire\Client\Home;
 use App\Livewire\Client\Events;
@@ -35,4 +36,5 @@ Route::group([
     'as' => 'admin.'
 ], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/events', EventsAdmin::class)->name('events');
 });
