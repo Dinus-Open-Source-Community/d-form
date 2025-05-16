@@ -1,3 +1,5 @@
-<div>
-                <h1 class="text-2xl font-bold">Dashboard</h1>
+<div class="p-4">
+  <h1 class="text-3xl font-bold mb-8">Dashboard</h1>
+  <livewire:admin.components.dashboard-stats />
+  <livewire:admin.components.event-list :showToday="true" :showOngoing="true" :showUpcoming="true" />
 </div>
