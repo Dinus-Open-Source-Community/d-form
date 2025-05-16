@@ -33,7 +33,7 @@
   </div>
 
   {{-- User Info --}}
-  <div class="mt-auto p-4">
+  <div class="mt-auto p-4 relative" x-data="{ open: false }" @click.outside="open = false">
     <div class="p-3 m-3 flex items-center rounded-md bg-white/10">
       {{-- Avatar --}}
       <div class="w-10 h-10 bg-gray-200 rounded-md mr-3 flex-shrink-0"></div>
@@ -45,7 +45,22 @@
       </div>
 
       {{-- Menu Button --}}
-      <button class="mx-auto">⋮</button>
+      <button @click="open = !open" class="ml-2 text-2xl p-2 hover:bg-white/20 rounded-md transition">
+        ⋮
+      </button>
+
+    </div>
+
+    {{-- Dropdown Menu --}}
+    <div x-show="open" x-transition
+      class="absolute bottom-24 right-6 bg-white text-black rounded-md shadow-md w-32 z-50">
+      <button wire:click="logout" class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer transition"
+        wire:loading.attr="disabled"
+        wire:loading.class="bg-gray-200 cursor-not-allowed"
+        wire:loading.class.remove="cursor-pointer"
+      >
+        Logout
+      </button>
     </div>
   </div>
 </div>
