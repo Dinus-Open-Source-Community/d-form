@@ -32,7 +32,13 @@ class Event extends Model
     protected $casts = [
         'duration_days' => 'integer',
         'participants' => 'integer',
+        'start_date' => 'date',
     ];
+
+    public function getEndDateAttribute()
+    {
+        return $this->start_date->addDays($this->duration_days);
+    }
 
     public function getCoverEventAttribute($value)
     {

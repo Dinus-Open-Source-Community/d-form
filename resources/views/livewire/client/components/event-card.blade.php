@@ -4,7 +4,7 @@
 
 <div 
     class="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105 flex flex-col h-full"
-     wire:click="handleClick"
+    wire:click="handleClick"
 >
     <!-- Image section -->
     <div class="h-36 sm:h-40 md:h-48 bg-[#343434] overflow-hidden">
@@ -52,20 +52,13 @@
             </p>
         </div>
 
-        <!-- Organizer -->
-        <p class="text-xs text-gray-500 mt-1">
-            By: {{ $event->user->name }}
-        </p>
-
         <!-- Date section -->
         <div class="mt-2 pt-2 border-t border-gray-200">
-            <p class="text-sm text-gray-500">
-                <b>{{ $eventDate['days'] ?? '' }}</b> 
-                {{ $eventDate['months'] ?? '' }}
+            <p class="text-sm text-gray-500 font-semibold">
+                {{ $eventDate['date'] ?? 'Tanggal belum tersedia' }}
             </p>
             <p class="text-xs text-gray-400 mt-1">
-                {{ Carbon::parse($event->start_time)->format('H:i') }} - 
-                {{ Carbon::parse($event->end_time)->format('H:i') }}
+                {{ $timeRange }}
             </p>
         </div>
     </div>

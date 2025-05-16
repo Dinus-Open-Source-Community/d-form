@@ -30,7 +30,7 @@
         </div>
 
         <div class="inline-block">
-            <a href="{{ route('client.events') }}" 
+            <a wire:navigate href="{{ route('client.events') }}" 
                class="bg-white text-gray-800 font-semibold py-2 px-6 sm:px-8 md:px-10 rounded-lg hover:bg-gray-200 cursor-pointer transform hover:scale-105 transition-transform"
             >
                 See All Events
