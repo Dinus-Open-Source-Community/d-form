@@ -202,9 +202,27 @@
     function copyRegUrl(url) {
       if (!url) return;
       navigator.clipboard.writeText(url).then(function() {
-        alert('Registration URL berhasil disalin!');
+        Swal.fire({
+          toast: true,
+          icon: 'success',
+          title: 'URL copied successfully!',
+          text: 'Registration URL has been copied to clipboard.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          position: 'top-end',
+        });
       }, function() {
-        alert('Gagal menyalin URL.');
+        Swal.fire({
+          toast: true,
+          icon: 'error',
+          title: 'Failed to copy URL',
+          text: 'Please try again.',
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          position: 'top-end',
+        });
       });
     }
   </script>

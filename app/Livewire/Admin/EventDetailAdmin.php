@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\File;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use ZipArchive;
 
 class EventDetailAdmin extends Component
@@ -52,9 +53,28 @@ class EventDetailAdmin extends Component
             Excel::import(new ParticipantsImport($this->eventId), $this->csvFile);
             $this->loadEvent();
             $this->showReuploadForm = false;
-            $this->dispatch('notify', 'CSV berhasil diunggah.');
+            LivewireAlert::title('Success')
+                ->text('CSV file uploaded successfully')
+                ->timer(3000)
+                ->success()
+                ->toast()
+                ->position('top-end')
+                ->withOptions([
+                    'timerProgressBar' => true,
+                ])
+                ->show();
         } catch (\Exception $e) {
             $this->dispatch('notify', 'Gagal mengunggah CSV: ' . $e->getMessage());
+            LivewireAlert::title('Error')
+                ->text('Failed to upload CSV: ' . $e->getMessage())
+                ->timer(3000)
+                ->error()
+                ->toast()
+                ->position('top-end')
+                ->withOptions([
+                    'timerProgressBar' => true,
+                ])
+                ->show();
         }
     }
 
@@ -63,7 +83,16 @@ class EventDetailAdmin extends Component
         // Generate barcode(s) first
         $generateResult = $this->generateBarcodes($this->eventId, $participantId);
         if (!$generateResult['success']) {
-            $this->dispatch('notify', $generateResult['message']);
+            LivewireAlert::title('Error')
+                ->text($generateResult['message'])
+                ->timer(3000)
+                ->error()
+                ->toast()
+                ->position('top-end')
+                ->withOptions([
+                    'timerProgressBar' => true,
+                ])
+                ->show();
             return;
         }
 
@@ -72,7 +101,16 @@ class EventDetailAdmin extends Component
             $filePath = public_path("barcodes/{$this->eventId}/{$participantId}.png");
 
             if (!file_exists($filePath)) {
-                $this->dispatch('notify', 'Barcode not found');
+                LivewireAlert::title('Error')
+                    ->text('Barcode not found')
+                    ->timer(3000)
+                    ->error()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions([
+                        'timerProgressBar' => true,
+                    ])
+                    ->show();
                 return;
             }
 
@@ -85,7 +123,16 @@ class EventDetailAdmin extends Component
 
         $zip = new ZipArchive();
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            $this->dispatch('notify', 'Failed to create zip file');
+            LivewireAlert::title('Error')
+                ->text('Failed to create zip file')
+                ->timer(3000)
+                ->error()
+                ->toast()
+                ->position('top-end')
+                ->withOptions([
+                    'timerProgressBar' => true,
+                ])
+                ->show();
             return;
         }
 
