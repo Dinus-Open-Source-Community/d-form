@@ -1,6 +1,6 @@
 <a
     class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform transform hover:scale-105 flex flex-col h-full"
-    href=""
+    href="{{ route('admin.event-detail', $event['id']) }}"
     wire:navigate
 >
     <div class="h-36 sm:h-40 md:h-48 bg-[#343434]"></div>
