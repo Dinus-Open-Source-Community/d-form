@@ -38,7 +38,7 @@ class EventsCatalogue extends Component
                 ->whereRaw('DATE_ADD(start_date, INTERVAL duration_days DAY) >= NOW()');
         }
 
-        $this->events = $query->limit(3)->get()->toArray();
+        $this->events = $query->orderByDesc('created_at')->limit(3)->get()->toArray();
         $this->notFound = empty($this->events);
     }
 
