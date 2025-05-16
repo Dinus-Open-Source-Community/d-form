@@ -13,39 +13,46 @@ class DateHelper
      * @param string|Carbon $endDate
      * @return array
      */
+    // app/Http/Helpers/DateHelper.php
     public static function formatRangedDate($startDate, $endDate)
     {
-        $start = $startDate instanceof Carbon ? $startDate : Carbon::parse($startDate);
-        $end = $endDate instanceof Carbon ? $endDate : Carbon::parse($endDate);
-        
-        $result = [
-            'days' => '',
-            'months' => ''
-        ];
-        
-        // Same month and year
-        if ($start->month === $end->month && $start->year === $end->year) {
-            if ($start->day === $end->day) {
-                // Single day event
-                $result['days'] = $start->day;
-            } else {
-                // Multi-day event in same month
-                $result['days'] = $start->day . '-' . $end->day;
-            }
-            $result['months'] = $start->translatedFormat('F Y'); 
-        } 
-        // Different months or years
-        else {
-            $result['days'] = $start->day . ' ' . $start->translatedFormat('M') . ' - ' . 
-                             $end->day . ' ' . $end->translatedFormat('M');
-            
-            if ($start->year !== $end->year) {
-                $result['days'] .= ' ' . $start->year . '-' . $end->year;
-            } else {
-                $result['months'] = $start->year;
-            }
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+
+        $format = 'j F Y';
+
+        if ($start->isSameDay($end)) {
+            return [
+                'date' => $start->translatedFormat($format),
+                'range' => false
+            ];
         }
-        
-        return $result;
+
+        return [
+            'date' => $start->translatedFormat($format) . ' - ' . $end->translatedFormat($format),
+            'range' => true
+        ];
+    }
+
+    public static function formatEventDateRange(Carbon $start, Carbon $end): array
+    {
+        if ($start->isSameDay($end)) {
+            return [
+                'date' => $start->translatedFormat('j F Y'),
+                'range' => false
+            ];
+        }
+
+        if ($start->month === $end->month) {
+            return [
+                'date' => $start->translatedFormat('j') . '-' . $end->translatedFormat('j F Y'),
+                'range' => true
+            ];
+        }
+
+        return [
+            'date' => $start->translatedFormat('j F') . ' - ' . $end->translatedFormat('j F Y'),
+            'range' => true
+        ];
     }
 }

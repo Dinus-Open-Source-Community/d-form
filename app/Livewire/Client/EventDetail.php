@@ -19,8 +19,10 @@ class EventDetail extends Component
     public function mount($eventId)
     {
         $this->eventId = $eventId;
-        $this->fetchEvent();
-        $this->eventDate = DateHelper::formatRangedDate($this->event->start_date, $this->event->end_date);
+        $this->event = Event::findOrFail($this->eventId);
+
+        $endDate = $this->event->end_date ?? $this->event->start_date->addDays($this->event->duration_days);
+        $this->eventDate = DateHelper::formatRangedDate($this->event->start_date, $endDate);
     }
 
     public function fetchEvent()

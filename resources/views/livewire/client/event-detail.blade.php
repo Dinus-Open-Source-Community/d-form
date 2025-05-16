@@ -42,11 +42,10 @@
                         <path d="M16 18h.01" />
                     </svg>
                     <span class="text-sm sm:text-base">
-                        @if(isset($eventDate['days']))
-                            <span class="font-semibold">{{ $eventDate['days'] }}</span>
-                            {{ $eventDate['months'] }}
+                        @if(isset($eventDate['date']))
+                            <span class="font-semibold">{{ $eventDate['date'] }}</span>
                         @else
-                            <span class="text-gray-500">Date not available</span>
+                            <span class="text-gray-500">Tanggal belum tersedia</span>
                         @endif
                     </span>
                 </div>
