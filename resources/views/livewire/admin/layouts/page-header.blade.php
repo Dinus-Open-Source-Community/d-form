@@ -7,8 +7,10 @@
 
     @foreach ($segments as $index => $segment)
       @php
-    if (strlen($segment) > 10) $newSegment = 'Detail';
-$path .= '/' . $segment;
+        if (strlen($segment) > 10) {
+            $newSegment = 'Detail';
+        }
+        $path .= '/' . $segment;
         $displayName = is_numeric($segment)
             ? $events[$segment]['title'] ?? $segment
             : ucfirst(str_replace('-', ' ', $segment));
@@ -27,7 +29,7 @@ $path .= '/' . $segment;
         </a>
       @endif
       @php
-          $newSegment = null;
+        $newSegment = null;
       @endphp
     @endforeach
   </div>
