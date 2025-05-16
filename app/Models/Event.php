@@ -45,7 +45,7 @@ class Event extends Model
         if (!$value)
             return null;
 
-        return url($value);
+        return url('storage/' . $value);
     }
 
 
