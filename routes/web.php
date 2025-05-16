@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\EventCreateAdmin;
 use App\Livewire\Admin\EventDetailAdmin;
 use App\Livewire\Admin\EventsAdmin;
 use App\Livewire\Admin\LoginForm;
@@ -39,6 +40,7 @@ Route::group([
 ], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/events', EventsAdmin::class)->name('events');
+    Route::get('/events/create', EventCreateAdmin::class)->name('events-create');
     Route::get('/events/{eventId}', EventDetailAdmin::class)->name('event-detail');
     Route::get('/scanqr/{eventId}', ScanQr::class)->name('scanqr');
 });
