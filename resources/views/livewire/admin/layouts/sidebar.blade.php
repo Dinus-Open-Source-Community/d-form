@@ -7,7 +7,7 @@
 
   {{-- Tombol New Event --}}
   <div class="p-6 flex justify-center">
-    <a href="">
+    <a href="{{ route('admin.events-create') }}">
       <button class="bg-white/10 text-white rounded-lg py-2 px-4 text-center hover:bg-white/20 cursor-pointer">
         New Event
       </button>
