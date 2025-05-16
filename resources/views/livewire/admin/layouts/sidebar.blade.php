@@ -25,7 +25,7 @@
     </a>
     <a href="{{ route('admin.events') }}" wire:navigate>
       <div
-        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer">
+        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events/*') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer">
         <span class="material-icons mr-2">menu</span>
         Events
       </div>
