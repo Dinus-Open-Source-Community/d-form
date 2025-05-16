@@ -6,6 +6,7 @@ use App\Models\Event;
 use App\Models\Participant;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Component;
 
 class ScanQr extends Component
@@ -92,12 +93,26 @@ class ScanQr extends Component
                 ->first();
 
             if (!$participant) {
-                $this->errorMessage = 'Participant not found or not registered for this event';
+                LivewireAlert::title('Error')
+                    ->text('Participant not found or not registered for this event')
+                    ->timer(3000)
+                    ->error()
+                    ->withOptions([
+                        'timerProgressBar' => true,
+                    ])
+                    ->show();
                 return;
             }
 
-            if ($participant->is_presence === true) {
-                $this->errorMessage = 'Participant already checked in';
+            if ($participant->is_presence === true || $participant->presence_at) {
+                LivewireAlert::title('Error')
+                    ->text('Participant already checked in')
+                    ->error()
+                    ->withOptions([
+                        'timerProgressBar' => true,
+                    ])
+                    ->withConfirmButton()
+                    ->show();
                 return;
             }
 
@@ -106,11 +121,26 @@ class ScanQr extends Component
             $participant->save();
 
             $this->scannedUser = $participant->name ?? 'Participant';
-            // $this->showSuccessModal = true;
             $this->updateParticipantStats();
+            LivewireAlert::title('Success')
+                ->text('Check-in successful for ' . $this->scannedUser)
+                ->timer(3000)
+                ->success()
+                ->withOptions([
+                    'timerProgressBar' => true,
+                ])
+                ->show();
         } catch (\Exception $e) {
             Log::error('Check-in error: ' . $e->getMessage());
             $this->errorMessage = 'Error processing check-in';
+            LivewireAlert::title('Error')
+                ->text('Error processing check-in: ' . $e->getMessage())
+                ->error()
+                ->withOptions([
+                    'timerProgressBar' => true,
+                ])
+                ->withConfirmButton()
+                ->show();
         }
     }
 
