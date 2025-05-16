@@ -1,10 +1,12 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\LoginForm;
 use App\Livewire\Client\Home;
 use App\Livewire\Client\Events;
 use App\Livewire\Client\EventDetail;
 use App\Livewire\Client\About;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', function () {
@@ -25,9 +27,11 @@ Route::group(
 );
 
 // Admin routes
+Route::get('/admin/login', LoginForm::class)->name('login');
+
 Route::group([
     'prefix' => 'admin',
-    // 'middleware' => 'auth',
+    'middleware' => ['auth'],
     'as' => 'admin.'
 ], function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
