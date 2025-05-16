@@ -4,7 +4,7 @@
             title="Today's Events"
             timestamp="today"
             :showSeeAll="$showSeeAll"
-            useQR
+            :useQR="$useQR"
         />
     @endif
 

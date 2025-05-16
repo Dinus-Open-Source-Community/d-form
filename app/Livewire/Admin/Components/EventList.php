@@ -10,7 +10,8 @@ class EventList extends Component
     public bool $showOngoing = true;
     public bool $showUpcoming = true;
     public bool $showSeeAll = true;
-    
+    public bool $useQR = false;
+
     public function render()
     {
         return view('livewire.admin.components.event-list');
