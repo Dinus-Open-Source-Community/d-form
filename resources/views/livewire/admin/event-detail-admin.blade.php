@@ -40,9 +40,10 @@
 
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4 mt-10 col-span-1 md:col-span-2 lg:col-span-1">
-      <button class="bg-white border border-black px-4 py-2 rounded-lg hover:bg-gray-200 cursor-pointer">
+      <a href="{{ route('admin.event-edit', $event->id) }}"
+        class="bg-white border border-black px-4 py-2 rounded-lg hover:bg-gray-200 cursor-pointer text-center">
         Edit
-      </button>
+      </a>
       @if ($showTable)
         <button wire:click="$set('showReuploadForm', true)"
           class="bg-white border border-black px-4 py-2 rounded-lg hover:bg-gray-200 cursor-pointer"> Reupload CSV
