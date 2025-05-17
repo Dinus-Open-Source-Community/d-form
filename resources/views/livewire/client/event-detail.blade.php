@@ -121,7 +121,10 @@
         <div class="col-span-1 lg:col-span-2 space-y-4 mt-6 lg:mt-0">
             <div class="flex flex-wrap gap-2 mb-4">
                 <span class="px-3 py-1 bg-[#343434] text-white text-xs sm:text-sm rounded-lg">
-                    {{ $event->division }}
+                    {{ Str::ucfirst($event->division) }}
+                </span>
+                <span class="px-3 py-1 bg-[#343434] text-white text-xs sm:text-sm rounded-lg">
+                    {{ Str::upper($event->type) }}
                 </span>
             </div>
 
