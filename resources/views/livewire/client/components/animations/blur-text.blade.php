@@ -44,7 +44,7 @@
 
 @pushOnce('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        function triggerBlurTextAnimation() {
             // Animate words
             document.querySelectorAll('.blur-text-word').forEach((el, index) => {
                 setTimeout(() => {
@@ -64,6 +64,15 @@
                     el.style.transform = 'translate(0)';
                 }, index * 50);
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', triggerBlurTextAnimation);
+        document.addEventListener('livewire:navigated', triggerBlurTextAnimation);
+
+        document.addEventListener('livewire:navigated', function () {
+            if (window.AOS) {
+                window.AOS.refreshHard();
+            }
         });
     </script>
 @endPushOnce

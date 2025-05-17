@@ -1,10 +1,6 @@
 <div class="px-4 sm:px-8 md:px-12 py-6 sm:py-8 mt-16 sm:mt-20">
     <!-- Breadcrumb Navigation -->
     <div class="flex items-center gap-2 text-sm text-gray-600 mb-4 sm:mb-6 overflow-x-auto pb-2">
-        <a wire:navigate href="{{ route('client.home') }}" class="hover:text-gray-900 whitespace-nowrap">
-            Home
-        </a>
-        <span>/</span>
         <a wire:navigate href="{{ route('client.events') }}" class="hover:text-gray-900 whitespace-nowrap">
             Events
         </a>

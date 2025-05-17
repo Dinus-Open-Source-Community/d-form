@@ -10,15 +10,15 @@
         
         {{-- Desktop menu --}}
         <div class="hidden md:flex space-x-6 lg:space-x-10 pr-4 lg:pl-20">
-            <a class="text-lg {{ request()->routeIs('client.home') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
+            <a wire:navigate class="text-lg {{ request()->routeIs('client.home') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
                href="{{ route('client.home') }}">
                 Home
             </a>
-            <a class="text-lg {{ request()->routeIs('client.events*') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
+            <a wire:navigate class="text-lg {{ request()->routeIs('client.events*') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
                href="{{ route('client.events') }}">
                 Events
             </a>
-            <a class="text-lg {{ request()->routeIs('client.about') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
+            <a wire:navigate class="text-lg {{ request()->routeIs('client.about') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
                href="{{ route('client.about') }}">
                 About
             </a>
@@ -44,6 +44,7 @@
                     class="text-lg {{ request()->routeIs('client.home') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
                     href="{{ route('client.home') }}"
                     wire:click="toggleMenu"
+                    wire:navigate
                 >
                     Home
                 </a>
@@ -51,6 +52,7 @@
                     class="text-lg {{ request()->routeIs('client.events*') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
                     href="{{ route('client.events') }}"
                     wire:click="toggleMenu"
+                    wire:navigate
                 >
                     Events
                 </a>
@@ -58,6 +60,7 @@
                     class="text-lg {{ request()->routeIs('client.about') ? 'text-[#343434] font-semibold' : 'text-gray-600 hover:text-black' }}" 
                     href="{{ route('client.about') }}"
                     wire:click="toggleMenu"
+                    wire:navigate
                 >
                     About
                 </a>

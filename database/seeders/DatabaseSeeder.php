@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@mail.com',
         ]);
 
-        $this->call([
-            EventSeeder::class,
-        ]);
+        // $this->call([
+        //     EventSeeder::class,
+        // ]);
     }
 }
