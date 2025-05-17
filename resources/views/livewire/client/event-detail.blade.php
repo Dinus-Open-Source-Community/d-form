@@ -14,8 +14,8 @@
         <!-- Left Column - Image -->
         <div class="col-span-1 space-y-6 lg:border-r-2 lg:border-gray-400 lg:pr-6">
             <div class="w-full h-48 sm:h-56 bg-[#343434] rounded-lg mb-4 sm:mb-7">
-                @if($event->cover_photo)
-                    <img src="{{ $event->cover_photo }}" alt="{{ $event->name }}"
+                @if($event->cover_event)
+                    <img src="{{ $event->cover_event }}" alt="{{ $event->name }}"
                         class="w-full h-full object-cover rounded-lg">
                 @endif
             </div>
