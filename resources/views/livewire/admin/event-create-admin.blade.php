@@ -82,7 +82,9 @@
                 <div class="flex flex-col">
                     <label class="text-sm mb-1 font-medium text-[#343434]">Participants</label>
                     <div class="relative">
-                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#343434] w-4 h-4" fill="none" stroke="currentColor" viewBox="0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#343434] w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
                         <input
                             type="number"
                             wire:model="participants"
@@ -164,8 +166,24 @@
                     for="coverEvent"
                     class="cursor-pointer w-full border border-[#343434] rounded-lg py-6 flex flex-col items-center justify-center text-[#343434] hover:bg-gray-100"
                 >
-                    <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                    Click or drag image to upload
+                    @if ($coverEvent)
+                        <div class="mb-2 relative">
+                            <img src="{{ $coverEvent->temporaryUrl() }}" alt="Cover Preview" class="max-h-48 rounded-lg object-contain mx-auto" />
+                            <button
+                                type="button"
+                                wire:click="removeCoverEvent"
+                                class="absolute top-2 right-2 bg-gray-400 bg-opacity-80 rounded-full p-1 text-[#343434] hover:bg-red-500 hover:text-white transition"
+                                title="Remove photo"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    @else
+                        <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Click or drag image to upload
+                    @endif
                     <input
                         id="coverEvent"
                         type="file"

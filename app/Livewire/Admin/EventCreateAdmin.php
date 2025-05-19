@@ -151,6 +151,11 @@ class EventCreateAdmin extends Component
         $this->showSuccessModal = false;
     }
 
+    public function removeCoverEvent()
+    {
+        $this->coverEvent = null;
+    }
+
     #[Layout('components.layouts.admin')]
     public function render()
     {
