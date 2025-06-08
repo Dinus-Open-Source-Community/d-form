@@ -1,13 +1,13 @@
 <div class="pt-32 min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
     <!-- Hero Section -->
-    <div class="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/15 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-primary/15 to-transparent"></div>
     <div class="relative overflow-hidden px-6 sm:px-8 md:px-12">
         <div class="relative py-16 sm:py-20 md:py-24">
             <div class="max-w-4xl mx-auto text-center">
                 <!-- Badge -->
-                <div class="inline-flex items-center gap-2 bg-[var(--bg-primary)]/10 px-4 py-2 rounded-full mb-6">
-                    <div class="w-2 h-2 bg-[var(--bg-primary)] rounded-full animate-pulse"></div>
-                    <span class="text-[var(--bg-primary)] font-medium text-base">Event Doscom</span>
+                <div class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
+                    <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                    <span class="text-primary font-medium text-base">Event Doscom</span>
                 </div>
 
                 <!-- Title -->
@@ -30,7 +30,7 @@
     <div class="px-6 sm:px-8 md:px-12 mb-8">
         <div class="max-w-7xl mx-auto">
             <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-6 sm:p-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                 <div class="relative">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Search Bar -->
@@ -47,14 +47,14 @@
                                 <input type="text" 
                                     wire:model.live.debounce.500ms="search"
                                     placeholder="Cari event berdasarkan nama, deskripsi, atau lokasi..."
-                                    class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[var(--bg-primary)]/20 focus:border-[var(--bg-primary)] transition-all duration-300 text-gray-900 placeholder-gray-500">
+                                    class="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 text-gray-900 placeholder-gray-500">
                             </div>
                         </div>
 
                         <!-- Filter Dropdown -->
                         <div class="relative">
                             <select wire:model.live="categoryFilter"
-                                class="w-full py-4 px-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[var(--bg-primary)]/20 focus:border-[var(--bg-primary)] transition-all duration-300 text-gray-900 appearance-none">
+                                class="w-full py-4 px-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-300 text-gray-900 appearance-none">
                                 <option value="">Semua Kategori</option>
                                 <option value="general">General</option>
                                 <option value="programming">Programming</option> 
@@ -88,7 +88,7 @@
                                 <!-- Clear filters button -->
                                 <button wire:click="clearFilters" 
                                     type="button"
-                                    class="text-[var(--bg-primary)] hover:text-[#5a7ca3] font-medium text-sm bg-[var(--bg-primary)]/10 hover:bg-[var(--bg-primary)]/20 px-3 py-1 rounded-full transition-all duration-200 flex items-center gap-1">
+                                    class="text-primary hover:text-[#5a7ca3] font-medium text-sm bg-primary/10 hover:bg-primary/20 px-3 py-1 rounded-full transition-all duration-200 flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M18 6 6 18"/>
                                         <path d="M6 6l12 12"/>

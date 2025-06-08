@@ -1,6 +1,6 @@
 <div class="pt-32 min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
     <!-- Hero Section -->
-    <div class="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/10 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent"></div>
 
     <!-- Main Content -->
     <div class="px-4 sm:px-6 md:px-12 pb-10 sm:pb-16 md:pb-20">
@@ -13,18 +13,18 @@
                         <div
                             class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-4 sm:p-6 relative overflow-hidden">
                             <div
-                                class="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-gradient-to-br from-[var(--bg-primary)]/6 to-transparent rounded-full -translate-y-10 sm:-translate-y-16 translate-x-10 sm:translate-x-16">
+                                class="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-gradient-to-br from-primary/6 to-transparent rounded-full -translate-y-10 sm:-translate-y-16 translate-x-10 sm:translate-x-16">
                             </div>
                             <div class="relative">
                                 <div
-                                    class="w-full h-44 sm:h-56 xl:h-64 bg-gradient-to-br from-[var(--bg-primary)]/20 to-[var(--bg-primary)]/5 rounded-2xl mb-4 sm:mb-6 overflow-hidden">
+                                    class="w-full h-44 sm:h-56 xl:h-64 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl mb-4 sm:mb-6 overflow-hidden">
                                     @if($event->cover_event)
                                         <img src="{{ $event->cover_event }}" alt="{{ $event->name }}"
                                             class="w-full h-full object-cover rounded-2xl hover:scale-105 transition-transform duration-500">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                                viewBox="0 0 24 24" fill="none" stroke="[var(--bg-primary)]"
+                                                viewBox="0 0 24 24" fill="none" stroke="primary"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
                                                 <circle cx="9" cy="9" r="2" />
@@ -36,7 +36,7 @@
                             </div>
                             <!-- Event Info Cards -->
                             <div
-                                class="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-8 sm:-translate-y-12 translate-x-8 sm:translate-x-12">
+                                class="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-8 sm:-translate-y-12 translate-x-8 sm:translate-x-12">
                             </div>
                             <div class="relative space-y-4 sm:space-y-6">
                                 <h3
@@ -47,7 +47,7 @@
                                     <div
                                         class="flex items-center gap-4 p-3 bg-gray-100/80 rounded-xl hover:bg-gray-200/60 transition-colors">
                                         <div
-                                            class="w-10 h-10 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            class="w-10 h-10 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -78,7 +78,7 @@
                                     <div
                                         class="flex items-center gap-4 p-3 bg-gray-100/80 rounded-xl hover:bg-gray-200/60 transition-colors">
                                         <div
-                                            class="w-10 h-10 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            class="w-10 h-10 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -98,7 +98,7 @@
                                     <div
                                         class="flex items-center gap-4 p-3 bg-gray-100/80 rounded-xl hover:bg-gray-200/60 transition-colors">
                                         <div
-                                            class="w-10 h-10 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            class="w-10 h-10 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -115,7 +115,7 @@
                                     <div
                                         class="flex items-center gap-4 p-3 bg-gray-100/80 rounded-xl hover:bg-gray-200/60 transition-colors">
                                         <div
-                                            class="w-10 h-10 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
+                                            class="w-10 h-10 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center flex-shrink-0">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -139,7 +139,7 @@
                         <!-- Registration Section -->
                         <div
                             class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-4 sm:p-6 relative overflow-hidden">
-                            <div class="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)]/5 to-transparent">
+                            <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent">
                             </div>
                             <div class="relative">
                                 @if($showEmailInput)
@@ -147,11 +147,11 @@
                                         <h3 class="text-lg font-bold text-gray-900 mb-4">Notify Me!</h3>
                                         <div class="relative">
                                             <input type="email" wire:model="email"
-                                                class="w-full p-4 pr-12 border-2 border-gray-200 rounded-xl focus:border-[var(--bg-primary)] focus:ring-4 focus:ring-[var(--bg-primary)]/10 transition-all duration-300 outline-none"
+                                                class="w-full p-4 pr-12 border-2 border-gray-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 outline-none"
                                                 placeholder="Masukkan email Anda" required />
                                             <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 24 24" fill="none" stroke="[var(--bg-primary)]"
+                                                    viewBox="0 0 24 24" fill="none" stroke="primary"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <path
                                                         d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -160,7 +160,7 @@
                                             </div>
                                         </div>
                                         <button type="submit"
-                                            class="w-full bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] text-white py-4 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold flex items-center justify-center gap-2">
+                                            class="w-full bg-gradient-to-r from-primary to-[#5a7ca3] text-white py-4 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold flex items-center justify-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -169,8 +169,8 @@
                                             </svg>
                                             Notify Me!
                                         </button>
-                                        <div class="text-center p-4 bg-[var(--bg-primary)]/5 rounded-xl">
-                                            <p class="text-[var(--bg-primary)] text-sm font-semibold">
+                                        <div class="text-center p-4 bg-primary/5 rounded-xl">
+                                            <p class="text-primary text-sm font-semibold">
                                                 <span class="text-gray-600">Registration Opens in</span><br>
                                                 {{ \Carbon\Carbon::parse($event->registration_start)->diffForHumans() }}
                                             </p>
@@ -179,7 +179,7 @@
                                 @else
                                     <div class="text-center">
                                         <div
-                                            class="w-16 h-16 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                            class="w-16 h-16 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-2xl flex items-center justify-center mx-auto mb-4">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -192,7 +192,7 @@
                                         <h3 class="text-lg font-bold text-gray-900 mb-2">Daftar Sekarang</h3>
                                         <p class="text-gray-600 text-base mb-6">Bergabunglah dengan event menarik ini</p>
                                         <button
-                                            class="w-full bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] text-white py-4 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold flex items-center justify-center gap-2"
+                                            class="w-full bg-gradient-to-r from-primary to-[#5a7ca3] text-white py-4 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold flex items-center justify-center gap-2"
                                             wire:click="toggleEmailInput">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -218,16 +218,16 @@
                             <!-- Event Tags -->
                             <div class="flex flex-wrap gap-2 mb-4 sm:mb-6">
                                 <span
-                                    class="px-3 py-1.5 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] text-white text-xs font-semibold rounded-full">
+                                    class="px-3 py-1.5 bg-gradient-to-r from-primary to-[#5a7ca3] text-white text-xs font-semibold rounded-full">
                                     {{ Str::ucfirst($event->division) }}
                                 </span>
                                 <span
-                                    class="px-3 py-1.5 bg-gray-100 text-[var(--bg-primary)] text-xs font-semibold rounded-full border border-[var(--bg-primary)]/20">
+                                    class="px-3 py-1.5 bg-gray-100 text-primary text-xs font-semibold rounded-full border border-primary/20">
                                     {{ Str::upper($event->type) }}
                                 </span>
                             </div>
                             <div
-                                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-16 translate-x-16">
+                                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16">
                             </div>
                             <div class="relative">
                                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
@@ -243,21 +243,21 @@
                         <div
                             class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-4 sm:p-8 relative overflow-hidden">
                             <div
-                                class="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-[var(--bg-primary)]/20 to-transparent rounded-full -translate-y-8 sm:-translate-y-12 -translate-x-8 sm:-translate-x-12">
+                                class="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-primary/20 to-transparent rounded-full -translate-y-8 sm:-translate-y-12 -translate-x-8 sm:-translate-x-12">
                             </div>
                             <div class="relative">
                                 <!-- Tabs Navigation -->
                                 <div
                                     class="relative flex border-2 rounded-2xl border-gray-200 w-auto max-w-xs sm:max-w-md md:max-w-lg p-1 mb-6 sm:mb-8 overflow-x-auto">
                                     <!-- Animated Slider -->
-                                    <div class="absolute top-1 left-1 h-11 w-[calc(50%-0.25rem)] bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl z-0 transition-all duration-300 ease-out shadow-lg"
+                                    <div class="absolute top-1 left-1 h-11 w-[calc(50%-0.25rem)] bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl z-0 transition-all duration-300 ease-out shadow-lg"
                                         style="transform: translateX({{ $activeTab === 'overview' ? '0%' : '100%' }});">
                                     </div>
 
                                     <!-- Buttons -->
                                     <div class="relative flex w-full gap-2 z-10">
                                         <button class="py-3 px-4 text-sm font-semibold rounded-xl transition-all duration-300 flex-1 text-center focus:outline-none
-                {{ $activeTab === 'overview' ? 'text-white' : 'text-gray-600 hover:text-[var(--bg-primary)]' }}"
+                {{ $activeTab === 'overview' ? 'text-white' : 'text-gray-600 hover:text-primary' }}"
                                             wire:click="switchTab('overview')">
                                             <div class="flex items-center justify-center gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -272,7 +272,7 @@
                                         </button>
 
                                         <button class="py-3 px-4 text-sm font-semibold rounded-xl transition-all duration-300 flex-1 text-center focus:outline-none
-                {{ $activeTab === 'speakers' ? 'text-white' : 'text-gray-600 hover:text-[var(--bg-primary)]' }}"
+                {{ $activeTab === 'speakers' ? 'text-white' : 'text-gray-600 hover:text-primary' }}"
                                             wire:click="switchTab('speakers')">
                                             <div class="flex items-center justify-center gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -293,7 +293,7 @@
                                     @if($activeTab === 'overview')
                                         <div class="flex items-center gap-3 mb-4 sm:mb-6">
                                             <div
-                                                class="w-12 h-12 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center">
+                                                class="w-12 h-12 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                     stroke-linecap="round" stroke-linejoin="round">
@@ -317,7 +317,7 @@
                                         <div class="space-y-6">
                                             <div class="flex items-center gap-3 mb-4 sm:mb-6">
                                                 <div
-                                                    class="w-12 h-12 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center">
+                                                    class="w-12 h-12 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                         stroke-linecap="round" stroke-linejoin="round">
@@ -336,13 +336,13 @@
                                                             class="bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-2xl p-6 border border-gray-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                                                             <div class="flex items-start gap-4">
                                                                 <div
-                                                                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--bg-primary)]/20 to-[var(--bg-primary)]/5 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                                                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 overflow-hidden flex-shrink-0 flex items-center justify-center">
                                                                     @if($speaker['photo'])
                                                                         <img src="{{ $speaker['photo'] }}" alt="{{ $speaker['name'] }}"
                                                                             class="w-full h-full object-cover rounded-2xl">
                                                                     @else
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                            viewBox="0 0 24 24" fill="none" stroke="[var(--bg-primary)]"
+                                                                            viewBox="0 0 24 24" fill="none" stroke="primary"
                                                                             stroke-width="2" stroke-linecap="round"
                                                                             stroke-linejoin="round">
                                                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -354,7 +354,7 @@
                                                                     <h3 class="font-bold text-lg text-gray-900 mb-1">
                                                                         {{ $speaker['name'] }}
                                                                     </h3>
-                                                                    <p class="text-[var(--bg-primary)] font-semibold text-sm mb-2">
+                                                                    <p class="text-primary font-semibold text-sm mb-2">
                                                                         {{ $speaker['topic'] }}
                                                                     </p>
                                                                     <p class="text-gray-600 text-sm leading-relaxed">
@@ -368,9 +368,9 @@
                                             @else
                                                 <div class="text-center py-12">
                                                     <div
-                                                        class="w-20 h-20 bg-gradient-to-r from-[var(--bg-primary)]/10 to-[var(--bg-primary)]/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                        class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                            viewBox="0 0 24 24" fill="none" stroke="[var(--bg-primary)]"
+                                                            viewBox="0 0 24 24" fill="none" stroke="primary"
                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                             <circle cx="12" cy="12" r="10" />
                                                             <path d="M12 6v6l4 2" />
@@ -392,12 +392,12 @@
                             <div
                                 class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-4 sm:p-8 relative overflow-hidden">
                                 <div
-                                    class="absolute bottom-0 right-0 w-16 h-16 sm:w-32 sm:h-32 bg-gradient-to-tl from-[var(--bg-primary)]/10 to-transparent rounded-full translate-y-8 sm:translate-y-16 translate-x-8 sm:translate-x-16">
+                                    class="absolute bottom-0 right-0 w-16 h-16 sm:w-32 sm:h-32 bg-gradient-to-tl from-primary/10 to-transparent rounded-full translate-y-8 sm:translate-y-16 translate-x-8 sm:translate-x-16">
                                 </div>
                                 <div class="relative">
                                     <div class="flex items-center gap-3 mb-6">
                                         <div
-                                            class="w-12 h-12 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] rounded-xl flex items-center justify-center">
+                                            class="w-12 h-12 bg-gradient-to-r from-primary to-[#5a7ca3] rounded-xl flex items-center justify-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round">
@@ -411,9 +411,9 @@
                                         @foreach($event->contact_info as $contact)
                                             <div class="flex items-center gap-3 p-3 bg-gray-50/80 rounded-xl">
                                                 <div
-                                                    class="w-8 h-8 bg-[var(--bg-primary)]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                    class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="none" stroke="[var(--bg-primary)]"
+                                                        viewBox="0 0 24 24" fill="none" stroke="primary"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                         <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0" />
                                                         <path

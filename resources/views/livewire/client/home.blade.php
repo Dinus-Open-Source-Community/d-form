@@ -296,59 +296,59 @@
         <div class="absolute inset-0">
             <!-- Main floating elements with enhanced animations -->
             <div
-                class="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[var(--bg-primary)] to-transparent blur-3xl animate-float animate-pulse-glow animate-morph">
+                class="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-primary to-transparent blur-3xl animate-float animate-pulse-glow animate-morph">
             </div>
-            <div class="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-tr from-[var(--bg-primary)] to-transparent blur-3xl animate-float-reverse animate-pulse-glow animate-morph"
+            <div class="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-tr from-primary to-transparent blur-3xl animate-float-reverse animate-pulse-glow animate-morph"
                 style="animation-delay: -1s;"></div>
             <div
-                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-[var(--bg-primary)]/50 to-transparent rounded-full blur-3xl animate-rotate-slow">
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary/50 to-transparent rounded-full blur-3xl animate-rotate-slow">
             </div>
 
             <!-- Enhanced Additional Elements -->
             <div
                 class="absolute top-32 left-1/4 w-48 h-48 bg-gradient-to-br from-[#5a7ca3]/40 to-transparent blur-2xl animate-drift animate-morph">
             </div>
-            <div class="absolute bottom-32 right-1/4 w-64 h-64 bg-gradient-to-tl from-[var(--bg-primary)]/30 to-transparent blur-2xl animate-spiral animate-pulse-glow"
+            <div class="absolute bottom-32 right-1/4 w-64 h-64 bg-gradient-to-tl from-primary/30 to-transparent blur-2xl animate-spiral animate-pulse-glow"
                 style="animation-delay: -2s;"></div>
 
             <!-- More dynamic floating particles -->
-            <div class="absolute top-1/4 right-1/3 w-16 h-16 bg-[var(--bg-primary)]/25 rounded-full blur-sm animate-float animate-morph"
+            <div class="absolute top-1/4 right-1/3 w-16 h-16 bg-primary/25 rounded-full blur-sm animate-float animate-morph"
                 style="animation-delay: -1s; animation-duration: 3s;"></div>
             <div class="absolute bottom-1/3 left-1/3 w-20 h-20 bg-[#5a7ca3]/30 rounded-full blur-sm animate-spiral"
                 style="animation-delay: -3s; animation-duration: 4s;"></div>
 
             <!-- New spiraling elements -->
-            <div class="absolute top-16 left-1/2 w-32 h-32 bg-gradient-to-r from-[var(--bg-primary)]/20 to-transparent rounded-full blur-xl animate-spiral"
+            <div class="absolute top-16 left-1/2 w-32 h-32 bg-gradient-to-r from-primary/20 to-transparent rounded-full blur-xl animate-spiral"
                 style="animation-delay: -4s;"></div>
             <div class="absolute bottom-16 right-1/2 w-40 h-40 bg-gradient-to-l from-[#5a7ca3]/25 to-transparent rounded-full blur-xl animate-drift"
                 style="animation-delay: -5s;"></div>
 
             <!-- Morphing background shapes -->
-            <div class="absolute top-40 left-20 w-80 h-80 bg-gradient-to-br from-[var(--bg-primary)]/15 to-transparent blur-2xl animate-float animate-morph"
+            <div class="absolute top-40 left-20 w-80 h-80 bg-gradient-to-br from-primary/15 to-transparent blur-2xl animate-float animate-morph"
                 style="animation-delay: -2.5s;"></div>
             <div class="absolute bottom-40 right-20 w-60 h-60 bg-gradient-to-tl from-[#5a7ca3]/20 to-transparent blur-2xl animate-float-reverse animate-morph"
                 style="animation-delay: -3.5s;"></div>
 
             <!-- Particle system - floating particles -->
-            <div class="absolute left-10 w-2 h-2 bg-[var(--bg-primary)]/40 rounded-full animate-particle"
+            <div class="absolute left-10 w-2 h-2 bg-primary/40 rounded-full animate-particle"
                 style="animation-delay: 0s;"></div>
             <div class="absolute left-20 w-1 h-1 bg-[#5a7ca3]/50 rounded-full animate-particle"
                 style="animation-delay: -2s;"></div>
-            <div class="absolute left-32 w-3 h-3 bg-[var(--bg-primary)]/30 rounded-full animate-particle"
+            <div class="absolute left-32 w-3 h-3 bg-primary/30 rounded-full animate-particle"
                 style="animation-delay: -4s;"></div>
             <div class="absolute right-10 w-2 h-2 bg-[#5a7ca3]/40 rounded-full animate-particle"
                 style="animation-delay: -1s;"></div>
-            <div class="absolute right-24 w-1 h-1 bg-[var(--bg-primary)]/60 rounded-full animate-particle"
+            <div class="absolute right-24 w-1 h-1 bg-primary/60 rounded-full animate-particle"
                 style="animation-delay: -3s;"></div>
             <div class="absolute right-40 w-2 h-2 bg-[#5a7ca3]/35 rounded-full animate-particle"
                 style="animation-delay: -5s;"></div>
 
             <!-- Wave-like moving elements -->
-            <div class="absolute top-60 left-0 w-12 h-12 bg-[var(--bg-primary)]/15 rounded-full blur-md animate-wave"
+            <div class="absolute top-60 left-0 w-12 h-12 bg-primary/15 rounded-full blur-md animate-wave"
                 style="animation-delay: -1s;"></div>
             <div class="absolute top-80 left-0 w-8 h-8 bg-[#5a7ca3]/20 rounded-full blur-sm animate-wave"
                 style="animation-delay: -2s;"></div>
-            <div class="absolute bottom-60 left-0 w-10 h-10 bg-[var(--bg-primary)]/18 rounded-full blur-md animate-wave"
+            <div class="absolute bottom-60 left-0 w-10 h-10 bg-primary/18 rounded-full blur-md animate-wave"
                 style="animation-delay: -3s;"></div>
         </div>
 
@@ -356,9 +356,9 @@
         <div class="relative z-10 px-4 sm:px-8 md:px-12 py-16 sm:py-24 md:py-32">
             <div class="max-w-6xl mx-auto text-center">
                 <!-- Status Badge -->
-                <div class="inline-flex items-center gap-2 bg-[var(--bg-primary)]/10 backdrop-blur-sm px-6 py-3 rounded-full mb-8 border border-[var(--bg-primary)]/20">
-                    <div class="w-3 h-3 bg-[var(--bg-primary)] rounded-full animate-pulse"></div>
-                    <span class="text-[var(--bg-primary)] font-semibold text-base">Platform Digital Doscom</span>
+                <div class="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm px-6 py-3 rounded-full mb-8 border border-primary/20">
+                    <div class="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                    <span class="text-primary font-semibold text-base">Platform Digital Doscom</span>
                 </div>
 
                 <!-- Animated Title -->
@@ -377,7 +377,7 @@
                                 'text' => 'D',
                                 'animateBy' => 'letters',
                                 'direction' => 'top',
-                                'class' => 'text-5xl sm:text-8xl md:text-9xl lg:text-[120px] font-extrabold bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] bg-clip-text animate-gradient'
+                                'class' => 'text-5xl sm:text-8xl md:text-9xl lg:text-[120px] font-extrabold bg-gradient-to-r from-primary to-[#5a7ca3] bg-clip-text animate-gradient'
                             ], key('blur-d'))
 
                             @livewire('client.components.animations.blur-text', [
@@ -394,18 +394,18 @@
                 <div class="max-w-4xl mx-auto mb-12">
                     <p class="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed mb-6">
                         Platform digital untuk 
-                        <span class="text-[var(--bg-primary)] font-semibold">absensi</span> 
+                        <span class="text-primary font-semibold">absensi</span> 
                         dan 
-                        <span class="text-[var(--bg-primary)] font-semibold">pendaftaran</span> 
+                        <span class="text-primary font-semibold">pendaftaran</span> 
                         event
-                        <span class="text-[var(--bg-primary)] font-bold">Dinus Open Source Community</span>
+                        <span class="text-primary font-bold">Dinus Open Source Community</span>
                     </p>
                 </div>
 
                 <!-- CTA Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 w-full">
                     <a wire:navigate href="{{ route('client.events') }}" 
-                        class="group inline-flex items-center gap-3 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-center justify-center">
+                        class="group inline-flex items-center gap-3 bg-gradient-to-r from-primary to-[#5a7ca3] text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                             <line x1="16" y1="2" x2="16" y2="6"/>
@@ -416,7 +416,7 @@
                     </a>
                     
                     <a wire:navigate href="{{ route('client.about') }}" 
-                        class="group inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm text-[var(--bg-primary)] font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl border border-[var(--bg-primary)]/20 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-center justify-center">
+                        class="group inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm text-primary font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl border border-primary/20 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>

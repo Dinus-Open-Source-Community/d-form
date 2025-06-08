@@ -3,13 +3,13 @@
         @if($useSearchMode)
             <div class="mb-12 sm:mb-16">
                 <div class="text-center mb-8 sm:mb-12">
-                    <div class="inline-flex items-center gap-2 bg-[var(--bg-primary)]/10 px-4 py-2 rounded-full mb-4">
-                        <div class="w-2 h-2 bg-[var(--bg-primary)] rounded-full animate-pulse"></div>
-                        <span class="text-[var(--bg-primary)] font-medium text-sm">Hasil Pencarian</span>
+                    <div class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
+                        <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <span class="text-primary font-medium text-sm">Hasil Pencarian</span>
                     </div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                         Event
-                        <span class="bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] bg-clip-text text-transparent">
+                        <span class="bg-gradient-to-r from-primary to-[#5a7ca3] bg-clip-text text-transparent">
                             Ditemukan
                         </span>
                     </h2>
@@ -42,9 +42,9 @@
                 @elseif($events->count() === 0)
                     <div class="col-span-full">
                         <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-12 text-center relative overflow-hidden max-w-2xl mx-auto">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                             <div class="relative">
-                                <div class="w-20 h-20 bg-gradient-to-r from-[var(--bg-primary)]/10 to-[var(--bg-primary)]/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <div class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="11" cy="11" r="8"/>
                                         <path d="M21 21l-4.35-4.35"/>
@@ -54,7 +54,7 @@
                                 <p class="text-gray-600 mb-4">Coba gunakan kata kunci atau kategori lain</p>
                                 <button wire:click="clearFilters" 
                                     type="button"
-                                    class="inline-flex items-center gap-2 bg-[var(--bg-primary)] hover:bg-[#5a7ca3] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                    class="inline-flex items-center gap-2 bg-primary hover:bg-[#5a7ca3] text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 6h18"/>
                                         <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
@@ -110,13 +110,13 @@
                 <section class="mb-12 sm:mb-16">
                     <!-- Today's Events Header -->
                     <div class="text-center mb-8 sm:mb-12">
-                        <div class="inline-flex items-center gap-2 bg-[var(--bg-primary)]/10 px-4 py-2 rounded-full mb-4">
-                            <div class="w-2 h-2 bg-[var(--bg-primary)] rounded-full animate-pulse"></div>
-                            <span class="text-[var(--bg-primary)] font-medium text-sm">Hari Ini</span>
+                        <div class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
+                            <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                            <span class="text-primary font-medium text-sm">Hari Ini</span>
                         </div>
                         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                             Event
-                            <span class="bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] bg-clip-text text-transparent">
+                            <span class="bg-gradient-to-r from-primary to-[#5a7ca3] bg-clip-text text-transparent">
                                 Hari Ini
                             </span>
                         </h2>
@@ -127,9 +127,9 @@
 
                     @if($hasError && $statusCode === 404 && count($todayEvents) === 0)
                         <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-12 text-center relative overflow-hidden max-w-2xl mx-auto">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                             <div class="relative">
-                                <div class="w-20 h-20 bg-gradient-to-r from-[var(--bg-primary)]/10 to-[var(--bg-primary)]/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <div class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                                         <line x1="16" y1="2" x2="16" y2="6"/>
@@ -171,13 +171,13 @@
             <section>
                 <!-- Upcoming Events Header -->
                 <div class="text-center mb-8 sm:mb-12">
-                    <div class="inline-flex items-center gap-2 bg-[var(--bg-primary)]/10 px-4 py-2 rounded-full mb-4">
-                        <div class="w-2 h-2 bg-[var(--bg-primary)] rounded-full animate-pulse"></div>
-                        <span class="text-[var(--bg-primary)] font-medium text-sm">Mendatang</span>
+                    <div class="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-4">
+                        <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <span class="text-primary font-medium text-sm">Mendatang</span>
                     </div>
                     <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                         Event
-                        <span class="bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] bg-clip-text text-transparent">
+                        <span class="bg-gradient-to-r from-primary to-[#5a7ca3] bg-clip-text text-transparent">
                             Mendatang
                         </span>
                     </h2>
@@ -188,9 +188,9 @@
 
                 @if($hasError && $statusCode === 404 && count($upcomingEvents) === 0)
                     <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-12 text-center relative overflow-hidden max-w-2xl mx-auto">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                         <div class="relative">
-                            <div class="w-20 h-20 bg-gradient-to-r from-[var(--bg-primary)]/10 to-[var(--bg-primary)]/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <div class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10"/>
                                     <path d="M12 6v6l4 2"/>

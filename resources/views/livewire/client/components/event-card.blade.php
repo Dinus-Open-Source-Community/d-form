@@ -7,23 +7,23 @@
 
     <!-- Decorative gradient circles -->
     <div
-        class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[var(--bg-primary)]/10 to-transparent rounded-full -translate-y-10 translate-x-10 pointer-events-none">
+        class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-10 translate-x-10 pointer-events-none">
     </div>
     <div
-        class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-[var(--bg-primary)]/5 to-transparent rounded-full translate-y-8 -translate-x-8 pointer-events-none">
+        class="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-primary/5 to-transparent rounded-full translate-y-8 -translate-x-8 pointer-events-none">
     </div>
 
     <!-- Image section with enhanced gradient overlay -->
-    <div class="relative h-48 sm:h-52 md:h-56 bg-gradient-to-br from-[var(--bg-primary)] to-[#5a7ca3] overflow-hidden">
+    <div class="relative h-48 sm:h-52 md:h-56 bg-gradient-to-br from-primary to-[#5a7ca3] overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent z-10"></div>
-        <div class="absolute inset-0 bg-gradient-to-br from-[var(--bg-primary)]/20 to-transparent z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent z-10"></div>
 
         @if($event->cover_event)
             <img src="{{ $event->cover_event }}" alt="{{ $event->name }}"
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
         @else
             <div class="w-full h-full flex items-center justify-center text-white relative">
-                <div class="absolute inset-0 bg-gradient-to-br from-[var(--bg-primary)]/90 to-[#5a7ca3]/90"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-[#5a7ca3]/90"></div>
                 <div class="relative z-10 text-center">
                     <div
                         class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-3">
@@ -48,7 +48,7 @@
                 </div>
             @else
                 <div
-                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] backdrop-blur-sm text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg border border-white/20">
+                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-primary to-[#5a7ca3] backdrop-blur-sm text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg border border-white/20">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
@@ -66,7 +66,7 @@
         <!-- Event badges with improved styling -->
         <div class="flex flex-wrap gap-2 mb-5">
             <span
-                class="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-[var(--bg-primary)] to-[#5a7ca3] text-white text-xs font-semibold rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
+                class="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-primary to-[#5a7ca3] text-white text-xs font-semibold rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
                 <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 {{ Str::ucfirst($event->division) }}
             </span>
@@ -85,7 +85,7 @@
         <!-- Event title and description with better typography -->
         <div class="flex-grow mb-4">
             <h3
-                class="text-lg font-bold mb-3 line-clamp-2 text-gray-900 group-hover:text-[var(--bg-primary)] transition-colors duration-300 leading-tight">
+                class="text-lg font-bold mb-3 line-clamp-2 text-gray-900 group-hover:text-primary transition-colors duration-300 leading-tight">
                 {{ $event->name }}
             </h3>
             <p class="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed">
@@ -126,7 +126,7 @@
             <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-500 font-medium">Klik untuk detail</span>
                 <div
-                    class="w-8 h-8 bg-[var(--bg-primary)]/10 rounded-lg flex items-center justify-center group-hover:bg-[var(--bg-primary)] group-hover:scale-110 transition-all duration-300">
+                    class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="group-hover:stroke-white transition-colors duration-300">
