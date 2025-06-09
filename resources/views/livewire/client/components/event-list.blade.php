@@ -44,8 +44,8 @@
                         <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-12 text-center relative overflow-hidden max-w-2xl mx-auto">
                             <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                             <div class="relative">
-                                <div class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <div class="w-20 h-20 bg-gradient-to-r from-primary to-primary/90 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="11" cy="11" r="8"/>
                                         <path d="M21 21l-4.35-4.35"/>
                                     </svg>
@@ -129,8 +129,8 @@
                         <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-12 text-center relative overflow-hidden max-w-2xl mx-auto">
                             <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                             <div class="relative">
-                                <div class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <div class="w-20 h-20 bg-gradient-to-r from-primary to-primary/90 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                                         <line x1="16" y1="2" x2="16" y2="6"/>
                                         <line x1="8" y1="2" x2="8" y2="6"/>
@@ -147,7 +147,7 @@
                         @if($isLoading && count($todayEvents) === 0)
                             @for($i = 0; $i < 3; $i++)
                                 <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 overflow-hidden">
-                                    <div class="bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse h-56"></div>
+                                    <div class="bg-gradient-to-br from-gray-20 to-gray-300 animate-pulse h-56"></div>
                                     <div class="p-6">
                                         <div class="flex gap-2 mb-4">
                                             <div class="bg-gray-200 animate-pulse h-6 w-20 rounded-full"></div>
@@ -190,8 +190,8 @@
                     <div class="bg-white rounded-3xl shadow-xl border border-gray-200/50 p-12 text-center relative overflow-hidden max-w-2xl mx-auto">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
                         <div class="relative">
-                            <div class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <div class="w-20 h-20 bg-gradient-to-r from-primary to-primary/90 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10"/>
                                     <path d="M12 6v6l4 2"/>
                                 </svg>
