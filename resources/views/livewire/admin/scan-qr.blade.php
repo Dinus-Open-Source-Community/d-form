@@ -1,12 +1,12 @@
-<div class="fixed inset-0 bg-white text-gray-800 z-50 flex flex-col items-center">
+<div class="fixed inset-0 bg-white text-primary z-50 flex flex-col items-center">
   <!-- Header -->
   <header class="w-full flex justify-between items-center px-10 py-4 border-b border-gray-200">
     <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2 cursor-pointer">
-      <div class="font-extrabold text-4xl text-gray-800">D</div>
-      <div class="text-3xl font-normal text-gray-800">FORM</div>
+      <div class="font-extrabold text-4xl text-primary">D</div>
+      <div class="text-3xl font-normal text-primary">FORM</div>
     </a>
     <button wire:click="toggleSettings" aria-label="Settings"
-      class="text-gray-800 text-2xl focus:outline-none cursor-pointer hover:text-gray-600">
+      class="text-primary text-2xl focus:outline-none cursor-pointer hover:text-gray-600">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37A1.724 1.724 0 0010.325 4.317z">
@@ -16,10 +16,10 @@
   </header>
 
   <main class="w-full max-w-5xl mx-auto px-6 py-8 flex-1">
-    <h1 class="text-4xl font-bold text-gray-800 text-center">
+    <h1 class="text-4xl font-bold text-primary text-center">
       {{ $event->name }}
     </h1>
-    <p class="text-center mt-3 text-gray-800 text-lg">
+    <p class="text-center mt-3 text-primary text-lg">
       <span class="font-bold">{{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('l') }},</span>
       {{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y') }}
     </p>
@@ -32,36 +32,36 @@
 
     <section class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Participant and Event Info box -->
-      <div class="border-2 border-gray-800 rounded-lg p-6 flex flex-col items-center space-y-8">
-        <div class="text-xl font-bold text-gray-800">Participsants</div>
+      <div class="border-2 border-primary rounded-lg p-6 flex flex-col items-center space-y-8">
+        <div class="text-xl font-bold text-primary">Participants</div>
         <div class="flex items-center space-x-2">
-          <div class="bg-gray-800 text-white font-bold text-xl rounded-md px-4 py-2 select-none">
+          <div class="bg-primary text-white font-bold text-xl rounded-md px-4 py-2 select-none">
             {{ $checkedInCount }}
           </div>
-          <div class="text-2xl font-bold text-gray-800 select-none">/</div>
-          <div class="bg-gray-800 text-white font-bold text-xl rounded-md px-4 py-2 select-none">
+          <div class="text-2xl font-bold text-primary select-none">/</div>
+          <div class="bg-primary text-white font-bold text-xl rounded-md px-4 py-2 select-none">
             {{ $totalParticipants }}
           </div>
         </div>
-        <div class="text-xl font-bold text-gray-800">Starting at</div>
-        <div class="text-2xl font-bold text-gray-800 select-none">
+        <div class="text-xl font-bold text-primary">Starting at</div>
+        <div class="text-2xl font-bold text-primary select-none">
           {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}
         </div>
       </div>
 
       <!-- QR Code Scanner Area -->
       <div
-        class="bg-gray-800 rounded-lg aspect-square flex flex-col items-center justify-center overflow-hidden relative">
+        class="bg-primary rounded-lg aspect-square flex flex-col items-center justify-center overflow-hidden relative">
         @if ($hasPermission === false)
-          <div class="absolute inset-0 flex flex-col items-center justify-center bg-gray-800 z-20 p-4">
+          <div class="absolute inset-0 flex flex-col items-center justify-center bg-primary z-20 p-4">
             <p class="text-white text-center mb-4">Camera access denied</p>
-            <button wire:click="startScanning" class="bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
+            <button wire:click="startScanning" class="bg-white text-primary px-4 py-2 rounded-lg font-medium">
               Allow Camera Access
             </button>
           </div>
         @elseif($hasPermission === null && !$isScanning)
           <div wire:click="startScanning"
-            class="absolute inset-0 flex flex-col items-center justify-center bg-gray-800 z-20 cursor-pointer hover:bg-gray-700 transition duration-300">
+            class="absolute inset-0 flex flex-col items-center justify-center bg-primary z-20 cursor-pointer hover:bg-gray-700 transition duration-300">
             <p class="text-white text-center mb-4">Tap to scan QR code</p>
             <div class="w-16 h-14 border-2 border-white rounded-lg flex items-center justify-center">
               <p class="text-white text-2xl">QR</p>
@@ -87,21 +87,21 @@
       </div>
 
       <!-- Latest Participants box -->
-      <div class="border-2 border-gray-800 rounded-lg p-6 flex flex-col space-y-4">
-        <div class="text-xl font-bold text-gray-800 mb-6 text-center">
+      <div class="border-2 border-primary rounded-lg p-6 flex flex-col space-y-4">
+        <div class="text-xl font-bold text-primary mb-6 text-center">
           Latest Check-Ins
         </div>
         <div class="flex flex-col gap-y-2 overflow-y-auto max-h-48">
 
           @forelse($latestCheckIns as $checkIn)
             <div
-              class="flex justify-between items-center {{ $loop->first ? 'bg-gray-800 text-white' : 'border border-gray-300 text-gray-800' }} rounded-lg px-4 py-3 text-base font-normal focus:outline-none">
+              class="flex justify-between items-center {{ $loop->first ? 'bg-primary text-white' : 'border border-gray-300 text-primary' }} rounded-lg px-4 py-3 text-base font-normal focus:outline-none">
               <span>{{ $checkIn['name'] }}</span>
               <span
                 class="{{ $loop->first ? 'text-gray-300' : 'text-gray-400' }} font-normal">{{ $checkIn['time'] }}</span>
             </div>
           @empty
-            <div class="text-center text-gray-800">No check-ins yet</div>
+            <div class="text-center text-primary">No check-ins yet</div>
           @endforelse
         </div>
       </div>
@@ -111,7 +111,7 @@
     <div class="mt-8 flex justify-center">
       <a href="{{ route('admin.event-detail', $event->id) }}">
         <button
-          class="bg-gray-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-300 cursor-pointer">
+          class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-300 cursor-pointer">
           Back to Event
         </button>
       </a>
@@ -124,15 +124,15 @@
     <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <div class="flex justify-center items-center mb-4">
-          <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
+          <h2 class="text-2xl font-bold text-primary">Settings</h2>
         </div>
         <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-800 mb-2">
+          <label class="block text-sm font-medium text-primary mb-2">
             Input Source
           </label>
           <div class="relative">
             <select wire:model.live="inputSource"
-              class="bg-gray-200 p-3 pr-12 rounded-lg w-full text-gray-800 focus:ring-1 focus:ring-gray-800 appearance-none">
+              class="bg-gray-200 p-3 pr-12 rounded-lg w-full text-primary focus:ring-1 focus:ring-primary appearance-none">
               @foreach ($cameraDevices as $device)
                 <option value="{{ $device['deviceId'] }}">{{ $device['label'] ?: 'Camera ' . ($loop->index + 1) }}
                 </option>
@@ -141,7 +141,7 @@
                 <option value="">No cameras detected</option>
               @endif
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-800">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-primary">
               <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
               </svg>
@@ -150,11 +150,11 @@
         </div>
         <div class="flex justify-center space-x-3">
           <button wire:click="toggleSettings"
-            class="px-4 py-2 font-medium border-2 border-gray-800 text-gray-800 rounded-lg hover:bg-gray-100">
+            class="px-4 py-2 font-medium border-2 border-primary text-primary rounded-lg hover:bg-gray-100">
             Cancel
           </button>
           <button wire:click="toggleSettings"
-            class="px-6 py-2 font-medium bg-gray-800 text-white rounded-lg hover:bg-gray-700">
+            class="px-6 py-2 font-medium bg-primary text-white rounded-lg hover:bg-gray-700">
             Save
           </button>
         </div>
@@ -164,14 +164,14 @@
 
   <!-- Success Modal -->
   @if ($showSuccessModal)
-    <div class="fixed inset-0 bg-gray-800/80 flex items-center justify-center z-50">
+    <div class="fixed inset-0 bg-primary/80 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-4 relative overflow-hidden">
         <button wire:click="closeSuccessModal"
-          class="absolute top-2 right-4 text-black hover:text-gray-800 text-xl cursor-pointer">
+          class="absolute top-2 right-4 text-black hover:text-primary text-xl cursor-pointer">
           ×
         </button>
         <div class="flex justify-center pt-8 pb-4">
-          <div class="bg-gray-800 rounded-full p-4">
+          <div class="bg-primary rounded-full p-4">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -179,9 +179,9 @@
           </div>
         </div>
         <div class="text-center">
-          <h2 class="text-3xl font-bold text-gray-800 mb-6">You're Already Here!</h2>
+          <h2 class="text-3xl font-bold text-primary mb-6">You're Already Here!</h2>
           <div class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rotate-45"></div>
-          <div class="bg-gray-800 py-8 px-6 text-white text-xl text-center font-normal">
+          <div class="bg-primary py-8 px-6 text-white text-xl text-center font-normal">
             {{ $scannedUser }}
           </div>
         </div>
