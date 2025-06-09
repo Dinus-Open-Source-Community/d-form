@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Livewire\WithFileUploads;
 
 class EventEditAdmin extends Component
 {
@@ -28,7 +28,8 @@ class EventEditAdmin extends Component
     public $googleMapsUrl = '';
     public $description = '';
     public $coverEvent;
-    public $showSuccessModal = false;
+    public $price = 0;
+    public $currentCoverEvent; // Tracks existing cover_event
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -45,6 +46,7 @@ class EventEditAdmin extends Component
         'googleMapsUrl' => 'nullable|url',
         'description' => 'required|string',
         'coverEvent' => 'nullable|image|max:2048',
+        'price' => 'required|numeric|min:0',
     ];
 
     protected $messages = [
@@ -72,6 +74,9 @@ class EventEditAdmin extends Component
         'description.required' => 'The description is required.',
         'coverEvent.image' => 'The uploaded file must be an image.',
         'coverEvent.max' => 'The image cannot exceed 2MB.',
+        'price.required' => 'The price is required.',
+        'price.numeric' => 'The price must be a number.',
+        'price.min' => 'The price cannot be negative.',
     ];
 
     public function mount($eventId)
@@ -87,11 +92,13 @@ class EventEditAdmin extends Component
         $this->endTime = $event->end_time;
         $this->durationDays = $event->duration_days;
         $this->participants = $event->participants;
+        $this->price = $event->price ?? 0;
         $this->type = $event->type;
         $this->division = $event->division;
         $this->address = $event->address;
         $this->googleMapsUrl = $event->map_url;
         $this->description = $event->description;
+        $this->currentCoverEvent = $event->cover_event; // Load existing cover
     }
 
     public function setType($type)
@@ -119,7 +126,8 @@ class EventEditAdmin extends Component
             'end_time' => $this->endTime,
             'duration_days' => $this->durationDays,
             'participants' => $this->participants,
-            'type' => $this->type,
+            'price' => $this->price,
+            'type' => $this->type, // Fixed: Use $this->type instead of $this->division
             'division' => $this->division,
             'address' => $this->address,
             'map_url' => $this->googleMapsUrl,
@@ -129,20 +137,19 @@ class EventEditAdmin extends Component
         if ($this->coverEvent) {
             $path = $this->coverEvent->store('events', 'public');
             $eventData['cover_event'] = $path;
+        } elseif ($this->currentCoverEvent === null) {
+            $eventData['cover_event'] = null; // Clear cover if removed
         }
 
         $updated = $event->update($eventData);
 
         if ($updated) {
-            LivewireAlert::title('Success')
-                ->text('Event updated successfully!')
-                ->success()
-                ->withConfirmButton()
-                ->onConfirm(
-                    'redirectToDetail',
-                    ['eventId' => $event->id],
-                )
-                ->show();
+            session()->flash('saved', [
+                'title' => 'Event Updated',
+                'text' => 'The event has been successfully updated.',
+            ]);
+
+            $this->redirectToDetail(['eventId' => $event->id]);
         } else {
             LivewireAlert::title('Error')
                 ->text('Failed to update event.')
@@ -167,9 +174,14 @@ class EventEditAdmin extends Component
         return redirect()->route('admin.dashboard');
     }
 
-    public function closeModal()
+    public function removeCoverEvent()
     {
-        $this->showSuccessModal = false;
+        $this->coverEvent = null;
+    }
+
+    public function removeExistingCover()
+    {
+        $this->currentCoverEvent = null;
     }
 
     #[Layout('components.layouts.admin')]
