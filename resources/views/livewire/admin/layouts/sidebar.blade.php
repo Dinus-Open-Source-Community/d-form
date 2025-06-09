@@ -1,16 +1,19 @@
-<div class="min-h-screen h-full w-80 bg-[#343434] text-white flex flex-col z-40 flex-shrink-0">
+<div class="min-h-screen h-full w-80 bg-primary text-white flex flex-col z-40 flex-shrink-0">
   {{-- Logo --}}
-  <div class="p-4 flex justify-center items-center">
+  <div class="p-4 flex justify-start items-center">
     <h1 class="text-5xl font-bold">D</h1>
     <span class="ml-2 text-4xl">FORM</span>
   </div>
 
   {{-- Tombol New Event --}}
-  <div class="p-6 flex justify-center">
-    <a href="{{ route('admin.events-create') }}">
-      <button class="bg-white/10 text-white rounded-lg py-2 px-4 text-center hover:bg-white/20 cursor-pointer">
-        New Event
-      </button>
+  <div class="p-4 flex items-center justify-center">
+    <a href="{{ route('admin.events-create') }}" wire:navigate
+      class="bg-white/10 text-white rounded-lg py-2 px-4 text-center hover:bg-white/20 cursor-pointer transition-colors ease-in-out duration-200 flex items-center w-full justify-center">
+      {{-- Icon --}}
+      <span class="material-icons align-middle mr-2">
+        add_circle
+      </span>
+      New Event
     </a>
   </div>
 
@@ -18,15 +21,19 @@
   <div class="flex-grow overflow-y-auto">
     <a href="{{ route('admin.dashboard') }}" wire:navigate>
       <div
-        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/dashboard') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer">
-        <span class="material-icons mr-2">menu</span>
+        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/dashboard') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
+        <span class="material-icons mr-2">
+          dashboard
+        </span>
         Dashboard
       </div>
     </a>
     <a href="{{ route('admin.events') }}" wire:navigate>
       <div
-        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events/*') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer">
-        <span class="material-icons mr-2">menu</span>
+        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events/*') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
+        <span class="material-icons mr-2">
+          event
+        </span>
         Events
       </div>
     </a>
@@ -36,7 +43,10 @@
   <div class="mt-auto p-4 relative" x-data="{ open: false }" @click.outside="open = false">
     <div class="p-3 m-3 flex items-center rounded-md bg-white/10">
       {{-- Avatar --}}
-      <div class="w-10 h-10 bg-gray-200 rounded-md mr-3 flex-shrink-0"></div>
+      <div
+        class="w-10 h-10 bg-gray-200 rounded-md mr-3 flex-shrink-0 flex items-center justify-center text-2xl font-bold text-gray-600">
+        {{ Auth::user()->name ? substr(Auth::user()->name, 0, 1) : 'A' }}
+      </div>
 
       {{-- Username & Email --}}
       <div class="flex flex-col flex-grow w-0">
@@ -54,11 +64,10 @@
     {{-- Dropdown Menu --}}
     <div x-show="open" x-transition
       class="absolute bottom-24 right-6 bg-white text-black rounded-md shadow-md w-32 z-50">
-      <button wire:click="logout" class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer transition"
-        wire:loading.attr="disabled"
-        wire:loading.class="bg-gray-200 cursor-not-allowed"
-        wire:loading.class.remove="cursor-pointer"
-      >
+      <button wire:click="logout"
+        class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer transition"
+        wire:loading.attr="disabled" wire:loading.class="bg-gray-200 cursor-not-allowed"
+        wire:loading.class.remove="cursor-pointer">
         Logout
       </button>
     </div>
