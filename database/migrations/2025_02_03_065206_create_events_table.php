@@ -25,8 +25,8 @@ return new class extends Migration
             $table->time('end_time');
             $table->integer('duration_days');
             $table->integer('participants');
-            $table->enum('type', ['rkt', 'non-rkt']);
-            $table->enum('division', ['general', 'programming', 'multimedia', 'networking'])->default('general');
+            $table->enum('type', ['RKT', 'NON-RKT']);
+            $table->enum('division', ['General', 'Programming', 'Multimedia', 'Networking'])->default('General');
 
             $table->date("start_date");
             $table->timestamps();
