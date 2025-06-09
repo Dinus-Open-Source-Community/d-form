@@ -3,6 +3,17 @@
         <!-- Main Content -->
         <div class="col-span-1 lg:col-span-3">
             <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-200/30">
+                <!-- Cover Event Image -->
+                @if ($event->cover_event)
+                    <div class="mb-6">
+                        <img
+                            src="{{ $event->cover_event }}"
+                            alt="{{ $event->name }} Cover"
+                            class="max-w-full h-auto rounded-lg shadow-md object-cover w-full max-h-96"
+                        />
+                    </div>
+                @endif
+
                 <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">{{ $event->name }}</h1>
 
                 <!-- Event Info -->
