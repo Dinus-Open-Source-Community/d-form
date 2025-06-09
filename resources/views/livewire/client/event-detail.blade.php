@@ -151,7 +151,7 @@
                                                 placeholder="Masukkan email Anda" required />
                                             <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 24 24" fill="none" stroke="primary"
+                                                    viewBox="0 0 24 24" fill="none" stroke="#466F97"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <path
                                                         d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -368,9 +368,9 @@
                                             @else
                                                 <div class="text-center py-12">
                                                     <div
-                                                        class="w-20 h-20 bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                        class="w-20 h-20 bg-gradient-to-r from-primary to-primary/90 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                            viewBox="0 0 24 24" fill="none" stroke="primary"
+                                                            viewBox="0 0 24 24" fill="none" stroke="white"
                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                             <circle cx="12" cy="12" r="10" />
                                                             <path d="M12 6v6l4 2" />
