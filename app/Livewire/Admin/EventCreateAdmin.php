@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Livewire\WithFileUploads;
 
 class EventCreateAdmin extends Component
 {
@@ -27,7 +27,7 @@ class EventCreateAdmin extends Component
     public $googleMapsUrl = '';
     public $description = '';
     public $coverEvent;
-    public $showSuccessModal = false;
+    public $price = 0;
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -44,6 +44,7 @@ class EventCreateAdmin extends Component
         'googleMapsUrl' => 'nullable|url',
         'description' => 'required|string',
         'coverEvent' => 'nullable|image|max:2048',
+        'price' => 'required|numeric|min:0',
     ];
 
     protected $messages = [
@@ -71,6 +72,9 @@ class EventCreateAdmin extends Component
         'description.required' => 'The description is required.',
         'coverEvent.image' => 'The uploaded file must be an image.',
         'coverEvent.max' => 'The image cannot exceed 2MB.',
+        'price.required' => 'The price is required.',
+        'price.numeric' => 'The price must be a number.',
+        'price.min' => 'The price cannot be negative.',
     ];
 
     public function setType($type)
@@ -101,6 +105,7 @@ class EventCreateAdmin extends Component
             'address' => $this->address,
             'map_url' => $this->googleMapsUrl,
             'description' => $this->description,
+            'price' => $this->price,
         ];
 
         if ($this->coverEvent) {
@@ -111,16 +116,12 @@ class EventCreateAdmin extends Component
         $event = Event::create($eventData);
 
         if ($event) {
-            LivewireAlert::title('Success')
-                ->text('Event created successfully!')
-                ->success()
-                ->withConfirmButton()
-                ->onConfirm(
-                    'redirectToDetail',
-                    ['eventId' => $event->id],
-                )
-                ->show();
-            
+            session()->flash('saved', [
+                'title' => 'Event Created',
+                'text' => 'The event has been successfully created.',
+            ]);
+
+            $this->redirectToDetail(['eventId' => $event->id]);
         } else {
             LivewireAlert::title('Error')
                 ->text('Failed to create event.')
@@ -133,7 +134,6 @@ class EventCreateAdmin extends Component
                 ])
                 ->show();
         }
-
     }
 
     public function redirectToDetail($data)
@@ -144,11 +144,6 @@ class EventCreateAdmin extends Component
     public function goToDashboard()
     {
         return redirect()->route('admin.dashboard');
-    }
-
-    public function closeModal()
-    {
-        $this->showSuccessModal = false;
     }
 
     public function removeCoverEvent()
