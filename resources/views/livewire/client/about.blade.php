@@ -125,7 +125,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-4">Komunitas Terbuka</h3>
-                    <p class="text-gray-600 leading-relaxed">Terbuka untuk anggota dan non-anggota DISC dalam
+                    <p class="text-gray-600 leading-relaxed">Terbuka untuk anggota dan non-anggota DOSCOM dalam
                         berpartisipasi di berbagai kegiatan</p>
                 </div>
             </div>
