@@ -30,6 +30,13 @@ class EventDetailAdmin extends Component
     {
         $this->eventId = $eventId;
         $this->loadEvent();
+
+        if (session()->has('saved')) {
+            LivewireAlert::title(session('saved.title'))
+                ->text(session('saved.text'))
+                ->success()
+                ->show();
+        }
     }
 
     public function loadEvent()
@@ -46,6 +53,11 @@ class EventDetailAdmin extends Component
     {
         $this->validate([
             'csvFile' => 'required|file|mimes:csv,xlsx,xls|max:2048',
+        ], [
+            'csvFile.required' => 'Please upload a CSV file.',
+            'csvFile.file' => 'The uploaded file must be a valid file.',
+            'csvFile.mimes' => 'The file must be a CSV, XLSX, or XLS format.',
+            'csvFile.max' => 'The file size must not exceed 2MB.',
         ]);
 
         try {
@@ -189,6 +201,7 @@ class EventDetailAdmin extends Component
             'code' => 200,
         ];
     }
+
 
     #[Layout('components.layouts.admin')]
     public function render()

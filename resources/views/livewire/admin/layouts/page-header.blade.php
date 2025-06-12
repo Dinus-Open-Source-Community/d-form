@@ -1,5 +1,5 @@
 <div class="px-8 py-6 bg-white z-10">
-  <div class="flex items-center text-sm text-gray-500">
+  <div class="flex items-center text-sm text-primary/50">
     @php
       $segments = array_slice(request()->segments(), 1);
       $path = '/admin';
@@ -22,9 +22,9 @@
       @endif
 
       @if ($isLast)
-        <span class="text-gray-700 font-semibold">{{ $newSegment ?? $displayName }}</span>
+        <span class="text-primary font-semibold">{{ $newSegment ?? $displayName }}</span>
       @else
-        <a href="{{ url($path) }}" class="hover:text-gray-700" wire:navigate>
+        <a href="{{ url($path) }}" class="hover:text-primary transition-colors ease-in-out duration-200" wire:navigate>
           {{ $newSegment ?? $displayName }}
         </a>
       @endif
