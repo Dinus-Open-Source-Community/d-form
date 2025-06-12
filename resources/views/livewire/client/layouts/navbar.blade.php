@@ -1,5 +1,5 @@
-<nav class="fixed top-0 left-0 right-0 flex items-center justify-between m-1 sm:m-2 md:m-3 p-3 sm:p-4 md:p-5 rounded-xl bg-white/70 backdrop-blur-md shadow-lg border border-gray-200/50 z-50"
-    x-data="{ isOpen: @entangle('isMenuOpen') }">
+<nav class="fixed top-0 left-0 right-0 flex items-center justify-between m-1 sm:m-2 md:m-3 p-3 sm:p-4 md:p-5 rounded-xl bg-white/20 backdrop-blur-xl shadow-2xl border border-white/30 z-50 before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-white/10 before:to-transparent before:pointer-events-none"
+    x-data="{ isOpen: @entangle('isMenuOpen') }" style="backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
     <!-- Logo Section -->
     <div class="text-primary flex items-center min-w-0">
         <div class="relative flex-shrink-0">
@@ -55,7 +55,7 @@
     {{-- Mobile menu button --}}
     <div class="lg:hidden flex-shrink-0 pr-1 sm:pr-2">
         <button wire:click="toggleMenu"
-            class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-primary/10 hover:bg-primary/20 transition-all duration-300 cursor-pointer">
+            class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-lg border border-white/20 transition-all duration-300 cursor-pointer shadow-lg">
             @if($isMenuOpen)
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
@@ -78,17 +78,17 @@
     {{-- Mobile menu dropdown --}}
     @if($isMenuOpen)
         <div
-            class="absolute top-full left-2 right-2 sm:left-4 sm:right-4 md:left-6 md:right-6 bg-white/95 backdrop-blur-md shadow-xl border border-gray-200/50 lg:hidden py-4 sm:py-6 mt-2 rounded-xl sm:rounded-2xl">
-            <div class="flex flex-col items-center space-y-3 sm:space-y-4 md:space-y-6 px-2 sm:px-4">
-                <a class="text-base sm:text-lg font-medium transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl w-full max-w-xs text-center {{ request()->routeIs('client.home') ? 'text-white bg-primary shadow-lg' : 'text-gray-700 hover:text-primary hover:bg-primary/10' }}"
+            class="absolute top-full left-2 right-2 sm:left-4 sm:right-4 md:left-6 md:right-6 bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 lg:hidden py-4 sm:py-6 mt-2 rounded-xl sm:rounded-2xl before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-b before:from-white/20 before:to-white/5 before:pointer-events-none" style="backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);">
+            <div class="flex flex-col items-center space-y-3 sm:space-y-4 md:space-y-6 px-2 sm:px-4 relative z-10">
+                <a class="text-base sm:text-lg font-medium transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl w-full max-w-xs text-center backdrop-blur-lg border border-white/20 {{ request()->routeIs('client.home') ? 'text-primary bg-primary/80 shadow-xl' : 'text-primary hover:text-black hover:bg-white/60 bg-white' }}"
                     href="{{ route('client.home') }}" wire:click="toggleMenu" wire:navigate>
                     Home
                 </a>
-                <a class="text-base sm:text-lg font-medium transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl w-full max-w-xs text-center {{ request()->routeIs('client.events*') ? 'text-white bg-primary shadow-lg' : 'text-gray-700 hover:text-primary hover:bg-primary/10' }}"
+                <a class="text-base sm:text-lg font-medium transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl w-full max-w-xs text-center backdrop-blur-lg border border-white/20 {{ request()->routeIs('client.events*') ? 'text-primary bg-primary/80 shadow-xl' : 'text-primary hover:text-black hover:bg-white/60 bg-white' }}"
                     href="{{ route('client.events') }}" wire:click="toggleMenu" wire:navigate>
                     Events
                 </a>
-                <a class="text-base sm:text-lg font-medium transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl w-full max-w-xs text-center {{ request()->routeIs('client.about') ? 'text-white bg-primary shadow-lg' : 'text-gray-700 hover:text-primary hover:bg-primary/10' }}"
+                <a class="text-base sm:text-lg font-medium transition-all duration-300 px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl w-full max-w-xs text-center backdrop-blur-lg border border-white/20 {{ request()->routeIs('client.about') ? 'text-primary bg-primary/80 shadow-xl' : 'text-primary hover:text-black hover:bg-white/60 bg-white' }}"
                     href="{{ route('client.about') }}" wire:click="toggleMenu" wire:navigate>
                     About
                 </a>
