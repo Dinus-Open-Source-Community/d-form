@@ -159,15 +159,30 @@
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">No</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Name</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">School</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Presence</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Presence At</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($event->participantList as $i => $participant)
+                                @foreach ($this->participants as $i => $participant)
                                     <tr class="{{ $i % 2 == 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-gray-100 transition duration-200">
-                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $i + 1 }}</td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">
+                                            {{ ($this->participants->currentPage() - 1) * $this->participants->perPage() + $i + 1 }}
+                                        </td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->name }}</td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->school }}</td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold
+                                                {{ $participant->is_presence ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                <span class="">{{ $participant->is_presence ? '✅' : '❌' }}</span>
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">
+                                            <span class="mt-1 text-xs text-gray-500">
+                                                {{ $participant->presence_at ? \Carbon\Carbon::parse($participant->presence_at)->translatedFormat('j F Y H:i') : '-' }}
+                                            </span>
+                                        </td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">
                                             <button wire:click="downloadBarcode('{{ $participant->id }}')"
                                                 class="bg-primary text-white px-3 py-1 rounded-lg hover:bg-[#3B5C80] transition duration-200 flex items-center text-xs">
@@ -178,6 +193,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="px-4 py-2">
+                            {{ $this->participants->links() }}
+                        </div>
                     </div>
                 </div>
 
