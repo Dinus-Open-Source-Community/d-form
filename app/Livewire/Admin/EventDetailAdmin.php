@@ -11,11 +11,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\File;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Livewire\WithPagination;
 use ZipArchive;
 
 class EventDetailAdmin extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $event;
     public $eventId;
@@ -23,6 +24,7 @@ class EventDetailAdmin extends Component
     public $eventDate;
     public $csvFile;
     public $showReuploadForm = false;
+    public $perPage = 10;
 
     protected $queryString = ['eventId'];
 
@@ -41,12 +43,19 @@ class EventDetailAdmin extends Component
 
     public function loadEvent()
     {
-        $this->event = Event::with('participantList')->findOrFail($this->eventId);
-        $this->showTable = !$this->event->participantList->isEmpty();
+        $this->event = Event::findOrFail($this->eventId);
+        $this->showTable = $this->event->participantList()->exists();
 
         $start = \Carbon\Carbon::parse($this->event->start_date);
         $end = $start->copy()->addDays($this->event->duration_days);
         $this->eventDate = $start->translatedFormat('j F') . ' - ' . $end->translatedFormat('j F Y');
+    }
+
+    public function getParticipantsProperty()
+    {
+        return $this->event
+            ? $this->event->participantList()->paginate($this->perPage)
+            : collect();
     }
 
     public function handleUploadCSV()
@@ -207,6 +216,8 @@ class EventDetailAdmin extends Component
 
             if (!file_exists($filePath)) {
                 QrCode::format('png')
+                    ->backgroundColor(255, 255, 255)
+                    ->color(20, 35, 50)
                     ->size(200)
                     ->generate($participant->id, $filePath);
             }
