@@ -79,40 +79,7 @@
 
             <!-- Participant Table or Upload Form -->
             @if ($showTable)
-                <div class="mt-6 bg-white rounded-xl shadow-lg border border-gray-200/30 overflow-hidden">
-                    <div class="text-center font-semibold text-gray-900 py-4 bg-gray-50">
-                        Event Participants (CSV Upload)
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full border-collapse">
-                            <thead class="bg-primary text-white">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">No</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Name</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">School</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($event->participantList as $i => $participant)
-                                    <tr class="{{ $i % 2 == 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-gray-100 transition duration-200">
-                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $i + 1 }}</td>
-                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->name }}</td>
-                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->school }}</td>
-                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">
-                                            <button wire:click="downloadBarcode('{{ $participant->id }}')"
-                                                class="bg-primary text-white px-3 py-1 rounded-lg hover:bg-[#3B5C80] transition duration-200 flex items-center text-xs">
-                                                <span class="material-icons text-sm mr-1">qr_code</span> Download QR
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Reupload CSV Form -->
+                 <!-- Reupload CSV Form -->
                 @if ($showReuploadForm)
                     <div class="mt-6 bg-white rounded-xl shadow-lg p-6 border border-gray-200/30" x-data="{ isDragging: false, fileName: '' }">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4 text-center">Reupload Participant CSV</h3>
@@ -180,6 +147,41 @@
                         </form>
                     </div>
                 @endif
+
+                <div class="mt-6 bg-white rounded-xl shadow-lg border border-gray-200/30 overflow-hidden">
+                    <div class="text-center font-semibold text-gray-900 py-4 bg-gray-50">
+                        Event Participants (CSV Upload)
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">No</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Name</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">School</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($event->participantList as $i => $participant)
+                                    <tr class="{{ $i % 2 == 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-gray-100 transition duration-200">
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $i + 1 }}</td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->name }}</td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->school }}</td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">
+                                            <button wire:click="downloadBarcode('{{ $participant->id }}')"
+                                                class="bg-primary text-white px-3 py-1 rounded-lg hover:bg-[#3B5C80] transition duration-200 flex items-center text-xs">
+                                                <span class="material-icons text-sm mr-1">qr_code</span> Download QR
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+               
             @else
                 <!-- Initial CSV Upload Form -->
                 <div class="mt-6 bg-white rounded-xl shadow-lg p-6 border border-gray-200/30" x-data="{ isDragging: false, fileName: '' }">
