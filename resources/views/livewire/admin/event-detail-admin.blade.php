@@ -196,7 +196,7 @@
                             </tbody>
                         </table>
                         <div class="px-4 py-2">
-                            {{ $this->participants->links() }}
+                            {{ $this->participants->links('livewire::tailwind') }}
                         </div>
                     </div>
                 </div>
