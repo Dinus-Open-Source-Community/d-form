@@ -223,8 +223,9 @@ class EventDetailAdmin extends Component
 
             if (!file_exists($filePath)) {
                 QrCode::format('png')
-                    ->backgroundColor(255, 255, 255)
                     ->color(20, 35, 50)
+                    ->backgroundColor(255, 255, 255)
+                    ->margin(1)
                     ->size(200)
                     ->generate($participant->id, $filePath);
             }
