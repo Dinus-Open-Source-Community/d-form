@@ -291,8 +291,9 @@
                             class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">
                             <span class="material-icons mr-2 text-lg">upload_file</span> Reupload CSV
                         </button>
-                        <button class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">
-                            <span class="material-icons mr-2 text-lg">download</span> Download CSV
+                        <button class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold"
+                            wire:click="downloadExcelPresence">
+                            <span class="material-icons mr-2 text-lg">download</span> Download Excel
                         </button>
                         <button wire:click="downloadBarcode"
                             class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">

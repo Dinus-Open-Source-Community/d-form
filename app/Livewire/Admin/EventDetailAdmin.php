@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Exports\ParticipantsPresenceExport;
 use App\Imports\ParticipantsImport;
 use App\Models\Event;
 use Livewire\Attributes\Layout;
@@ -276,6 +277,21 @@ class EventDetailAdmin extends Component
                 ->withOptions(['timerProgressBar' => true])
                 ->show();
         }
+    }
+
+    public function downloadExcelPresence()
+    {
+        $participants = $this->event->participantList()->get(['name', 'school', 'is_presence', 'presence_at']);
+        $csvData = $participants->map(function ($p) {
+            return [
+                'Name' => $p->name,
+                'School' => $p->school,
+                'Presence' => $p->is_presence ? 'Present' : 'Absent',
+                'Presence At' => $p->presence_at ? \Carbon\Carbon::parse($p->presence_at)->format('d/m/Y H:i') : '-',
+            ];
+        });
+        $filename = 'participants-presence-' . $this->event->id . '.xlsx';
+        return \Maatwebsite\Excel\Facades\Excel::download(new ParticipantsPresenceExport($csvData), $filename);
     }
 
     #[Layout('components.layouts.admin')]
