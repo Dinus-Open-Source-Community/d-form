@@ -88,9 +88,22 @@ class EventDetailAdmin extends Component
                 return;
             }
 
+            // Hapus folder barcodes jika ada
+            $barcodeDir = public_path("barcodes/{$this->eventId}");
+            if (File::exists($barcodeDir)) {
+                File::deleteDirectory($barcodeDir);
+            }
+
+            // Hapus file zip jika ada
+            $zipFilePath = public_path("barcodes/barcodes_{$this->eventId}.zip");
+            if (File::exists($zipFilePath)) {
+                File::delete($zipFilePath);
+            }
+
             // Jika valid, baru dihapus dan import
             $this->event->participantList()->delete();
             Excel::import(new ParticipantsImport($this->eventId), $this->csvFile);
+            
 
             $this->loadEvent();
             $this->showReuploadForm = false;
