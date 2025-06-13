@@ -61,20 +61,39 @@ class EventDetailAdmin extends Component
         ]);
 
         try {
+            // Hitung jumlah row pada file
+            $rows = Excel::toArray(null, $this->csvFile);
+            $dataRows = $rows[0];
+            $rowCount = count($dataRows) - 1; // Kurangi header
+
+            if ($rowCount > $this->event->participants) {
+                LivewireAlert::title('Over Capacity')
+                    ->text("Jumlah peserta di CSV ($rowCount) melebihi kapasitas maksimal ({$this->event->participants}).")
+                    ->timer(4000)
+                    ->error()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+                return;
+            }
+
+            // Jika valid, baru dihapus dan import
             $this->event->participantList()->delete();
             Excel::import(new ParticipantsImport($this->eventId), $this->csvFile);
+
             $this->loadEvent();
             $this->showReuploadForm = false;
+
             LivewireAlert::title('Success')
                 ->text('CSV file uploaded successfully')
                 ->timer(3000)
                 ->success()
                 ->toast()
                 ->position('top-end')
-                ->withOptions([
-                    'timerProgressBar' => true,
-                ])
+                ->withOptions(['timerProgressBar' => true])
                 ->show();
+
         } catch (\Exception $e) {
             $this->dispatch('notify', 'Gagal mengunggah CSV: ' . $e->getMessage());
             LivewireAlert::title('Error')
@@ -83,9 +102,7 @@ class EventDetailAdmin extends Component
                 ->error()
                 ->toast()
                 ->position('top-end')
-                ->withOptions([
-                    'timerProgressBar' => true,
-                ])
+                ->withOptions(['timerProgressBar' => true])
                 ->show();
         }
     }

@@ -200,7 +200,7 @@
                                 <span class="material-icons text-4xl text-gray-500 mr-3">upload_file</span>
                                 <div class="text-left">
                                     <p class="text-sm font-medium text-gray-700" x-text="fileName ? `Dropped: ${fileName}` : 'Click or drag CSV file to upload'"></p>
-                                    <p class="text-xs text-gray-400">Max 1MB. Format: .csv</p>
+                                    <p class="text-xs text-gray-400">Max 2MB. Format: .csv</p>
                                 </div>
                             </div>
                             <input
