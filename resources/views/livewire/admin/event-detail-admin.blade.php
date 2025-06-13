@@ -283,29 +283,29 @@
             <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200/30 sticky top-6">
                 <div class="grid grid-cols-1 gap-3">
                     <a wire:navigate href="{{ route('admin.event-edit', $event->id) }}"
-                        class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">
+                        class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm  cursor-pointer">
                         <span class="material-icons mr-2 text-lg">edit</span> Edit Event
                     </a>
                     @if ($showTable)
                         <button wire:click="$set('showReuploadForm', true)"
-                            class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">
+                            class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm  cursor-pointer">
                             <span class="material-icons mr-2 text-lg">upload_file</span> Reupload CSV
                         </button>
-                        <button class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold"
+                        <button class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm  cursor-pointer"
                             wire:click="downloadExcelPresence">
                             <span class="material-icons mr-2 text-lg">download</span> Download Excel
                         </button>
                         <button wire:click="downloadBarcode"
-                            class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">
+                            class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm  cursor-pointer">
                             <span class="material-icons mr-2 text-lg">qr_code</span> Download All QR Codes
                         </button>
                     @endif
                     <a href="{{ route('admin.scanqr', $event->id) }}"
-                        class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold">
+                        class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm  cursor-pointer">
                         <span class="material-icons mr-2 text-lg">qr_code_scanner</span> Scan QR
                     </a>
                     <button id="copyRegUrlBtn" type="button"
-                        class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm font-semibold"
+                        class="flex items-center justify-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-[#3B5C80] transition duration-200 text-sm  cursor-pointer"
                         onclick="copyRegUrl('{{ $event->gform_url }}')">
                         <span class="material-icons mr-2 text-lg">content_copy</span> Copy Registration URL
                     </button>
