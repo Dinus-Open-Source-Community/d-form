@@ -230,6 +230,53 @@ class EventDetailAdmin extends Component
         ];
     }
 
+    public function markPresence($participantId)
+    {
+        $this->dispatch('confirmMarkPresence', participantId: $participantId);
+    }
+
+    public function doMarkPresence($participantId)
+    {
+        $participant = $this->event->participantList()->where('id', $participantId)->first();
+        if ($participant) {
+            $participant->is_presence = true;
+            $participant->presence_at = now();
+            $participant->save();
+            $this->loadEvent();
+            \Jantinnerezo\LivewireAlert\Facades\LivewireAlert::title('Success')
+                ->text('Participant marked as present.')
+                ->timer(2000)
+                ->success()
+                ->toast()
+                ->position('top-end')
+                ->withOptions(['timerProgressBar' => true])
+                ->show();
+        }
+    }
+
+    public function unmarkPresence($participantId)
+    {
+        $this->dispatch('confirmUnmarkPresence', participantId: $participantId);
+    }
+
+    public function doUnmarkPresence($participantId)
+    {
+        $participant = $this->event->participantList()->where('id', $participantId)->first();
+        if ($participant) {
+            $participant->is_presence = false;
+            $participant->presence_at = null;
+            $participant->save();
+            $this->loadEvent();
+            \Jantinnerezo\LivewireAlert\Facades\LivewireAlert::title('Success')
+                ->text('Presence status removed.')
+                ->timer(2000)
+                ->success()
+                ->toast()
+                ->position('top-end')
+                ->withOptions(['timerProgressBar' => true])
+                ->show();
+        }
+    }
 
     #[Layout('components.layouts.admin')]
     public function render()

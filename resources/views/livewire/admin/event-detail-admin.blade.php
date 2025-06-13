@@ -185,11 +185,25 @@
                                                 {{ $participant->presence_at ? \Carbon\Carbon::parse($participant->presence_at)->format('d/m/y H:i') : '-' }}
                                             </span>
                                         </td>
-                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm flex gap-2">
                                             <button wire:click="downloadBarcode('{{ $participant->id }}')"
-                                                class="bg-primary text-white px-3 py-1 rounded-lg hover:bg-[#3B5C80] transition duration-200 flex items-center text-xs">
-                                                <span class="material-icons text-sm mr-1">qr_code</span> Download QR
+                                                class="bg-primary text-white px-3 py-1 rounded-lg hover:bg-[#3B5C80] transition duration-200 flex items-center text-xs"
+                                                title="Download QR">
+                                                <span class="material-icons text-sm mr-1">qr_code</span>
                                             </button>
+                                            @if (!$participant->is_presence)
+                                                <button wire:click="markPresence('{{ $participant->id }}')"
+                                                    class="bg-green-700 text-white px-2 py-1 rounded-lg hover:bg-green-600 transition duration-200 flex items-center text-xs"
+                                                    title="Mark as Present">
+                                                    <span class="material-icons text-base">check_circle</span>
+                                                </button>
+                                            @else
+                                                <button wire:click="unmarkPresence('{{ $participant->id }}')"
+                                                    class="bg-red-700 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-200 flex items-center text-xs"
+                                                    title="Unmark Presence">
+                                                    <span class="material-icons text-base">cancel</span>
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -328,5 +342,37 @@
                 });
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const componentId = @json($this->getId());
+            window.addEventListener('confirmMarkPresence', event => {
+                Swal.fire({
+                    title: 'Mark as Present?',
+                    text: 'Yakin ingin menandai peserta hadir?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, tandai hadir',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.find(componentId).call('doMarkPresence', event.detail.participantId);
+                    }
+                });
+            });
+            window.addEventListener('confirmUnmarkPresence', event => {
+                Swal.fire({
+                    title: 'Batalkan Presensi?',
+                    text: 'Yakin ingin membatalkan presensi peserta?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, batalkan',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.find(componentId).call('doUnmarkPresence', event.detail.participantId);
+                    }
+                });
+            });
+        });
     </script>
 @endpush
