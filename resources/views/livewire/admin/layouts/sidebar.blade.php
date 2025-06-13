@@ -30,7 +30,7 @@
     </a>
     <a href="{{ route('admin.events') }}" wire:navigate>
       <div
-        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events/*') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
+        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events') || request()->is('admin/events/*') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
         <span class="material-icons mr-2">
           event
         </span>
