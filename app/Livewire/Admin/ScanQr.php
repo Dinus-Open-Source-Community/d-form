@@ -24,6 +24,9 @@ class ScanQr extends Component
     public $checkedInCount = 0;
     public $totalParticipants = 0;
     public $latestCheckIns = [];
+    public $isProcessing = false;
+    public $lastScannedCode = '';
+    public $lastScanTime = 0;
 
     public function mount($eventId)
     {
@@ -85,63 +88,78 @@ class ScanQr extends Component
         }
     }
 
-    public function checkIn($barcode)
-    {
-        try {
-            $participant = Participant::where('id', $barcode)
-                ->where('event_id', $this->eventId)
-                ->first();
+   public function checkIn($barcode)
+{
+    if ($this->isProcessing) {
+        return;
+    }
 
-            if (!$participant) {
-                LivewireAlert::title('Error')
-                    ->text('Participant not found or not registered for this event')
-                    ->timer(3000)
-                    ->error()
-                    ->withOptions([
-                        'timerProgressBar' => true,
-                    ])
-                    ->show();
-                return;
-            }
+    $currentTime = time();
+    if ($this->lastScannedCode === $barcode && ($currentTime - $this->lastScanTime) < 3) {
+        return;
+    }
 
-            if ($participant->is_presence === true || $participant->presence_at) {
-                LivewireAlert::title('Error')
-                    ->text('Participant already checked in')
-                    ->error()
-                    ->withOptions([
-                        'timerProgressBar' => true,
-                    ])
-                    ->withConfirmButton()
-                    ->show();
-                return;
-            }
+    $this->isProcessing = true;
+    $this->lastScannedCode = $barcode;
+    $this->lastScanTime = $currentTime;
 
-            $participant->is_presence = true;
-            $participant->presence_at = now();
-            $participant->save();
+    try {
+        $participant = Participant::where('id', $barcode)
+            ->where('event_id', $this->eventId)
+            ->first();
 
-            $this->scannedUser = $participant->name ?? 'Participant';
-            $this->updateParticipantStats();
-            LivewireAlert::title('Success')
-                ->text('Check-in successful for ' . $this->scannedUser)
-                ->timer(3000)
-                ->success()
-                ->withOptions([
-                    'timerProgressBar' => true,
-                ])
-                ->show();
-        } catch (\Exception $e) {
-            Log::error('Check-in error: ' . $e->getMessage());
-            $this->errorMessage = 'Error processing check-in';
+        if (!$participant) {
             LivewireAlert::title('Error')
-                ->text('Error processing check-in: ' . $e->getMessage())
+                ->text('Participant not found or not registered for this event')
+                ->timer(3000)
                 ->error()
-                ->withOptions([
-                    'timerProgressBar' => true,
-                ])
+                ->withOptions(['timerProgressBar' => true])
+                ->show();
+            $this->dispatch('resetProcessingAfterDelay');
+            return;
+        }
+
+        if ($participant->is_presence === true || $participant->presence_at) {
+            LivewireAlert::title('Error')
+                ->text('Participant already checked in')
+                ->error()
+                ->withOptions(['timerProgressBar' => true])
                 ->withConfirmButton()
                 ->show();
+            $this->dispatch('resetProcessingAfterDelay');
+            return;
         }
+
+        $participant->is_presence = true;
+        $participant->presence_at = now();
+        $participant->save();
+
+        $this->scannedUser = $participant->name ?? 'Participant';
+        $this->updateParticipantStats();
+        LivewireAlert::title('Success')
+            ->text('Check-in successful for ' . $this->scannedUser)
+            ->timer(3000)
+            ->success()
+            ->withOptions(['timerProgressBar' => true])
+            ->show();
+
+        $this->dispatch('resetProcessingAfterDelay');
+    } catch (\Exception $e) {
+        Log::error('Check-in error: ' . $e->getMessage());
+        $this->errorMessage = 'Error processing check-in';
+        LivewireAlert::title('Error')
+            ->text('Error processing check-in: ' . $e->getMessage())
+            ->error()
+            ->withOptions(['timerProgressBar' => true])
+            ->withConfirmButton()
+            ->show();
+        $this->dispatch('resetProcessingAfterDelay');
+    }
+}
+
+    public function resetProcessing()
+    {
+        $this->isProcessing = false;
     }
 
     public function closeSuccessModal()

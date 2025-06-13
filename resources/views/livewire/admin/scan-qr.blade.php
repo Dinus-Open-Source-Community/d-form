@@ -208,137 +208,160 @@
 
   <!-- JavaScript for QR Scanning -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-  <script>
-    document.addEventListener('livewire:initialized', () => {
-      let video = document.getElementById('video');
-      let stream = null;
-      let scanning = @json($isScanning);
-      let inputSource = @json($inputSource);
+ <script>
+  document.addEventListener('livewire:initialized', () => {
+    let video = document.getElementById('video');
+    let stream = null;
+    let scanning = @json($isScanning);
+    let inputSource = @json($inputSource);
+    let isProcessing = false;
+    let lastScannedCode = '';
+    let lastScanTime = 0;
 
-      async function enumerateCameras() {
-        try {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          const videoDevices = devices
-            .filter(device => device.kind === 'videoinput')
-            .map(device => ({
-              deviceId: device.deviceId,
-              label: device.label || `Camera ${devices.indexOf(device) + 1}`
-            }));
-          @this.call('updateCameraDevices', videoDevices);
-          return videoDevices;
-        } catch (err) {
-          console.error('Error enumerating devices:', err);
-          @this.set('errorMessage', 'Unable to access camera devices');
-          return [];
-        }
+    async function enumerateCameras() {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices
+          .filter(device => device.kind === 'videoinput')
+          .map(device => ({
+            deviceId: device.deviceId,
+            label: device.label || `Camera ${devices.indexOf(device) + 1}`
+          }));
+        @this.call('updateCameraDevices', videoDevices);
+        return videoDevices;
+      } catch (err) {
+        console.error('Error enumerating devices:', err);
+        @this.set('errorMessage', 'Unable to access camera devices');
+        return [];
       }
+    }
 
-      async function startCamera() {
-        if (!inputSource) {
-          const devices = await enumerateCameras();
-          if (devices.length > 0) {
-            inputSource = devices[0].deviceId;
-            @this.set('inputSource', inputSource);
-          } else {
-            @this.set('errorMessage', 'No cameras available');
-            return;
-          }
-        }
-
-        const constraints = {
-          video: {
-            deviceId: inputSource ? {
-              exact: inputSource
-            } : undefined,
-            facingMode: 'environment'
-          }
-        };
-
-        try {
-          stream = await navigator.mediaDevices.getUserMedia(constraints);
-          video.srcObject = stream;
-          video.onloadedmetadata = () => {
-            video.play();
-            scanQR();
-          };
-        } catch (err) {
-          console.error('Camera error:', err);
-          @this.set('hasPermission', false);
-          @this.set('errorMessage', 'Failed to access camera: ' + err.message);
-        }
-      }
-
-      function stopCamera() {
-        if (stream) {
-          stream.getTracks().forEach(track => track.stop());
-          stream = null;
-          video.srcObject = null;
-        }
-      }
-
-      function scanQR() {
-        if (!scanning) return;
-
-        if (video.readyState < 2 || video.videoWidth === 0 || video.videoHeight === 0) {
-          setTimeout(scanQR, 100);
+    async function startCamera() {
+      if (!inputSource) {
+        const devices = await enumerateCameras();
+        if (devices.length > 0) {
+          inputSource = devices[0].deviceId;
+          @this.set('inputSource', inputSource);
+        } else {
+          @this.set('errorMessage', 'No cameras available');
           return;
         }
+      }
 
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        try {
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-          const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-          if (code) {
-            @this.call('checkIn', code.data);
-          }
-        } catch (err) {
-          console.error('QR scan error:', err);
-          @this.set('errorMessage', 'Failed to process QR code: ' + err.message);
+      const constraints = {
+        video: {
+          deviceId: inputSource ? { exact: inputSource } : undefined,
+          facingMode: 'environment'
         }
+      };
 
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+        video.onloadedmetadata = () => {
+          video.play();
+          scanQR();
+        };
+      } catch (err) {
+        console.error('Camera error:', err);
+        @this.set('hasPermission', false);
+        @this.set('errorMessage', 'Failed to access camera: ' + err.message);
+      }
+    }
+
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+        video.srcObject = null;
+      }
+    }
+
+    function scanQR() {
+      if (!scanning || isProcessing) {
+        // Continue the loop even if processing, but skip processing QR codes
         if (scanning) {
           requestAnimationFrame(scanQR);
         }
+        return;
       }
 
-      enumerateCameras();
+      if (video.readyState < 2 || video.videoWidth === 0 || video.videoHeight === 0) {
+        setTimeout(scanQR, 100);
+        return;
+      }
 
-      @this.on('start-scanning', () => {
-        scanning = true;
-        startCamera();
-      });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
 
-      @this.on('stop-scanning', () => {
-        scanning = false;
-        stopCamera();
-      });
+      try {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-      @this.on('inputSourceUpdated', (newSource) => {
-        inputSource = newSource;
-        if (scanning) {
-          stopCamera();
-          startCamera();
+        if (code) {
+          const currentTime = Date.now();
+          if (lastScannedCode === code.data && (currentTime - lastScanTime) < 3000) {
+            requestAnimationFrame(scanQR);
+            return;
+          }
+
+          isProcessing = true;
+          lastScannedCode = code.data;
+          lastScanTime = currentTime;
+          @this.call('checkIn', code.data);
         }
-      });
+      } catch (err) {
+        console.error('QR scan error:', err);
+        @this.set('errorMessage', 'Failed to process QR code: ' + err.message);
+      }
 
-      Livewire.watch('inputSource', (newSource) => {
-        inputSource = newSource;
-        if (scanning) {
-          stopCamera();
-          startCamera();
-        }
-        @this.dispatch('inputSourceUpdated', newSource);
-      });
+      if (scanning) {
+        requestAnimationFrame(scanQR);
+      }
+    }
 
-      window.addEventListener('beforeunload', () => {
-        stopCamera();
-      });
+    enumerateCameras();
+
+    @this.on('start-scanning', () => {
+      scanning = true;
+      startCamera();
     });
-  </script>
+
+    @this.on('stop-scanning', () => {
+      scanning = false;
+      stopCamera();
+    });
+
+    @this.on('resetProcessingAfterDelay', () => {
+      setTimeout(() => {
+        isProcessing = false; // Reset client-side isProcessing
+        @this.call('resetProcessing');
+      }, 2000);
+    });
+
+    @this.on('inputSourceUpdated', (newSource) => {
+      inputSource = newSource;
+      if (scanning) {
+        stopCamera();
+        startCamera();
+      }
+    });
+
+    Livewire.watch('inputSource', (newSource) => {
+      inputSource = newSource;
+      if (scanning) {
+        stopCamera();
+        startCamera();
+      }
+      @this.dispatch('inputSourceUpdated', newSource);
+    });
+
+    window.addEventListener('beforeunload', () => {
+      stopCamera();
+    });
+  });
+</script>
 </div>
