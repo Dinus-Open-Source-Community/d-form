@@ -15,7 +15,7 @@
     </button>
   </header>
 
-  <main class="w-full max-w-5xl mx-auto px-6 py-8 flex-1">
+  <main class="w-full max-w-7xl mx-auto px-6 py-8 flex-1">
     <h1 class="text-4xl font-bold text-primary text-center">
       {{ $event->name }}
     </h1>
@@ -30,7 +30,7 @@
       </div>
     @endif
 
-    <section class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <section class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Participant and Event Info box -->
       <div class="border-2 border-primary rounded-lg p-6 flex flex-col items-center space-y-8">
         <div class="text-xl font-bold text-primary">Participants</div>
@@ -291,7 +291,7 @@
         return;
       }
 
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement('x`');
       const context = canvas.getContext('2d');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
