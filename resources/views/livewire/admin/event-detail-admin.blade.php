@@ -173,14 +173,16 @@
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->name }}</td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->school }}</td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">
-                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold
+                                            <span class="inline-flex items-center p-1 rounded-full text-xs font-semibold
                                                 {{ $participant->is_presence ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                <span class="">{{ $participant->is_presence ? '✅' : '❌' }}</span>
+                                                <span class="material-icons text-base">
+                                                    {{ $participant->is_presence ? 'check_circle' : 'cancel' }}
+                                                </span>
                                             </span>
                                         </td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">
                                             <span class="mt-1 text-xs text-gray-500">
-                                                {{ $participant->presence_at ? \Carbon\Carbon::parse($participant->presence_at)->translatedFormat('j F Y H:i') : '-' }}
+                                                {{ $participant->presence_at ? \Carbon\Carbon::parse($participant->presence_at)->format('d/m/y H:i') : '-' }}
                                             </span>
                                         </td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">
