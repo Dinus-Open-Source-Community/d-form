@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\File;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\WithPagination;
 use ZipArchive;
+use App\Jobs\GenerateQrZipJob;
 
 class EventDetailAdmin extends Component
 {
@@ -26,6 +27,9 @@ class EventDetailAdmin extends Component
     public $csvFile;
     public $showReuploadForm = false;
     public $perPage = 10;
+    public $zipStatus = null; // 'processing', 'ready', 'error'
+    public $zipFileName = null;
+    public $zipJobId = null; // Store job ID for tracking
 
     protected $queryString = ['eventId'];
 
@@ -34,11 +38,59 @@ class EventDetailAdmin extends Component
         $this->eventId = $eventId;
         $this->loadEvent();
 
+        // Check for ongoing zip generation
+        $this->checkOngoingZipGeneration();
+
         if (session()->has('saved')) {
             LivewireAlert::title(session('saved.title'))
                 ->text(session('saved.text'))
                 ->success()
                 ->show();
+        }
+    }
+
+    public function checkOngoingZipGeneration()
+    {
+        // Check if there's an ongoing zip generation for this event
+        $zipFileName = "barcodes_{$this->eventId}.zip";
+        $zipFilePath = public_path("barcodes/{$zipFileName}");
+        
+        // Check session for ongoing job
+        $ongoingJob = session("zip_job_{$this->eventId}");
+        
+        if ($ongoingJob) {
+            $this->zipFileName = $zipFileName;
+            $this->zipJobId = $ongoingJob['job_id'];
+            
+            // Check if file is ready
+            if (file_exists($zipFilePath)) {
+                $this->zipStatus = 'ready';
+                session()->forget("zip_job_{$this->eventId}");
+                
+                LivewireAlert::title('Download Starting!')
+                    ->text('Your QR codes zip file is ready. Download will start automatically in 2 seconds.')
+                    ->timer(4000)
+                    ->success()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+                    
+                $this->dispatch('zipReadyOnMount', url: asset('barcodes/' . $this->zipFileName));
+            } else {
+                $this->zipStatus = 'processing';
+                
+                LivewireAlert::title('Processing Continues...')
+                    ->text('Your QR codes are still being generated in the background.')
+                    ->timer(3000)
+                    ->info()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+                    
+                $this->dispatch('continueZipPolling');
+            }
         }
     }
 
@@ -132,24 +184,24 @@ class EventDetailAdmin extends Component
 
     public function downloadBarcode($participantId = null)
     {
-        // Generate barcode(s) first
-        $generateResult = $this->generateBarcodes($this->eventId, $participantId);
-        if (!$generateResult['success']) {
-            LivewireAlert::title('Error')
-                ->text($generateResult['message'])
-                ->timer(3000)
-                ->error()
-                ->toast()
-                ->position('top-end')
-                ->withOptions([
-                    'timerProgressBar' => true,
-                ])
-                ->show();
-            return;
-        }
-
         // Download single barcode
         if ($participantId) {
+            // Generate single barcode if not exists
+            $generateResult = $this->generateBarcodes($this->eventId, $participantId);
+            if (!$generateResult['success']) {
+                LivewireAlert::title('Error')
+                    ->text($generateResult['message'])
+                    ->timer(3000)
+                    ->error()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions([
+                        'timerProgressBar' => true,
+                    ])
+                    ->show();
+                return;
+            }
+
             $participant = $this->event->participantList()->where('id', $participantId)->first();
             $safeName = preg_replace('/[^A-Za-z0-9 _-]/', '', $participant->name);
             $filePath = public_path("barcodes/{$this->eventId}/{$safeName}.png");
@@ -171,36 +223,89 @@ class EventDetailAdmin extends Component
             return response()->download($filePath, $safeName.'.png');
         }
 
-        // Download all barcodes in zip
+        // Batch download: Use queue job for both generate and zip
+        $this->startBatchZipGeneration();
+    }
+
+    public function startBatchZipGeneration()
+    {
         $zipFileName = "barcodes_{$this->eventId}.zip";
         $zipFilePath = public_path("barcodes/{$zipFileName}");
+        
+        $this->zipFileName = $zipFileName;
+        $this->zipStatus = 'processing';
+        
+        // Delete existing zip if exists
+        if (file_exists($zipFilePath)) {
+            unlink($zipFilePath);
+        }
+        
+        // Delete existing barcodes folder to regenerate fresh
+        $barcodeDir = public_path("barcodes/{$this->eventId}");
+        if (File::exists($barcodeDir)) {
+            File::deleteDirectory($barcodeDir);
+        }
+        
+        // Dispatch job to generate QR codes and create zip
+        $job = GenerateQrZipJob::dispatch($this->eventId, $zipFilePath);
+        $this->zipJobId = $job->id ?? uniqid();
+        
+        // Store job info in session for persistence across page navigation
+        session([
+            "zip_job_{$this->eventId}" => [
+                'job_id' => $this->zipJobId,
+                'started_at' => now()->toDateTimeString(),
+                'zip_file' => $zipFileName
+            ]
+        ]);
+        
+        // Show processing toast
+        LivewireAlert::title('Processing...')
+            ->text('Generating all QR codes and creating zip file. You can navigate away, we\'ll notify you when ready.')
+            ->timer(0)
+            ->info()
+            ->toast()
+            ->position('top-end')
+            ->show();
+            
+        $this->dispatch('startZipPolling');
+    }
 
-        $zip = new ZipArchive();
-        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            LivewireAlert::title('Error')
-                ->text('Failed to create zip file')
-                ->timer(3000)
-                ->error()
+    public function checkZipStatus()
+    {
+        if (!$this->zipFileName) return false;
+        
+        $zipFilePath = public_path("barcodes/{$this->zipFileName}");
+        if (file_exists($zipFilePath)) {
+            $this->zipStatus = 'ready';
+            
+            // Clear session job info
+            session()->forget("zip_job_{$this->eventId}");
+            
+            LivewireAlert::title('Download Starting!')
+                ->text('QR codes zip file is ready. Download will start automatically in 2 seconds.')
+                ->timer(4000)
+                ->success()
                 ->toast()
                 ->position('top-end')
-                ->withOptions([
-                    'timerProgressBar' => true,
-                ])
+                ->withOptions(['timerProgressBar' => true])
                 ->show();
-            return;
+                
+            $this->dispatch('zipReady', url: asset('barcodes/' . $this->zipFileName));
+            return true;
         }
+        return false;
+    }
 
-        $barcodeDir = public_path("barcodes/{$this->eventId}/");
-        foreach ($this->event->participantList()->get() as $participant) {
-            $safeName = preg_replace('/[^A-Za-z0-9 _-]/', '', $participant->name);
-            $filePath = $barcodeDir . $safeName . '.png';
-            if (file_exists($filePath)) {
-                $zip->addFile($filePath, $safeName . '.png');
+    public function downloadZipFile()
+    {
+        if ($this->zipStatus === 'ready' && $this->zipFileName) {
+            $zipFilePath = public_path("barcodes/{$this->zipFileName}");
+            if (file_exists($zipFilePath)) {
+                return response()->download($zipFilePath)->deleteFileAfterSend(true);
             }
         }
-        $zip->close();
-
-        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        return null;
     }
 
     private function generateBarcodes($eventId, $participantId = null)
@@ -312,6 +417,37 @@ class EventDetailAdmin extends Component
         });
         $filename = 'participants-presence-' . $this->event->id . '.xlsx';
         return \Maatwebsite\Excel\Facades\Excel::download(new ParticipantsPresenceExport($csvData), $filename);
+    }
+
+    public function generateZip()
+    {
+        $this->zipStatus = 'processing';
+
+        // Dispatch job to generate QR code zip
+        GenerateQrZipJob::dispatch($this->eventId)
+            ->then(function ($job) {
+                $this->zipStatus = 'ready';
+                $this->zipFileName = "barcodes_{$this->eventId}.zip";
+                LivewireAlert::title('Success')
+                    ->text('QR code zip file is ready to download.')
+                    ->timer(3000)
+                    ->success()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+            })
+            ->catch(function ($exception) {
+                $this->zipStatus = 'error';
+                LivewireAlert::title('Error')
+                    ->text('Failed to generate zip file: ' . $exception->getMessage())
+                    ->timer(3000)
+                    ->error()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+            });
     }
 
     #[Layout('components.layouts.admin')]

@@ -346,6 +346,133 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const componentId = @json($this->getId());
+            
+            // Zip polling logic
+            let zipPollingInterval = null;
+            
+            window.addEventListener('startZipPolling', () => {
+                if (zipPollingInterval) clearInterval(zipPollingInterval);
+                
+                zipPollingInterval = setInterval(() => {
+                    Livewire.find(componentId).call('checkZipStatus').then((isReady) => {
+                        if (isReady) {
+                            clearInterval(zipPollingInterval);
+                            zipPollingInterval = null;
+                        }
+                    });
+                }, 3000); // Check every 3 seconds
+            });
+            
+            window.addEventListener('continueZipPolling', () => {
+                if (zipPollingInterval) clearInterval(zipPollingInterval);
+                
+                zipPollingInterval = setInterval(() => {
+                    Livewire.find(componentId).call('checkZipStatus').then((isReady) => {
+                        if (isReady) {
+                            clearInterval(zipPollingInterval);
+                            zipPollingInterval = null;
+                        }
+                    });
+                }, 3000); // Check every 3 seconds
+            });
+            
+            window.addEventListener('zipReady', (event) => {
+                if (zipPollingInterval) {
+                    clearInterval(zipPollingInterval);
+                    zipPollingInterval = null;
+                }
+                
+                // Show countdown notification then auto download
+                let countdown = 3;
+                const countdownToast = Swal.fire({
+                    title: 'Download Starting...',
+                    html: `Your QR codes zip file will download automatically in <strong>${countdown}</strong> seconds.`,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        const timer = setInterval(() => {
+                            countdown--;
+                            if (countdown > 0) {
+                                Swal.getHtmlContainer().innerHTML = `Your QR codes zip file will download automatically in <strong>${countdown}</strong> seconds.`;
+                            }
+                        }, 1000);
+                        
+                        setTimeout(() => {
+                            clearInterval(timer);
+                        }, 3000);
+                    }
+                });
+                
+                // Auto download after 3 seconds
+                setTimeout(() => {
+                    window.location.href = event.detail.url;
+                    
+                    // Show download completed notification
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: 'Download Complete!',
+                            text: 'Your QR codes zip file has been downloaded successfully.',
+                            icon: 'success',
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }, 1000);
+                }, 3000);
+            });
+            
+            window.addEventListener('zipReadyOnMount', (event) => {
+                // Auto download with notification for files ready on page load
+                Swal.fire({
+                    title: 'Download Starting!',
+                    html: 'Your QR codes zip file is ready and will download automatically in <strong>2</strong> seconds.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        let countdown = 2;
+                        const timer = setInterval(() => {
+                            countdown--;
+                            if (countdown > 0) {
+                                Swal.getHtmlContainer().innerHTML = `Your QR codes zip file is ready and will download automatically in <strong>${countdown}</strong> seconds.`;
+                            }
+                        }, 1000);
+                        
+                        setTimeout(() => {
+                            clearInterval(timer);
+                        }, 2000);
+                    }
+                });
+                
+                setTimeout(() => {
+                    window.location.href = event.detail.url;
+                    
+                    // Show download completed notification
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: 'Download Complete!',
+                            text: 'Your QR codes zip file has been downloaded successfully.',
+                            icon: 'success',
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }, 1000);
+                }, 2000);
+            });
+            
+            // Presence confirmation dialogs
             window.addEventListener('confirmMarkPresence', event => {
                 Swal.fire({
                     title: 'Mark as Present?',
@@ -360,6 +487,7 @@
                     }
                 });
             });
+            
             window.addEventListener('confirmUnmarkPresence', event => {
                 Swal.fire({
                     title: 'Batalkan Presensi?',
