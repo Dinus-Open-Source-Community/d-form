@@ -137,7 +137,9 @@ class EventDetailAdmin extends Component
 
         // Download single barcode
         if ($participantId) {
-            $filePath = public_path("barcodes/{$this->eventId}/{$participantId}.png");
+            $participant = $this->event->participantList()->where('id', $participantId)->first();
+            $safeName = preg_replace('/[^A-Za-z0-9 _-]/', '', $participant->name);
+            $filePath = public_path("barcodes/{$this->eventId}/{$safeName}.png");
 
             if (!file_exists($filePath)) {
                 LivewireAlert::title('Error')
@@ -153,7 +155,7 @@ class EventDetailAdmin extends Component
                 return;
             }
 
-            return response()->download($filePath);
+            return response()->download($filePath, $safeName.'.png');
         }
 
         // Download all barcodes in zip
@@ -176,8 +178,12 @@ class EventDetailAdmin extends Component
         }
 
         $barcodeDir = public_path("barcodes/{$this->eventId}/");
-        foreach (File::files($barcodeDir) as $file) {
-            $zip->addFile($file->getRealPath(), $file->getFilename());
+        foreach ($this->event->participantList()->get() as $participant) {
+            $safeName = preg_replace('/[^A-Za-z0-9 _-]/', '', $participant->name);
+            $filePath = $barcodeDir . $safeName . '.png';
+            if (file_exists($filePath)) {
+                $zip->addFile($filePath, $safeName . '.png');
+            }
         }
         $zip->close();
 
@@ -213,7 +219,7 @@ class EventDetailAdmin extends Component
         }
 
         foreach ($participants as $participant) {
-            $filePath = "{$folderPath}{$participant->id}.png";
+            $filePath = "{$folderPath}{$participant->name}.png";
 
             if (!file_exists($filePath)) {
                 QrCode::format('png')
