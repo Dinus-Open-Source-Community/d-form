@@ -36,6 +36,8 @@ class EventsCatalogue extends Component
         } elseif ($this->timestamp === 'ongoing') {
             $query->where('start_date', '<=', Carbon::now())
                 ->whereRaw('DATE_ADD(start_date, INTERVAL duration_days DAY) >= NOW()');
+        } elseif ($this->timestamp === 'completed') {
+            $query->whereRaw('NOW() > DATE_ADD(start_date, INTERVAL duration_days DAY)');
         }
 
         $this->events = $query->orderByDesc('created_at')->limit(3)->get()->toArray();
