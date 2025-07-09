@@ -9,6 +9,7 @@ class EventList extends Component
     public bool $showToday = false;
     public bool $showOngoing = true;
     public bool $showUpcoming = true;
+    public bool $showCompleted = false;
     public bool $showSeeAll = true;
     public bool $useQR = false;
 
