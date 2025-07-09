@@ -23,4 +23,12 @@
             :showSeeAll="$showSeeAll"
         />
     @endif
+
+    @if ($showCompleted)
+        <livewire:admin.components.events-catalogue
+            title="Completed Events"
+            timestamp="completed"
+            :showSeeAll="$showSeeAll"
+        />
+    @endif
 </div>
