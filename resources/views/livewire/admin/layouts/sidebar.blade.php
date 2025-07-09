@@ -37,6 +37,15 @@
         Events
       </div>
     </a>
+    <a href="{{ route('admin.completed-events') }}" wire:navigate>
+      <div
+        class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/completed-events') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
+        <span class="material-icons mr-2">
+          event_available
+        </span>
+        Completed Events
+      </div>
+    </a>
   </div>
 
   {{-- User Info --}}
