@@ -37,9 +37,18 @@
             </div>
         @endif
 
-        <!-- Status badge (Free/Paid) -->
+        <!-- Status badge (Free/Paid/Completed) -->
         <div class="absolute top-3 right-3 z-20">
-            @if (!empty($event['price']) && $event['price'] > 0)
+            @if ($this->getEventStatus() === 'completed')
+                <div
+                    class="inline-flex items-center gap-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md border border-white/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    COMPLETED
+                </div>
+            @elseif (!empty($event['price']) && $event['price'] > 0)
                 <div
                     class="inline-flex items-center gap-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md border border-white/20">
                     Rp {{ number_format($event['price'], 0, ',', '.') }}
@@ -100,16 +109,31 @@
         <!-- Call to action indicator -->
         <div class="mt-3 pt-3 border-t border-gray-200/80">
             <div class="flex items-center justify-between">
-                <span class="text-xs text-gray-500 font-medium">View Details</span>
-                <div
-                    class="w-7 h-7 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                        stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="group-hover:stroke-white transition-colors duration-300">
-                        <path d="M5 12h14" />
-                        <path d="M12 5l7 7-7 7" />
-                    </svg>
-                </div>
+                @if ($this->getEventStatus() === 'completed')
+                    <span class="text-xs text-gray-500 font-medium">View Attendance</span>
+                    <div
+                        class="w-7 h-7 bg-gray-500/10 rounded-lg flex items-center justify-center group-hover:bg-gray-500 group-hover:scale-110 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="group-hover:stroke-white transition-colors duration-300">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="8.5" cy="7" r="4"/>
+                            <line x1="20" y1="8" x2="20" y2="14"/>
+                            <line x1="23" y1="11" x2="17" y2="11"/>
+                        </svg>
+                    </div>
+                @else
+                    <span class="text-xs text-gray-500 font-medium">View Details</span>
+                    <div
+                        class="w-7 h-7 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--bg-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="group-hover:stroke-white transition-colors duration-300">
+                            <path d="M5 12h14" />
+                            <path d="M12 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
