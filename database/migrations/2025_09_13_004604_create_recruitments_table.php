@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('nomor_hp');
             $table->string('email_pribadi');
             $table->string('email_mahasiswa');
-            $table->enum('divisi_utama', ['Pemrograman', 'Jaringan', 'Media_Creative', 'Data']);
-            $table->enum('divisi_tambahan', ['Pemrograman', 'Jaringan', 'Media_Creative', 'Data']);
+            $table->enum('divisi_utama', ['Pemrograman', 'Jaringan', 'Medcrev', 'Data']);
+            $table->enum('divisi_tambahan', ['Pemrograman', 'Jaringan', 'Medcrev', 'Data']);
             $table->string('cv');
             $table->string('portofolio')->nullable();
             $table->string('bukti_follow_instagram');
