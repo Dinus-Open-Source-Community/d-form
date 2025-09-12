@@ -64,11 +64,11 @@ class Recruitment extends Model
         ],
         'divisi_utama' => [
             'required',
-            'in:Pemrograman,Jaringan,Medcrev,Data'
+            'in:Pemrograman,Jaringan,Media_Creative,Data'
         ],
         'divisi_tambahan' => [
             'required',
-            'in:Pemrograman,Jaringan,Medcrev,Data',
+            'in:Pemrograman,Jaringan,Media_Creative,Data',
             'different:divisi_utama'
         ],
         'cv' => [

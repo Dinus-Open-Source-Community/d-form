@@ -49,7 +49,7 @@ class RecruitmentForm extends Component
 
         Recruitment::create($validated);
 
-        session()->flash('success', 'Recruitment berhasil!');
+        session()->flash('success', 'Recruitment telah berhasil didaftarkan!');
         $this->reset();
     }
 
