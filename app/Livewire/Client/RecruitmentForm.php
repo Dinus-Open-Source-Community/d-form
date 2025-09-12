@@ -15,6 +15,18 @@ class RecruitmentForm extends Component
            $divisi_utama, $divisi_tambahan, $cv, $portofolio, $bukti_follow_instagram,
            $bukti_follow_linkedin, $username_instagram;
 
+    
+    public function upload()
+    {
+        $path = $this->cv->store('cv', 'public'); // simpan di storage/app/public/cv
+        // simpan $path ke database jika perlu
+        $path = $this->portofolio->store('portofolio', 'public'); // simpan di storage/app/public/portofolio
+        $path = $this->bukti_follow_instagram->store('follow_instagram', 'public'); // simpan di storage/app/public/follow_instagram
+        $path = $this->bukti_follow_linkedin->store('follow_linkedin', 'public'); // simpan di storage/app/public/follow_linkedin
+        
+    }
+    
+
     protected $rules = [
         'nama_lengkap' => ['required','string','max:255','regex:/^[a-zA-Z\s.]+$/'],
         'nim' => ['required','string','max:50','unique:recruitments,nim','regex:/^[0-9]{7,12}$/'],
