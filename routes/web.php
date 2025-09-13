@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Admin\RecruitmentTable;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\EventCreateAdmin;
 use App\Livewire\Admin\EventDetailAdmin;
@@ -48,3 +49,6 @@ Route::group([
     Route::get('/completed-events', CompletedEventsAdmin::class)->name('completed-events');
     Route::get('/scanqr/{eventId}', ScanQr::class)->name('scanqr');
 });
+
+Route::get('/admin/recruitment', RecruitmentTable::class)
+    ->name('admin.recruitment');
