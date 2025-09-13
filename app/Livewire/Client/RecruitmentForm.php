@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Client;
+namespace App\Livewire\Client;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -18,11 +18,10 @@ class RecruitmentForm extends Component
     
     public function upload()
     {
-        $path = $this->cv->store('cv', 'public'); // simpan di storage/app/public/cv
-        // simpan $path ke database jika perlu
-        $path = $this->portofolio->store('portofolio', 'public'); // simpan di storage/app/public/portofolio
-        $path = $this->bukti_follow_instagram->store('follow_instagram', 'public'); // simpan di storage/app/public/follow_instagram
-        $path = $this->bukti_follow_linkedin->store('follow_linkedin', 'public'); // simpan di storage/app/public/follow_linkedin
+        $path = $this->cv->store('cv', 'public'); 
+        $path = $this->portofolio->store('portofolio', 'public'); 
+        $path = $this->bukti_follow_instagram->store('follow_instagram', 'public');
+        $path = $this->bukti_follow_linkedin->store('follow_linkedin', 'public'); 
         
     }
     
@@ -61,12 +60,14 @@ class RecruitmentForm extends Component
 
         Recruitment::create($validated);
 
-        session()->flash('success', 'Recruitment berhasil!');
+        session()->flash('short_uuid', $validated['short_uuid']);
+        session()->flash('success', 'Pendaftaran berhasil! Simpan kode ini untuk edit data.');
         $this->reset();
     }
 
+    
     public function render()
     {
         return view('livewire.client.recruitment-form');
     }
-}
+}// simpan di storage/app/public/follow_linkedin
