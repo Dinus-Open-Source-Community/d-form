@@ -56,14 +56,25 @@ class RecruitmentForm extends Component
             $validated['portofolio'] = $this->portofolio->store('portofolio');
         }
         $validated['bukti_follow_instagram'] = $this->bukti_follow_instagram->store('follow_instagram');
-        $validated['bukti_follow_linkedin'] = $this->bukti_follow_linkedin->store('follow_linkedin');
+        $validated['bukti_follow_linkedin'] = $this->bukti_follow_linkedin ? $this->bukti_follow_linkedin->store('follow_linkedin') : null;
 
         Recruitment::create($validated);
 
+        // Kirim email kode ke email pribadi (atau email mahasiswa jika email_pribadi null)
+        $emailTo = $validated['email_mahasiswa'] ?: $validated['email_pribadi'];
+        Mail::to($emailTo)->send(
+            new RecruitmentVerificationMail(
+                $validated['nama_lengkap'],
+                $validated['nim'],
+                $validated['short_uuid']
+            )
+        );
+
         session()->flash('short_uuid', $validated['short_uuid']);
-        session()->flash('success', 'Pendaftaran berhasil! Simpan kode ini untuk edit data.');
+        session()->flash('success', 'Pendaftaran berhasil! Kode edit telah dikirim ke email Anda.');
         $this->reset();
     }
+
 
     
     public function render()
