@@ -1,12 +1,12 @@
-<div>
-    <div class="mx-auto max-w-7xl">
+<div class="mb-8 px-6 sm:px-8 md:px-12">
+    <div class="mx-auto my-12 max-w-7xl">
         <div class="relative overflow-hidden rounded-3xl border border-gray-200/50 bg-white p-6 shadow-xl sm:p-8">
             <div class="mb-6 flex justify-center text-lg font-bold text-gray-700">
-                <p>FORM REGISTRASI</p>
+                <p>FORM EDIT REGISTRASI</p>
             </div>
 
             {{-- field form --}}
-            <form wire:submit.prevent="submit" enctype="multipart/form-data">
+            <form wire:submit.prevent="update" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2" x-data="{
                     divisiUtama: @entangle('divisi_utama'),
                     divisiTambahan: @entangle('divisi_tambahan'),
@@ -38,7 +38,7 @@
                                 class="material-icons absolute left-3 top-1/2 -translate-y-1/2 transform text-lg text-gray-400">badge</span>
                             <input
                                 class="focus:ring-primary focus:border-primary w-full rounded-lg border border-gray-200 py-2.5 pl-10 pr-4 text-gray-900 placeholder-gray-400 transition duration-200 focus:ring-2"
-                                type="text" wire:model="nim" placeholder="A11.2025.12345" />
+                                type="text" disabled wire:model="nim" placeholder="A11.2025.12345" />
                         </div>
                         @error('nim')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
@@ -164,21 +164,41 @@
                     {{-- cv --}}
                     <div class="relative">
                         <label class="mb-1 block text-sm font-medium text-gray-700">CV</label>
-                        <div class="relative" x-data="{ fileName: '' }">
-                            <div
-                                class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
-                                <label
-                                    class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
-                                    <span class="material-icons text-lg text-gray-400">description</span>
-                                    <span class="font-medium text-gray-400">Pilih File</span>
-                                    <input class="hidden" type="file" wire:model="cv"
-                                        @change="fileName = $event.target.files[0]?.name || ''">
-                                </label>
-                                <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
-                                    <span class="truncate text-gray-700"
-                                        x-text="fileName || 'Belum ada file dipilih'">Belum ada file dipilih</span>
+                        <div class="flex items-center gap-2">
+                            <div class="relative w-full" x-data="{
+                                fileName: '',
+                                oldFileName: '{{ $recruitment && $recruitment->cv ? basename($recruitment->cv) : '' }}'
+                            }">
+                                <div
+                                    class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
+                                    <label
+                                        class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
+                                        <span class="material-icons text-lg text-gray-400">description</span>
+                                        <span class="font-medium text-gray-400">Pilih File</span>
+                                        <input class="hidden" type="file" wire:model="cv"
+                                            @change="fileName = $event.target.files[0]?.name || ''">
+                                    </label>
+                                    <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
+                                        <span class="truncate text-gray-700"
+                                            x-text="fileName || oldFileName || 'Belum ada file dipilih'">
+                                            Belum ada file dipilih
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
+                            {{-- tombol download file --}}
+                            @if ($recruitment && $recruitment->cv)
+                                <div
+                                    class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
+                                    <a href="{{ Storage::url($recruitment->cv) }}" title="Download CV"
+                                        target="_blank">
+                                        <span class="material-icons hover:text-primary text-gray-400"
+                                            style="font-size: 1.7rem;">
+                                            download
+                                        </span>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                         @error('cv')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
@@ -188,21 +208,46 @@
                     {{-- portofolio --}}
                     <div class="relative">
                         <label class="mb-1 block text-sm font-medium text-gray-700">Portofolio</label>
-                        <div class="relative" x-data="{ fileName: '' }">
-                            <div
-                                class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
-                                <label
-                                    class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
-                                    <span class="material-icons text-lg text-gray-400">description</span>
-                                    <span class="font-medium text-gray-400">Pilih File</span>
-                                    <input class="hidden" type="file" wire:model="portofolio"
-                                        @change="fileName = $event.target.files[0]?.name || ''">
-                                </label>
-                                <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
-                                    <span class="truncate text-gray-700"
-                                        x-text="fileName || 'Belum ada file dipilih'">Belum ada file dipilih</span>
+
+                        <div class="flex items-center gap-2">
+                            {{-- file name --}}
+                            <div class="relative w-full" x-data="{
+                                fileName: '',
+                                oldFileName: '{{ $recruitment && $recruitment->portofolio ? basename($recruitment->portofolio) : '' }}'
+                            }">
+                                <div
+                                    class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
+                                    <label
+                                        class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
+                                        <span class="material-icons text-lg text-gray-400">description</span>
+                                        <span class="font-medium text-gray-400">Pilih File</span>
+                                        <input class="hidden" type="file" wire:model="portofolio"
+                                            @change="fileName = $event.target.files[0]?.name || ''">
+                                    </label>
+                                    <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
+                                        <span class="truncate text-gray-700"
+                                            x-text="(fileName.length> 30 ? fileName.slice(0, 30) + '...' : fileName)
+                                                || (oldFileName.length > 30 ? oldFileName.slice(0, 30) + '...' : oldFileName)
+                                                || 'Belum ada file dipilih'">
+                                            Belum ada file dipilih
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
+
+                            {{-- tombol download file --}}
+                            @if ($recruitment && $recruitment->portofolio)
+                                <div
+                                    class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
+                                    <a href="{{ Storage::url($recruitment->portofolio) }}"
+                                        title="Download Portofolio" target="_blank">
+                                        <span class="material-icons hover:text-primary text-gray-400"
+                                            style="font-size: 1.7rem;">
+                                            download
+                                        </span>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                         @error('portofolio')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
@@ -213,20 +258,44 @@
                         {{-- bukti follow instagram --}}
                         <div class="relative w-full lg:w-3/5">
                             <label class="mb-1 block text-sm font-medium text-gray-700">Bukti Follow Instagram</label>
-                            <div class="relative" x-data="{ fileName: '' }">
-                                <div
-                                    class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
-                                    <label
-                                        class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
-                                        <span class="material-icons text-lg text-gray-400">description</span>
-                                        <span class="font-medium text-gray-400">Pilih File</span>
-                                        <input class="hidden" type="file" wire:model="bukti_follow_instagram"
-                                            @change="fileName = $event.target.files[0]?.name || ''">
-                                    </label>
-                                    <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
-                                        <span class="truncate text-gray-700"
-                                            x-text="fileName || 'Belum ada file dipilih'">Belum ada file dipilih</span>
+                            <div class="relative" x-data="{
+                                fileName: '',
+                                oldFileName: '{{ $recruitment && $recruitment->bukti_follow_instagram ? basename($recruitment->bukti_follow_instagram) : '' }}'
+                            }">
+                                <div class="flex items-center gap-2">
+
+                                    {{-- file name --}}
+                                    <div
+                                        class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
+                                        <label
+                                            class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
+                                            <span class="material-icons text-lg text-gray-400">description</span>
+                                            <span class="font-medium text-gray-400">Pilih File</span>
+                                            <input class="hidden" type="file" wire:model="bukti_follow_instagram"
+                                                @change="fileName = $event.target.files[0]?.name || ''">
+                                        </label>
+
+                                        <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
+                                            <span class="truncate text-gray-700"
+                                                x-text="fileName || oldFileName || 'Belum ada file dipilih'">
+                                                Belum ada file dipilih
+                                            </span>
+                                        </div>
                                     </div>
+
+                                    {{-- tombol download file --}}
+                                    @if ($recruitment && $recruitment->bukti_follow_instagram)
+                                        <div
+                                            class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
+                                            <a href="{{ Storage::url($recruitment->bukti_follow_instagram) }}"
+                                                title="Download Bukti Follow Instagram" target="_blank">
+                                                <span class="material-icons hover:text-primary text-gray-400"
+                                                    style="font-size: 1.7rem;">
+                                                    download
+                                                </span>
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             @error('bukti_follow_instagram')
@@ -252,24 +321,49 @@
 
                     {{-- bukti follow linkedin --}}
                     <div class="relative">
-                        <label class="mb-1 block text-sm font-medium text-gray-700">Bukti Follow LinkedIn</label>
-                        <div class="relative" x-data="{ fileName: '' }">
-                            <div
-                                class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
-                                <label
-                                    class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
-                                    <span class="material-icons text-lg text-gray-400">description</span>
-                                    <span class="font-medium text-gray-400">Pilih File</span>
-                                    <input class="hidden" type="file" wire:model="bukti_follow_linkedin"
-                                        @change="fileName = $event.target.files[0]?.name || ''">
-                                </label>
-                                <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
-                                    <span class="truncate text-gray-700"
-                                        x-text="fileName || 'Belum ada file dipilih'">Belum ada file dipilih</span>
+                        <label class="mb-1 block text-sm font-medium text-gray-700">bukti follow linkedin</label>
+
+                        <div class="flex items-center gap-2">
+                            {{-- file name --}}
+                            <div class="relative w-full" x-data="{
+                                fileName: '',
+                                oldFileName: '{{ $recruitment && $recruitment->bukti_follow_linkedin ? basename($recruitment->bukti_follow_linkedin) : '' }}'
+                            }">
+                                <div
+                                    class="focus-within:ring-primary flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white py-0.5 focus-within:ring-2">
+                                    <label
+                                        class="flex cursor-pointer items-center bg-gray-50 px-4 py-2 transition-colors hover:bg-gray-100">
+                                        <span class="material-icons text-lg text-gray-400">description</span>
+                                        <span class="font-medium text-gray-400">Pilih File</span>
+                                        <input class="hidden" type="file" wire:model="bukti_follow_linkedin"
+                                            @change="fileName = $event.target.files[0]?.name || ''">
+                                    </label>
+                                    <div class="flex min-w-0 flex-1 items-center border-l border-gray-200 px-4">
+                                        <span class="truncate text-gray-700"
+                                            x-text="(fileName.length> 30 ? fileName.slice(0, 30) + '...' : fileName)
+                                                || (oldFileName.length > 30 ? oldFileName.slice(0, 30) + '...' : oldFileName)
+                                                || 'Belum ada file dipilih'">
+                                            Belum ada file dipilih
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
+
+                            {{-- tombol download file --}}
+                            @if ($recruitment && $recruitment->bukti_follow_linkedin)
+                                <div
+                                    class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
+                                    <a href="{{ Storage::url($recruitment->bukti_follow_linkedin) }}"
+                                        title="Download bukti follow LinkedIn" target="_blank">
+                                        <span class="material-icons hover:text-primary text-gray-400"
+                                            style="font-size: 1.7rem;">
+                                            download
+                                        </span>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
-                        @error('bukti_follow_linkedin')
+                        @error('portofolio')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
@@ -277,87 +371,42 @@
                     <!-- Buttons -->
                     <div class="flex justify-end gap-4 md:col-span-2">
 
-                        <!-- Modal -->
-                        <div x-data="{ showEditModal: false }" x-cloak>
-                            <!-- Edit Button triggers modal -->
+                        <!-- Back Button -->
+                        <a class="flex items-center justify-center rounded-lg border border-gray-300 px-6 py-2 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100"
+                            href="{{ route('client.recruitment') }}">
+                            Back
+                        </a>
+
+                        {{-- <button
+                            class="flex items-center justify-center rounded-lg border border-blue-500 bg-blue-500 px-6 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-blue-600"
+                            type="button" wire:click="testSendEmail">
+                            Test Kirim Email
+                        </button> --}}
+
+                        <!-- Buttons -->
+                        <div class="flex justify-end gap-4 md:col-span-2">
                             <button
-                                class="rounded-lg border border-gray-300 px-6 py-2 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100"
-                                type="button" @click="showEditModal = true">
-                                Edit
+                                class="bg-primary focus:ring-primary/30 rounded-lg px-6 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-[#3B5C80] focus:ring-2"
+                                type="submit" wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-not-allowed"
+                                wire:loading.class.remove="hover:bg-[#3B5C80]">
+                                <span wire:loading.remove wire:target="update">Update</span>
+                                <span class="animate-pulse" wire:loading wire:target="update">Updating...</span>
                             </button>
-
-                            <!-- Modal Overlay -->
-                            <div class="fixed inset-0 z-40 flex items-center justify-center bg-white/50 backdrop-blur-sm"
-                                x-show="showEditModal" x-transition:enter="transition ease-out duration-200"
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                x-transition:leave="transition ease-in duration-150"
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                                @click.self="showEditModal = false">
-                                <!-- Modal Content -->
-                                <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl"
-                                    x-transition:enter="transition ease-out duration-200 transform"
-                                    x-transition:enter-start="scale-95 opacity-0"
-                                    x-transition:enter-end="scale-100 opacity-100"
-                                    x-transition:leave="transition ease-in duration-150 transform"
-                                    x-transition:leave-start="scale-100 opacity-100"
-                                    x-transition:leave-end="scale-95 opacity-0">
-                                    <div class="mb-4 flex items-center justify-between">
-                                        <h2 class="text-lg font-semibold text-gray-700">Edit Data</h2>
-                                        <button class="text-gray-400 hover:text-gray-600"
-                                            @click="showEditModal = false">
-                                            <span class="material-icons">close</span>
-                                        </button>
-                                    </div>
-                                    <!-- Modal Body -->
-                                    {{-- Input Short UUID untuk Edit --}}
-                                    <div class="mb-6 flex items-center justify-center gap-2">
-                                        <input
-                                            class="focus:border-primary focus:ring-primary w-64 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring-2"
-                                            type="text" x-data wire:model.defer="input_short_uuid"
-                                            placeholder="Masukkan kode edit" />
-
-                                    </div>
-                                    @if ($short_uuid_error)
-                                        <div class="mb-4 text-center text-sm text-red-500">{{ $short_uuid_error }}
-                                        </div>
-                                    @endif
-                                    <div class="mt-6 flex justify-center gap-3">
-                                        <button
-                                            class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
-                                            @click="showEditModal = false">
-                                            Tutup
-                                        </button>
-                                        <button
-                                            class="bg-primary rounded-lg px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#3B5C80]"
-                                            wire:click="checkShortUuid">
-                                            Edit Recruitment
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
-                        <button
-                            class="bg-primary focus:ring-primary/30 rounded-lg px-6 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-[#3B5C80] focus:ring-2"
-                            type="submit" wire:loading.attr="disabled"
-                            wire:loading.class="opacity-50 cursor-not-allowed"
-                            wire:loading.class.remove="hover:bg-[#3B5C80]">
-                            <span wire:loading.remove wire:target="submit">Upload</span>
-                            <span class="animate-pulse" wire:loading wire:target="submit">Uploading...</span>
-                        </button>
                     </div>
-
                 </div>
+
             </form>
         </div>
     </div>
     <!-- Overlay loading saat update -->
     <div class="fixed inset-0 z-50 flex h-screen items-center justify-center bg-black/40 backdrop-blur-sm"
-        wire:loading.delay.longest wire:target="submit">
+        wire:loading.delay.longest wire:target="update">
         <div>
             <div class="flex h-full flex-col items-center">
                 <x-spinner />
-                <span class="text-lg font-semibold text-white">Mengupload...</span>
+                <span class="text-lg font-semibold text-white">Menyimpan perubahan...</span>
             </div>
         </div>
     </div>
