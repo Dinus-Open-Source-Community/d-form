@@ -15,6 +15,8 @@ use App\Livewire\Client\Home;
 use App\Livewire\Client\Events;
 use App\Livewire\Client\EventDetail;
 use App\Livewire\Client\About;
+use App\Livewire\Client\Recruitment;
+use App\Livewire\Client\RecruitmentEdit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +33,16 @@ Route::group(
         Route::get('/', Home::class)->name('home');
         Route::get('/events', Events::class)->name('events');
         Route::get('/events/{eventId}', EventDetail::class)->name('event-detail');
+        Route::get('/recruitment', Recruitment::class)->name('recruitment');
+        Route::get('/recruitment/edit/{short_uuid}', RecruitmentEdit::class)->name('recruitment.edit');
         Route::get('/about', About::class)->name('about');
+        Route::get('/test-mail', function () {
+            return view('emails.recruitment.verification', [
+                'nama_lengkap' => 'Contoh Nama',
+                'short_uuid' => 'ABCDEFGH',
+                'nim' => 'A11.2022.12345',
+            ]);
+        });
     }
 );
 

@@ -26,6 +26,10 @@ class Recruitment extends Model
         'username_instagram',
     ];
 
+    protected $casts = [
+        'divisi_tambahan' => 'array',
+    ];
+
     protected $rules = [
         'nama_lengkap' => [
             'required',
