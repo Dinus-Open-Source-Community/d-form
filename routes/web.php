@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Admin\RecruitmentTable;
+use App\Livewire\Admin\RecruitmentConvert;
 use App\Livewire\Client\RecruitmentForm;
 use App\Livewire\Client\RecruitmentEditForm;
 use App\Livewire\Admin\Dashboard;
@@ -50,12 +50,11 @@ Route::group([
     Route::get('/events/{eventId}/edit', EventEditAdmin::class)->name('event-edit');
     Route::get('/completed-events', CompletedEventsAdmin::class)->name('completed-events');
     Route::get('/scanqr/{eventId}', ScanQr::class)->name('scanqr');
-});
+    Route::get('/recruitment-convert', RecruitmentConvert::class)->name('recruitment-convert'); // <-- ini yang benar
+ });
 
 Route::get('/admin/recruitments', function () {
     return view('admin.recruitments');
 })->middleware(['auth'])->name('admin.recruitments');
 
 Route::get('/recruitments', RecruitmentForm::class)->name('client.recruitments');
-
-Route::get('/recruitments/edit/{short_uuid}', RecruitmentEditForm::class)->name('client.recruitments.edit');
