@@ -69,4 +69,4 @@ Route::get('/admin/recruitments', function () {
 
 Route::get('/recruitments', RecruitmentForm::class)->name('client.recruitments');
 
-Route::get('/recruitments/edit/{short_uuid}', RecruitmentEditForm::class)->name('client.recruitments.edit');
+// Route::get('/recruitments/edit/{short_uuid}', RecruitmentEditForm::class)->name('client.recruitments.edit');

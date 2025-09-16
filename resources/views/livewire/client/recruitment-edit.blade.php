@@ -363,7 +363,7 @@
                                 </div>
                             @endif
                         </div>
-                        @error('portofolio')
+                        @error('bukti_follow_linkedin')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
                         @enderror
                     </div>

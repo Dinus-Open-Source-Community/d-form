@@ -4,10 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Email Pendaftaran</title>
+
+    <style>
+        @media only screen and (max-width: 620px) {
+            table[width="600"] {
+                width: 100% !important;
+            }
+
+            td[style*="padding:30px 20px;"] {
+                padding: 20px 10px !important;
+            }
+
+            td[style*="padding:0 40px 30px 40px;"] {
+                padding: 0 10px 20px 10px !important;
+            }
+
+            .responsive-img {
+                width: 80px !important;
+                height: auto !important;
+            }
+
+            .responsive-box {
+                padding: 12px !important;
+                font-size: 16px !important;
+            }
+        }
+    </style>
 </head>
 
 <body style="margin:0; padding:0; background-color:#f4f4f4;">
-
     <table
         style="background-color:#178ADF; background-image: url('https://i.imgur.com/r76QizC.png'); background-size:cover; background-repeat:no-repeat; padding:40px 0;"
         width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -21,7 +46,7 @@
                     {{-- Header --}}
                     <tr>
                         <td style="padding:30px 20px;" align="center">
-                            <img src="https://i.imgur.com/foOg2oz.png" alt="DOSCOM"
+                            <img class="responsive-img" src="https://i.imgur.com/foOg2oz.png" alt="DOSCOM"
                                 style="display:block; margin-bottom:10px;" width="120">
                             <table role="presentation" style="margin:20px auto;" width="80%" border="0"
                                 cellpadding="0" cellspacing="0">
@@ -40,7 +65,7 @@
                             </p>
                             <p style="margin:5px 0 20px 0;">NIM: {{ $nim }}</p>
 
-                            <div
+                            <div class="responsive-box"
                                 style="background-color:#fff8d9; padding:20px; text-align:center; border-radius:6px; font-weight:bold; font-size:20px; letter-spacing:2px;">
                                 {{ $short_uuid }}
                                 <p
@@ -67,7 +92,6 @@
             </td>
         </tr>
     </table>
-
 </body>
 
 </html>
