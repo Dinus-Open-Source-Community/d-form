@@ -188,6 +188,7 @@
                             </div>
                             {{-- tombol download file --}}
                             {{-- @if ($recruitment && $recruitment->cv)
+                            {{-- @if ($recruitment && $recruitment->cv)
                                 <div
                                     class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
                                     <a href="{{ Storage::url($recruitment->cv) }}" title="Download CV"
@@ -248,6 +249,7 @@
                                     </a>
                                 </div>
                             @endif --}}
+                            @endif --}}
                         </div>
                         @error('portofolio')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
@@ -285,6 +287,7 @@
 
                                     {{-- tombol download file --}}
                                     {{-- @if ($recruitment && $recruitment->bukti_follow_instagram)
+                                    {{-- @if ($recruitment && $recruitment->bukti_follow_instagram)
                                         <div
                                             class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
                                             <a href="{{ Storage::url($recruitment->bukti_follow_instagram) }}"
@@ -295,6 +298,7 @@
                                                 </span>
                                             </a>
                                         </div>
+                                    @endif --}}
                                     @endif --}}
                                 </div>
                             </div>
@@ -351,17 +355,17 @@
 
                             {{-- tombol download file --}}
                             {{-- @if ($recruitment && $recruitment->bukti_follow_linkedin)
-                                    <div
-                                        class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
-                                        <a href="{{ Storage::url($recruitment->bukti_follow_linkedin) }}"
-                                            title="Download bukti follow LinkedIn" target="_blank">
-                                            <span class="material-icons hover:text-primary text-gray-400"
-                                                style="font-size: 1.7rem;">
-                                                download
-                                            </span>
-                                        </a>
-                                    </div>
-                                @endif --}}
+                                <div
+                                    class="flex cursor-pointer items-center rounded-lg border border-gray-300 p-1.5 text-sm font-semibold text-gray-700 transition duration-200 hover:bg-gray-100">
+                                    <a href="{{ Storage::url($recruitment->bukti_follow_linkedin) }}"
+                                        title="Download bukti follow LinkedIn" target="_blank">
+                                        <span class="material-icons hover:text-primary text-gray-400"
+                                            style="font-size: 1.7rem;">
+                                            download
+                                        </span>
+                                    </a>
+                                </div>
+                            @endif --}}
                         </div>
                         @error('bukti_follow_linkedin')
                             <span class="mt-1 block text-xs text-red-500">{{ $message }}</span>
