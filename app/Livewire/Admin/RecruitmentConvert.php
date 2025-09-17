@@ -4,10 +4,13 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\Recruitment;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
 
-class RecruitmentTable extends Component
+class RecruitmentConvert extends Component
 {
+    use WithPagination;
+
     public function exportCsv()
     {
         $fileName = 'recruitments.csv';
@@ -34,7 +37,9 @@ class RecruitmentTable extends Component
 
     public function render()
     {
-        $recruitments = Recruitment::latest()->paginate(20);
-        return view('livewire.admin.recruitment-table', compact('recruitments'));
+        return view('livewire.admin.recruitment-convert', [
+            // GUNAKAN model Recruitment, BUKAN RecruitmentConvert
+            'recruitments' => Recruitment::orderBy('created_at', 'desc')->paginate(20)
+        ]);
     }
 }
