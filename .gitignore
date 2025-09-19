@@ -22,5 +22,5 @@ yarn-error.log
 /.vscode
 /.zed
 
-docker-compose.yml
-Caddyfile
+/.docker-compose.yml
+/.Caddyfile
