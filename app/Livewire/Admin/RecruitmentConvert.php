@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Recruitment;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class RecruitmentConvert extends Component
 {
@@ -13,24 +14,46 @@ class RecruitmentConvert extends Component
 
     public function exportCsv()
     {
-        $fileName = 'recruitments.csv';
+        $fileName = 'recruitments_' . now()->format('Y_m_d_H_i_s') . '.csv';
         $recruitments = Recruitment::all();
 
         // Ambil semua kolom tabel 'recruitments'
         $fields = Schema::getColumnListing((new Recruitment)->getTable());
 
-        return response()->streamDownload(function () use ($recruitments, $fields) {
+        // Field yang berupa file agar bisa diubah menjadi URL publik
+        $fileFields = ['cv', 'portofolio', 'bukti_follow_instagram', 'bukti_follow_linkedin'];
+
+        return response()->streamDownload(function () use ($recruitments, $fields, $fileFields) {
             $handle = fopen('php://output', 'w');
-            // Header
+
+            // Header CSV
             fputcsv($handle, $fields);
-            // Data
+
             foreach ($recruitments as $row) {
                 $data = [];
                 foreach ($fields as $field) {
-                    $data[] = $row->$field;
+                    $value = $row->$field;
+
+                    // Jika array, ubah jadi string
+                    if (is_array($value)) {
+                        $value = implode(', ', $value);
+                    }
+
+                    // Jika field file, buat URL publik
+                    if (in_array($field, $fileFields) && $value) {
+                        if (Storage::disk('public')->exists($value)) {
+                            $value = asset('storage/' . $value);
+                        } else {
+                            $value = ''; // file tidak ada
+                        }
+                    }
+
+                    $data[] = $value;
                 }
+
                 fputcsv($handle, $data);
             }
+
             fclose($handle);
         }, $fileName, ['Content-Type' => 'text/csv']);
     }
@@ -38,7 +61,6 @@ class RecruitmentConvert extends Component
     public function render()
     {
         return view('livewire.admin.recruitment-convert', [
-            // GUNAKAN model Recruitment, BUKAN RecruitmentConvert
             'recruitments' => Recruitment::orderBy('created_at', 'desc')->paginate(20)
         ]);
     }

@@ -16,6 +16,21 @@
                 </button>
             </div>
 
+            {{-- Helper untuk menampilkan field --}}
+            @php
+                function displayField($field) {
+                    if (is_array($field)) {
+                        return implode(', ', $field);
+                    }
+                    return $field;
+                }
+
+                function fileUrl($folder, $file) {
+                    if(!$file) return null;
+                    return asset('storage/' . $folder . '/' . basename($file));
+                }
+            @endphp
+
             {{-- Recruitment Table --}}
             <div class="overflow-x-auto rounded-lg border border-gray-200 bg-white">
                 <table class="min-w-[900px] w-full bg-white text-black text-xs md:text-sm">
@@ -41,37 +56,39 @@
                     <tbody>
                         @forelse($recruitments as $item)
                             <tr>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->id }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->short_uuid }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->nama_lengkap }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->nim }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->semester }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->nomor_hp }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->email_pribadi }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->email_mahasiswa }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->divisi_utama }}</td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->divisi_tambahan }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->id) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->short_uuid) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->nama_lengkap) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->nim) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->semester) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->nomor_hp) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->email_pribadi) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->email_mahasiswa) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->divisi_utama) }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->divisi_tambahan) }}</td>
+
+                                {{-- File Links --}}
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->cv)
-                                        <a href="{{ $item->cv }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ fileUrl('cv', $item->cv) }}" target="_blank" class="text-blue-600 underline">Lihat</a>
                                     @endif
                                 </td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->portofolio)
-                                        <a href="{{ $item->portofolio }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ fileUrl('portofolio', $item->portofolio) }}" target="_blank" class="text-blue-600 underline">Lihat</a>
                                     @endif
                                 </td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->bukti_follow_instagram)
-                                        <a href="{{ $item->bukti_follow_instagram }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ fileUrl('follow_instagram', $item->bukti_follow_instagram) }}" target="_blank" class="text-blue-600 underline">Lihat</a>
                                     @endif
                                 </td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->bukti_follow_linkedin)
-                                        <a href="{{ $item->bukti_follow_linkedin }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ fileUrl('follow_linkedin', $item->bukti_follow_linkedin) }}" target="_blank" class="text-blue-600 underline">Lihat</a>
                                     @endif
                                 </td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->username_instagram }}</td>
+                                <td class="py-2 px-2 md:px-4 border-b">{{ displayField($item->username_instagram) }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -82,7 +99,7 @@
                 </table>
             </div>
 
-            {{-- Pagination (jika pakai pagination) --}}
+            {{-- Pagination --}}
             <div class="mt-4">
                 {{ $recruitments->links() }}
             </div>
