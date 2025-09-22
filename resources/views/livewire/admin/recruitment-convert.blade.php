@@ -53,26 +53,41 @@
                                 <td class="py-2 px-2 md:px-4 border-b">{{ $item->divisi_tambahan }}</td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->cv)
-                                        <a href="{{ $item->cv }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ asset('storage/' . $item->cv) }}" 
+                                        target="_blank" 
+                                        class="text-blue-600 underline hover:text-blue-800">
+                                        Lihat
+                                        </a>
                                     @endif
                                 </td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->portofolio)
-                                        <a href="{{ $item->portofolio }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ asset('storage/' . $item->portofolio) }}" 
+                                        target="_blank" 
+                                        class="text-blue-600 underline hover:text-blue-800">
+                                        Lihat
+                                        </a>
                                     @endif
                                 </td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->bukti_follow_instagram)
-                                        <a href="{{ $item->bukti_follow_instagram }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ asset('storage/' . $item->bukti_follow_instagram) }}" 
+                                        target="_blank" 
+                                        class="text-blue-600 underline hover:text-blue-800">
+                                        Lihat
+                                        </a>
                                     @endif
                                 </td>
                                 <td class="py-2 px-2 md:px-4 border-b">
                                     @if($item->bukti_follow_linkedin)
-                                        <a href="{{ $item->bukti_follow_linkedin }}" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        <a href="{{ asset('storage/' . $item->bukti_follow_linkedin) }}" 
+                                        target="_blank" 
+                                        class="text-blue-600 underline hover:text-blue-800">
+                                        Lihat
+                                        </a>
                                     @endif
                                 </td>
-                                <td class="py-2 px-2 md:px-4 border-b">{{ $item->username_instagram }}</td>
-                            </tr>
+                           </tr>
                         @empty
                             <tr>
                                 <td colspan="17" class="text-center py-4">Data tidak ditemukan.</td>
