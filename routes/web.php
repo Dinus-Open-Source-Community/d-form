@@ -37,7 +37,7 @@ Route::group(
         Route::get('/recruitment/edit/{short_uuid}', RecruitmentEdit::class)->name('recruitment.edit');
         Route::get('/about', About::class)->name('about');
         Route::get('/test-mail', function () {
-            return view('emails.recruitment.verification', [
+            return view('emails.recruitment.group-invite', [
                 'nama_lengkap' => 'Contoh Nama',
                 'short_uuid' => 'ABCDEFGH',
                 'nim' => 'A11.2022.12345',
@@ -62,12 +62,12 @@ Route::group([
     Route::get('/completed-events', CompletedEventsAdmin::class)->name('completed-events');
     Route::get('/scanqr/{eventId}', ScanQr::class)->name('scanqr');
     Route::get('/recruitment-convert', RecruitmentConvert::class)->name('recruitment-convert'); // <-- ini yang benar
- });
+});
 
 Route::get('/admin/recruitments', function () {
     return view('admin.recruitments');
 })->middleware(['auth'])->name('admin.recruitments');
 
-Route::get('/recruitments', RecruitmentForm::class)->name('client.recruitments');
+// Route::get('/recruitments', RecruitmentForm::class)->name('client.recruitments');
 
 // Route::get('/recruitments/edit/{short_uuid}', RecruitmentEditForm::class)->name('client.recruitments.edit');
