@@ -215,12 +215,31 @@ class RecruitmentManagement extends Component
 
         // Loop tiap recruitment dan lakukan aksi sesuai bulkAction
         foreach ($recruitments as $recruitment) {
-            match ($this->bulkAction) {
-                'approve' => $this->approveRecruitment($recruitment),
-                'reject' => $this->rejectRecruitment($recruitment),
-                'delete' => $this->deleteRecruitmentSingle($recruitment),
-                default => null
-            };
+            switch ($this->bulkAction) {
+                case 'approve':
+                    $recruitment->update([
+                        'status' => 'approved',
+                        'catatan' => $this->bulkNote,
+                        'reviewed_by' => auth()->id(),
+                        'reviewed_at' => now(),
+                    ]);
+                    dispatch(new SendRecruitmentStatusEmail($recruitment));
+                    break;
+                
+                case 'reject':
+                    $recruitment->update([
+                        'status' => 'rejected',
+                        'catatan' => $this->bulkNote,
+                        'reviewed_by' => auth()->id(),
+                        'reviewed_at' => now(),
+                    ]);
+                    dispatch(new SendRecruitmentStatusEmail($recruitment));
+                    break;
+                
+                case 'delete':
+                    $recruitment->delete();
+                    break;
+            }
         }
 
         // Reset selection dan modal
@@ -241,6 +260,7 @@ class RecruitmentManagement extends Component
             'message' => "{$count} data recruitment berhasil {$actionText}"
         ]);
     }
+
     // =============================================================================
     // ACTIONS - SORTING & FILTERING
     // =============================================================================
