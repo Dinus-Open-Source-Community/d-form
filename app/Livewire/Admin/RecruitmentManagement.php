@@ -141,7 +141,11 @@ class RecruitmentManagement extends Component
     public function submitReview()
     {
         $this->validate([
-            'reviewNote' => $this->reviewAction === 'reject' ? 'required|min:10' : 'nullable'
+            'reviewNote' => $this->reviewAction === 'reject' ? 'required|string|min:10' : 'nullable|string'
+        ], [
+            'reviewNote.required' => 'Catatan penolakan wajib diisi',
+            'reviewNote.min' => 'Catatan penolakan minimal 10 karakter',
+            'reviewNote.string' => 'Catatan harus berupa teks'
         ]);
 
         $this->selectedRecruitment->update([
@@ -195,10 +199,16 @@ class RecruitmentManagement extends Component
 
     public function submitBulkAction()
     {
-        // Validasi input
+        // Validasi input dengan pesan error yang jelas
         $this->validate([
             'bulkAction' => 'required|in:approve,reject,delete',
-            'bulkNote' => $this->bulkAction === 'reject' ? 'required|min:10' : 'nullable'
+            'bulkNote' => $this->bulkAction === 'reject' ? 'required|string|min:10' : 'nullable|string'
+        ], [
+            'bulkAction.required' => 'Pilih aksi yang akan dilakukan',
+            'bulkAction.in' => 'Aksi yang dipilih tidak valid',
+            'bulkNote.required' => 'Catatan penolakan wajib diisi',
+            'bulkNote.min' => 'Catatan penolakan minimal 10 karakter',
+            'bulkNote.string' => 'Catatan harus berupa teks'
         ]);
 
         // Ambil data recruitment yang dipilih
