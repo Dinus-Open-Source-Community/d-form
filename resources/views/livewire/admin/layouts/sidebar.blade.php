@@ -1,22 +1,17 @@
-<?php
-// =============================================================================
-// 1. UPDATE SIDEBAR - Tambahkan menu recruitment
-// =============================================================================
-
-// File: resources/views/livewire/admin/layouts/sidebar.blade.php (Update existing)
-?>
-<div class="min-h-screen h-full w-80 bg-primary text-white flex flex-col z-40 flex-shrink-0">
+<div class="bg-primary z-40 flex h-full min-h-screen w-80 flex-shrink-0 flex-col text-white">
     {{-- Logo --}}
-    <div class="p-4 flex justify-start items-center">
+    <div class="flex items-center justify-start p-4">
         <h1 class="text-5xl font-bold">D</h1>
         <span class="ml-2 text-4xl">FORM</span>
     </div>
 
     {{-- Tombol New Event --}}
-    <div class="p-4 flex items-center justify-center">
-        <a href="{{ route('admin.events-create') }}" wire:navigate
-           class="bg-white/10 text-white rounded-lg py-2 px-4 text-center hover:bg-white/20 cursor-pointer transition-colors ease-in-out duration-200 flex items-center w-full justify-center">
-            <span class="material-icons align-middle mr-2">add_circle</span>
+    <div class="flex items-center justify-center p-4">
+        <a class="flex w-full cursor-pointer items-center justify-center rounded-lg bg-white/10 px-4 py-2 text-center text-white transition-colors duration-200 ease-in-out hover:bg-white/20"
+            href="{{ route('admin.events-create') }}" wire:navigate>
+            <span class="material-icons mr-2 align-middle">
+                add_circle
+            </span>
             New Event
         </a>
     </div>
@@ -24,22 +19,31 @@
     {{-- Menu Items --}}
     <div class="flex-grow overflow-y-auto">
         <a href="{{ route('admin.dashboard') }}" wire:navigate>
-            <div class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/dashboard') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
-                <span class="material-icons mr-2">dashboard</span>
+            <div
+                class="{{ request()->is('admin/dashboard') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">
+                <span class="material-icons mr-2">
+                    dashboard
+                </span>
                 Dashboard
             </div>
         </a>
         
         <a href="{{ route('admin.events') }}" wire:navigate>
-            <div class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/events') || request()->is('admin/events/*') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
-                <span class="material-icons mr-2">event</span>
+            <div
+                class="{{ request()->is('admin/events') || request()->is('admin/events/*') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">
+                <span class="material-icons mr-2">
+                    event
+                </span>
                 Events
             </div>
         </a>
         
         <a href="{{ route('admin.completed-events') }}" wire:navigate>
-            <div class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/completed-events') ? 'bg-white/10' : '' }}  hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
-                <span class="material-icons mr-2">event_available</span>
+            <div
+                class="{{ request()->is('admin/completed-events') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">
+                <span class="material-icons mr-2">
+                    event_available
+                </span>
                 Completed Events
             </div>
         </a>
@@ -60,27 +64,43 @@
         </a>
         
         <a href="{{ route('admin.recruitment-convert') }}" wire:navigate>
-            <div class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/recruitment-convert') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
-                <span class="material-icons mr-2">file_download</span>
-                Export Recruitment
+            <div
+                class="{{ request()->is('admin/recruitment-convert') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">
+                <span class="material-icons mr-2">
+                    people
+                </span>
+                Recruitment
             </div>
         </a>
     </div>
 
-    {{-- User Info (existing code) --}}
-    <div class="mt-auto p-4 relative" x-data="{ open: false }" @click.outside="open = false">
-        <div class="p-3 m-3 flex items-center rounded-md bg-white/10">
-            <div class="w-10 h-10 bg-gray-200 rounded-md mr-3 flex-shrink-0 flex items-center justify-center text-2xl font-bold text-gray-600">
+    {{-- User Info --}}
+    <div class="relative mt-auto p-4" x-data="{ open: false }" @click.outside="open = false">
+        <div class="m-3 flex items-center rounded-md bg-white/10 p-3">
+            {{-- Avatar --}}
+            <div
+                class="mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-gray-200 text-2xl font-bold text-gray-600">
                 {{ Auth::user()->name ? substr(Auth::user()->name, 0, 1) : 'A' }}
             </div>
-            <div class="flex flex-col flex-grow w-0">
+
+            {{-- Username & Email --}}
+            <div class="flex w-0 flex-grow flex-col">
                 <p class="font-medium">{{ Auth::user()->name ?? 'Admin' }}</p>
-                <p class="text-xs text-gray-300 break-all w-full">{{ Auth::user()->email ?? 'example@mail.com' }}</p>
+                <p class="w-full break-all text-xs text-gray-300">{{ Auth::user()->email ?? 'example@mail.com' }}</p>
             </div>
-            <button @click="open = !open" class="ml-2 text-2xl p-2 hover:bg-white/20 rounded-md transition">⋮</button>
+
+            {{-- Menu Button --}}
+            <button class="ml-2 rounded-md p-2 text-2xl transition hover:bg-white/20" @click="open = !open">
+                ⋮
+            </button>
         </div>
-        <div x-show="open" x-transition class="absolute bottom-24 right-6 bg-white text-black rounded-md shadow-md w-32 z-50">
-            <button wire:click="logout" class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-200 cursor-pointer transition" wire:loading.attr="disabled">
+
+        {{-- Dropdown Menu --}}
+        <div class="absolute bottom-24 right-6 z-50 w-32 rounded-md bg-white text-black shadow-md" x-show="open"
+            x-transition>
+            <button class="w-full cursor-pointer rounded-md px-4 py-2 text-left transition hover:bg-gray-200"
+                wire:click="logout" wire:loading.attr="disabled" wire:loading.class="bg-gray-200 cursor-not-allowed"
+                wire:loading.class.remove="cursor-pointer">
                 Logout
             </button>
         </div>
