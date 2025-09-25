@@ -27,6 +27,7 @@
                 Dashboard
             </div>
         </a>
+        
         <a href="{{ route('admin.events') }}" wire:navigate>
             <div
                 class="{{ request()->is('admin/events') || request()->is('admin/events/*') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">
@@ -36,6 +37,7 @@
                 Events
             </div>
         </a>
+        
         <a href="{{ route('admin.completed-events') }}" wire:navigate>
             <div
                 class="{{ request()->is('admin/completed-events') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">
@@ -45,6 +47,22 @@
                 Completed Events
             </div>
         </a>
+
+        {{-- NEW: Recruitment Management Menu --}}
+        <a href="{{ route('admin.recruitment.dashboard') }}" wire:navigate>
+            <div class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/recruitment/dashboard') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
+                <span class="material-icons mr-2">analytics</span>
+                Recruitment Dashboard
+            </div>
+        </a>
+
+        <a href="{{ route('admin.recruitment') }}" wire:navigate>
+            <div class="flex items-center rounded-lg p-4 m-2 {{ request()->is('admin/recruitment') && !request()->is('admin/recruitment/dashboard') ? 'bg-white/10' : '' }} hover:bg-white/10 cursor-pointer transition-colors ease-in-out duration-200">
+                <span class="material-icons mr-2">people</span>
+                Manage Recruitment
+            </div>
+        </a>
+        
         <a href="{{ route('admin.recruitment-convert') }}" wire:navigate>
             <div
                 class="{{ request()->is('admin/recruitment-convert') ? 'bg-white/10' : '' }} m-2 flex cursor-pointer items-center rounded-lg p-4 transition-colors duration-200 ease-in-out hover:bg-white/10">

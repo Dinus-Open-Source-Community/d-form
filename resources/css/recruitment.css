@@ -1,0 +1,128 @@
+
+/* Custom styles for recruitment management */
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Table enhancements */
+.recruitment-table {
+    font-size: 0.875rem;
+}
+
+.recruitment-table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.recruitment-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Status badges with better contrast */
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Modal animations */
+.modal-enter {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+.modal-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.modal-leave {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.modal-leave-active {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 300ms, transform 300ms;
+}
+
+/* File preview enhancements */
+.file-preview-container {
+    max-height: calc(90vh - 120px);
+    overflow: auto;
+}
+
+.file-preview-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.file-preview-container iframe {
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard chart container */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .recruitment-table {
+        font-size: 0.75rem;
+    }
+    
+    .recruitment-table th,
+    .recruitment-table td {
+        padding: 0.5rem 0.25rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .recruitment-table {
+        border-collapse: collapse;
+    }
+    
+    .recruitment-table th,
+    .recruitment-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+}

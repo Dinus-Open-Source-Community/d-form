@@ -8,33 +8,23 @@ use Livewire\WithFileUploads;
 use App\Models\Recruitment;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class RecruitmentForm extends Component
 {
     use WithFileUploads;
 
     public $nama_lengkap, $nim, $semester, $nomor_hp, $email_pribadi, $email_mahasiswa,
-    $divisi_utama, $divisi_tambahan = '', $cv, $portofolio, $bukti_follow_instagram,
+    $divisi_utama, $divisi_tambahan = null,
+    $cv, $portofolio, $bukti_follow_instagram,
     $bukti_follow_linkedin, $username_instagram, $input_short_uuid, $short_uuid_error;
-
-
-    public function upload()
-    {
-
-        $path = $this->cv->store('cv', 'public'); // simpan di storage/app/public/cv
-        // simpan $path ke database jika perlu
-        $path = $this->portofolio->store('portofolio', 'public'); // simpan di storage/app/public/portofolio
-        $path = $this->bukti_follow_instagram->store('follow_instagram', 'public'); // simpan di storage/app/public/follow_instagram
-        $path = $this->bukti_follow_linkedin->store('follow_linkedin', 'public'); // simpan di storage/app/public/follow_linkedin
-
-    }
 
     protected $messages = [
         'nama_lengkap.required' => 'Nama lengkap wajib diisi',
         'nama_lengkap.regex' => 'Nama lengkap hanya boleh berisi huruf, spasi, dan titik',
         'nim.required' => 'NIM wajib diisi',
         'nim.unique' => 'NIM sudah terdaftar',
-        'nim.regex' => 'NIM harus berupa angka dengan panjang 7-12 digit',
+        'nim.regex' => 'Format NIM tidak valid. Contoh: A11.2020.12345',
         'semester.required' => 'Semester wajib dipilih',
         'semester.in' => 'Semester yang dipilih tidak valid',
         'nomor_hp.required' => 'Nomor HP wajib diisi',
@@ -75,7 +65,7 @@ class RecruitmentForm extends Component
         'email_pribadi' => ['nullable', 'email', 'max:255', 'different:email_mahasiswa'],
         'email_mahasiswa' => ['required', 'email', 'max:255', 'unique:recruitments,email_mahasiswa', 'regex:/^[a-zA-Z0-9._%+-]+@mhs\.dinus\.ac\.id$/'],
         'divisi_utama' => ['required', 'in:Pemrograman,Jaringan,Medcrev,Data'],
-        'divisi_tambahan' => ['nullable', 'string', 'in:Pemrograman,Jaringan,Medcrev,Data', 'different:divisi_utama'],
+        'divisi_tambahan' => ['nullable', 'in:Pemrograman,Jaringan,Medcrev,Data', 'different:divisi_utama'],
         'cv' => ['required', 'file', 'mimes:pdf,doc,docx', 'max:10240'],
         'portofolio' => ['nullable', 'file', 'mimes:pdf,doc,docx,zip,rar', 'max:10240'],
         'bukti_follow_instagram' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:10240'],
@@ -83,44 +73,70 @@ class RecruitmentForm extends Component
         'username_instagram' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9._]+$/'],
     ];
 
-    public function submit()
-    {
-        $validated = $this->validate();
+public function submit()
+{
+    $validated = $this->validate();
 
-        // Generate unique 8-char short_uuid
-        do {
-            $validated['short_uuid'] = Str::upper(Str::random(8));
-        } while (Recruitment::where('short_uuid', $validated['short_uuid'])->exists());
+    // Tangani divisi_tambahan: pastikan berupa array atau null
+    if (!$this->divisi_tambahan || $this->divisi_tambahan === 'null') {
+        $divisiTambahan = null;
+    } else {
+        // Bisa single string atau array
+        $divisiTambahan = is_array($this->divisi_tambahan) 
+            ? $this->divisi_tambahan 
+            : [$this->divisi_tambahan];
 
-        $cvName = time() . '_' . $this->cv->getClientOriginalName();
-        $validated['cv'] = $this->cv->storeAs('cv', $cvName, 'public');
+        // Validasi isi array sesuai allowed list
+        $allowedDivisi = ['Pemrograman', 'Jaringan', 'Medcrev', 'Data'];
+        $divisiTambahan = array_values(array_intersect($divisiTambahan, $allowedDivisi));
 
-        if ($this->portofolio) {
-            $portofolioName = time() . '_' . $this->portofolio->getClientOriginalName();
-            $validated['portofolio'] = $this->portofolio->storeAs('portofolio', $portofolioName, 'public');
+        if (empty($divisiTambahan)) {
+            $divisiTambahan = null;
         }
-        $buktiFollowInstagramName = time() . '_' . $this->bukti_follow_instagram->getClientOriginalName();
-        $validated['bukti_follow_instagram'] = $this->bukti_follow_instagram->storeAs('follow_instagram', $buktiFollowInstagramName, 'public');
-        $buktiFollowLinkedinName = $this->bukti_follow_linkedin ? time() . '_' . $this->bukti_follow_linkedin->getClientOriginalName() : null;
-        $validated['bukti_follow_linkedin'] = $this->bukti_follow_linkedin ? $this->bukti_follow_linkedin->storeAs('follow_linkedin', $buktiFollowLinkedinName, 'public') : null;
-
-        Recruitment::create($validated);
-
-        // Kirim email kode ke email pribadi (atau email mahasiswa jika email_pribadi null)
-        $emailTo = $validated['email_mahasiswa'] ?: $validated['email_pribadi'];
-        Mail::to($emailTo)->send(
-            new RecruitmentVerificationMail(
-                $validated['nama_lengkap'],
-                $validated['nim'],
-                $validated['short_uuid']
-            )
-        );
-
-        session()->flash('short_uuid', $validated['short_uuid']);
-        session()->flash('success', 'Pendaftaran berhasil! Kode edit telah dikirim ke email Anda.');
-        $this->reset();
-        return redirect()->route('client.home');
     }
+
+    // Generate unique 8-char short_uuid
+    do {
+        $short_uuid = Str::upper(Str::random(8));
+    } while (Recruitment::where('short_uuid', $short_uuid)->exists());
+
+    // Upload file
+    $cvPath = $this->cv->storeAs('cv', time().'_'.$this->cv->getClientOriginalName(), 'public');
+    $portofolioPath = $this->portofolio ? $this->portofolio->storeAs('portofolio', time().'_'.$this->portofolio->getClientOriginalName(), 'public') : null;
+    $buktiInstagramPath = $this->bukti_follow_instagram->storeAs('follow_instagram', time().'_'.$this->bukti_follow_instagram->getClientOriginalName(), 'public');
+    $buktiLinkedinPath = $this->bukti_follow_linkedin ? $this->bukti_follow_linkedin->storeAs('follow_linkedin', time().'_'.$this->bukti_follow_linkedin->getClientOriginalName(), 'public') : null;
+
+    // Simpan ke database
+    $recruitment = Recruitment::create([
+        'nama_lengkap' => $this->nama_lengkap,
+        'nim' => $this->nim,
+        'semester' => $this->semester,
+        'nomor_hp' => $this->nomor_hp,
+        'email_pribadi' => $this->email_pribadi,
+        'email_mahasiswa' => $this->email_mahasiswa,
+        'divisi_utama' => $this->divisi_utama,
+        'divisi_tambahan' => $divisiTambahan ? json_encode($divisiTambahan) : null,
+        'cv' => $cvPath,
+        'portofolio' => $portofolioPath,
+        'bukti_follow_instagram' => $buktiInstagramPath,
+        'bukti_follow_linkedin' => $buktiLinkedinPath,
+        'username_instagram' => $this->username_instagram,
+        'short_uuid' => $short_uuid,
+    ]);
+
+    // Kirim email
+    // $emailTo = $this->email_mahasiswa ?: $this->email_pribadi;
+    // Mail::to($emailTo)->send(new RecruitmentVerificationMail(
+    //     $this->nama_lengkap,
+    //     $this->nim,
+    //     $short_uuid
+    // ));
+
+    session()->flash('success', 'Pendaftaran berhasil! Kode edit telah dikirim ke email Anda.');
+    $this->reset();
+    return redirect()->route('client.home');
+}
+
 
     public function checkShortUuid()
     {
@@ -135,17 +151,14 @@ class RecruitmentForm extends Component
         $exists = Recruitment::where('short_uuid', $uuid)->exists();
 
         if ($exists) {
-            // Ganti route sesuai kebutuhan, misal: route('recruitment.edit', $uuid)
             return redirect()->route('client.recruitment.edit', ['short_uuid' => $uuid]);
         } else {
             $this->short_uuid_error = 'Kode edit tidak ditemukan.';
         }
     }
 
-
-
     public function render()
     {
         return view('livewire.client.recruitment-form');
-    }
-}// simpan di storage/app/public/follow_linkedin
+}
+}
