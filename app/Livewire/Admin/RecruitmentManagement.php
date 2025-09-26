@@ -395,4 +395,24 @@ class RecruitmentManagement extends Component
             'semesters' => range(1, 8)
         ]);
     }
+
+    public function exportApproved()
+    {
+        return $this->quickExport('approved', 'xlsx');
+    }
+
+    public function exportRejected()
+    {
+        return $this->quickExport('rejected', 'xlsx');
+    }
+
+    public function exportPending()
+    {
+        return $this->quickExport('pending', 'xlsx');
+    }
+
+    public function exportCurrentFilter()
+    {
+        return $this->quickExport('current_filter', 'xlsx');
+    }
 }

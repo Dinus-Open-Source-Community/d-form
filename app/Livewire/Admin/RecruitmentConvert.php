@@ -2,65 +2,226 @@
 
 namespace App\Livewire\Admin;
 
-use App\Mail\GroupInvite;
-use Livewire\Component;
 use App\Models\Recruitment;
+use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Schema;
-use Livewire\Attributes\Layout;
-use Illuminate\Support\Facades\Mail;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RecruitmentExport;
+use Carbon\Carbon;
 
 class RecruitmentConvert extends Component
 {
     use WithPagination;
 
-    #[Layout('components.layouts.admin')]
+    public string $selectedStatus = 'all';
+    public string $selectedDivision = 'all';
+    public int $perPage = 10;
 
-    public function sendGroupInvite($recruitmentId)
+    // Export properties
+    public bool $showExportModal = false;
+    public string $exportType = 'all';
+    public string $exportFormat = 'csv';
+
+    public function mount()
     {
-        $recruitment = Recruitment::findOrFail($recruitmentId);
+        abort_unless(auth()->check(), 403);
+    }
 
-        try {
-            Mail::to($recruitment->email_mahasiswa)->send(
-                new GroupInvite($recruitment->nama_lengkap)
-            );
+    public function updatedSelectedStatus()
+    {
+        $this->resetPage();
+    }
 
-            session()->flash('success', 'Undangan grup berhasil dikirim ke ' . $recruitment->email_mahasiswa);
-        } catch (\Exception $e) {
-            session()->flash('error', 'Gagal mengirim email: ' . $e->getMessage());
+    public function updatedSelectedDivision()
+    {
+        $this->resetPage();
+    }
+
+    public function getRecruitments()
+    {
+        $query = Recruitment::query();
+
+        if ($this->selectedStatus !== 'all') {
+            $query->where('status', $this->selectedStatus);
         }
+
+        if ($this->selectedDivision !== 'all') {
+            $query->where(function ($q) {
+                $q->where('divisi_utama', $this->selectedDivision)
+                  ->orWhere('divisi_tambahan', $this->selectedDivision);
+            });
+        }
+
+        return $query->orderBy('created_at', 'desc')->paginate($this->perPage);
+    }
+
+    public function getStatistics()
+    {
+        $query = Recruitment::query();
+
+        if ($this->selectedDivision !== 'all') {
+            $query->where(function ($q) {
+                $q->where('divisi_utama', $this->selectedDivision)
+                  ->orWhere('divisi_tambahan', $this->selectedDivision);
+            });
+        }
+
+        return [
+            'total' => $query->count(),
+            'approved' => $query->clone()->where('status', 'approved')->count(),
+            'rejected' => $query->clone()->where('status', 'rejected')->count(),
+            'pending' => $query->clone()->where('status', 'pending')->count(),
+        ];
+    }
+
+    // Export methods
+    public function showExportModal()
+    {
+        $this->showExportModal = true;
+    }
+
+    public function closeExportModal()
+    {
+        $this->showExportModal = false;
+        $this->exportType = 'all';
+        $this->exportFormat = 'csv';
     }
 
     public function exportCsv()
     {
-        $fileName = 'recruitments.csv';
-        $recruitments = Recruitment::all();
+        return $this->performExport('csv');
+    }
 
-        // Ambil semua kolom tabel 'recruitments'
-        $fields = Schema::getColumnListing((new Recruitment)->getTable());
+    public function exportExcel()
+    {
+        return $this->performExport('xlsx');
+    }
 
-        return response()->streamDownload(function () use ($recruitments, $fields) {
-            $handle = fopen('php://output', 'w');
-            // Header
-            fputcsv($handle, $fields);
-            // Data
-            foreach ($recruitments as $row) {
-                $data = [];
-                foreach ($fields as $field) {
-                    $data[] = $row->$field;
-                }
-                fputcsv($handle, $data);
+    public function exportFiltered()
+    {
+        return $this->performExport($this->exportFormat);
+    }
+
+    private function performExport($format)
+    {
+        $filters = [
+            'status' => $this->selectedStatus,
+            'division' => $this->selectedDivision,
+        ];
+
+        $exportType = match($this->selectedStatus) {
+            'approved' => 'approved',
+            'rejected' => 'rejected', 
+            'pending' => 'pending',
+            default => 'all'
+        };
+
+        $filename = $this->generateFilename($exportType, $format);
+
+        if ($format === 'csv') {
+            return $this->exportToCSV($filters, $filename);
+        } else {
+            $export = new RecruitmentExport($filters, $exportType);
+            return Excel::download($export, $filename);
+        }
+    }
+
+    private function exportToCSV($filters, $filename)
+    {
+        $query = Recruitment::query()->with('reviewer');
+
+        if ($filters['status'] !== 'all') {
+            $query->where('status', $filters['status']);
+        }
+
+        if ($filters['division'] !== 'all') {
+            $query->where(function ($q) use ($filters) {
+                $q->where('divisi_utama', $filters['division'])
+                  ->orWhere('divisi_tambahan', $filters['division']);
+            });
+        }
+
+        $recruitments = $query->orderBy('created_at', 'desc')->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        $callback = function() use ($recruitments) {
+            $file = fopen('php://output', 'w');
+            
+            // Write BOM for UTF-8
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Write headers
+            fputcsv($file, [
+                'ID', 'Short UUID', 'Nama Lengkap', 'NIM', 'Semester', 'Nomor HP',
+                'Email Pribadi', 'Email Mahasiswa', 'Divisi Utama', 'Divisi Tambahan',
+                'Username Instagram', 'Portfolio', 'Status', 'Catatan Review',
+                'Reviewer', 'Tanggal Review', 'Tanggal Daftar'
+            ]);
+
+            // Write data
+            foreach ($recruitments as $recruitment) {
+                fputcsv($file, [
+                    $recruitment->id,
+                    $recruitment->short_uuid,
+                    $recruitment->nama_lengkap,
+                    $recruitment->nim,
+                    $recruitment->semester,
+                    $recruitment->nomor_hp,
+                    $recruitment->email_pribadi,
+                    $recruitment->email_mahasiswa,
+                    $recruitment->divisi_utama,
+                    $recruitment->divisi_tambahan ?? '-',
+                    $recruitment->username_instagram,
+                    $recruitment->portofolio ?? '-',
+                    $this->getStatusLabel($recruitment->status),
+                    $recruitment->catatan ?? '-',
+                    $recruitment->reviewer?->name ?? '-',
+                    $recruitment->reviewed_at?->format('d/m/Y H:i') ?? '-',
+                    $recruitment->created_at->format('d/m/Y H:i')
+                ]);
             }
-            fclose($handle);
-        }, $fileName, ['Content-Type' => 'text/csv']);
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    private function generateFilename($exportType, $format): string
+    {
+        $date = Carbon::now()->format('Y_m_d_His');
+        $statusLabel = match($exportType) {
+            'approved' => 'Diterima',
+            'rejected' => 'Ditolak',
+            'pending' => 'Menunggu',
+            default => 'All'
+        };
+        
+        $divisionLabel = $this->selectedDivision !== 'all' ? '_' . str_replace(' ', '', $this->selectedDivision) : '';
+        
+        return "recruitment_{$statusLabel}{$divisionLabel}_{$date}.{$format}";
+    }
+
+    private function getStatusLabel($status): string
+    {
+        return match($status) {
+            'approved' => 'DITERIMA',
+            'rejected' => 'DITOLAK',
+            'pending' => 'MENUNGGU REVIEW',
+            default => strtoupper($status)
+        };
     }
 
     public function render()
     {
         return view('livewire.admin.recruitment-convert', [
-            // GUNAKAN model Recruitment, BUKAN RecruitmentConvert
-            'recruitments' => Recruitment::orderBy('created_at', 'desc')->paginate(20)
+            'recruitments' => $this->getRecruitments(),
+            'statistics' => $this->getStatistics(),
+            'divisions' => Recruitment::getDivisions(),
         ]);
     }
 }
