@@ -15,7 +15,7 @@
     </div>
 
     {{-- Statistics Cards --}}
-    <div class="grid grid-cols-1 gap-4 px-4 pb-6 sm:grid-cols-2 sm:gap-6 sm:px-6 lg:grid-cols-4 lg:px-10">
+    <div class="grid grid-cols-1 gap-4 px-4 pb-8 sm:grid-cols-2 sm:gap-6 sm:px-6 lg:grid-cols-4 lg:px-10">
         <livewire:admin.components.stat-card title="Total Data" :count="$statistics['total']"
             bgColor="bg-gradient-to-br from-primary to-[#5a7ca3]" />
         <livewire:admin.components.stat-card title="Menunggu Review" :count="$statistics['pending']"
@@ -27,7 +27,7 @@
     </div>
 
     {{-- Filters & Search --}}
-    <div class="px-4 pb-6 sm:px-6 lg:px-10">
+    <div class="px-4 pt-6 pb-6 sm:px-6 lg:px-10">
         <div class="rounded-lg border bg-white p-6 shadow-sm">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
                 {{-- Search --}}

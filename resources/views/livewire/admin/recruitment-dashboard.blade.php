@@ -37,7 +37,7 @@
     </div>
 
     {{-- Chart & Recent Data --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 sm:px-6 lg:px-10 pb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 pt-6 sm:px-6 lg:px-10 pb-10">
         {{-- Chart Section --}}
         <div class="bg-white rounded-lg shadow-sm border">
             <div class="p-6 border-b border-gray-200">
