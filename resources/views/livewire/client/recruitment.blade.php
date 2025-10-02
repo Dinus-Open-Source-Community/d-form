@@ -12,29 +12,32 @@
 
                 <!-- Title -->
                 <h1 class="mb-6 text-4xl font-bold leading-tight text-gray-900 sm:text-5xl md:text-6xl">
-                    Hello
+                    Pendaftaran
                     <span class="bg-primary bg-clip-text text-transparent">
-                        Oll🙌
+                        Ditutup 🙌
                     </span>
                 </h1>
 
                 <!-- Description -->
-                <p class="mx-auto max-w-4xl text-lg leading-relaxed text-gray-600 sm:text-xl">
-                    Gas daftar sekarang, tunjukin potensimu, dan siap-siap jadi bagian dari squad kece Doscom!
+                <p class="mx-auto max-w-3xl text-lg leading-relaxed text-gray-600 sm:text-xl">
+                    Terima kasih atas antusiasme kalian, oll! ✨  
+                    Pendaftaran resmi <span class="font-semibold text-primary">ditutup per 3 Oktober 2025</span>.  
+                    Jangan khawatir — masih banyak kegiatan seru dari 
+                    <span class="text-primary font-semibold">Doscom</span> yang bisa kamu ikuti .
                 </p>
             </div>
         </div>
     </div>
 
-
-    <div class="mb-8 px-6 sm:px-8 md:px-12">
-
-        @if (request()->routeIs('client.recruitment.edit'))
-            @livewire('client.recruitment-edit', ['short_uuid' => request()->route('short_uuid')])
-        @else
-            @livewire('client.recruitment-form')
-        @endif
-
-    </div>
+{{-- Form lama disembunyikan dengan Blade comment --}}
+{{-- 
+<div class="mb-8 px-6 sm:px-8 md:px-12">
+    @if (request()->routeIs('client.recruitment.edit'))
+        @livewire('client.recruitment-edit', ['short_uuid' => request()->route('short_uuid')])
+    @else
+        @livewire('client.recruitment-form')
+    @endif
+</div>
+--}}
 
 </div>
