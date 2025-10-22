@@ -11,10 +11,12 @@ use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\WithPagination;
 use ZipArchive;
 use App\Jobs\GenerateQrZipJob;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class EventDetailAdmin extends Component
 {
@@ -126,8 +128,26 @@ class EventDetailAdmin extends Component
             // Hitung jumlah row pada file
             $rows = Excel::toArray(null, $this->csvFile);
             $dataRows = $rows[0];
+            
+            // Log header untuk debugging
+            Log::info('CSV Headers:', $dataRows[0] ?? []);
+            
             $rowCount = count($dataRows) - 1; // Kurangi header
 
+            // Validasi jumlah row tidak boleh 0
+            if ($rowCount <= 0) {
+                LivewireAlert::title('Empty File')
+                    ->text('CSV file tidak memiliki data peserta.')
+                    ->timer(4000)
+                    ->error()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+                return;
+            }
+
+            // Validasi kapasitas
             if ($rowCount > $this->event->participants) {
                 LivewireAlert::title('Over Capacity')
                     ->text("Jumlah peserta di CSV ($rowCount) melebihi kapasitas maksimal ({$this->event->participants}).")
@@ -152,28 +172,65 @@ class EventDetailAdmin extends Component
                 File::delete($zipFilePath);
             }
 
-            // Jika valid, baru dihapus dan import
+            // Hapus data lama
             $this->event->participantList()->delete();
+            
+            // Import data baru
             Excel::import(new ParticipantsImport($this->eventId), $this->csvFile);
             
+            // Verify import success
+            $importedCount = $this->event->participantList()->count();
+            Log::info("Successfully imported {$importedCount} participants for event {$this->eventId}");
+            
+            // Check if any participants have email
+            $participantsWithEmail = $this->event->participantList()->whereNotNull('email')->count();
+            Log::info("Participants with email: {$participantsWithEmail}");
 
             $this->loadEvent();
             $this->showReuploadForm = false;
+            $this->reset('csvFile'); // Reset file input
+
+            $successMessage = "CSV file uploaded successfully. {$importedCount} participants imported";
+            if ($participantsWithEmail > 0) {
+                $successMessage .= " ({$participantsWithEmail} with email)";
+            }
 
             LivewireAlert::title('Success')
-                ->text('CSV file uploaded successfully')
-                ->timer(3000)
+                ->text($successMessage)
+                ->timer(4000)
                 ->success()
                 ->toast()
                 ->position('top-end')
                 ->withOptions(['timerProgressBar' => true])
                 ->show();
 
+        } catch (ValidationException $e) {
+            // Handle validation errors from import
+            $failures = $e->failures();
+            $errorMessages = [];
+            
+            foreach ($failures as $failure) {
+                $errorMessages[] = "Row {$failure->row()}: " . implode(', ', $failure->errors());
+            }
+            
+            Log::error('CSV Import Validation Error:', $errorMessages);
+            
+            LivewireAlert::title('Validation Error')
+                ->text('CSV validation failed. Please check the file format and data.')
+                ->timer(5000)
+                ->error()
+                ->toast()
+                ->position('top-end')
+                ->withOptions(['timerProgressBar' => true])
+                ->show();
+                
         } catch (\Exception $e) {
-            $this->dispatch('notify', 'Gagal mengunggah CSV: ' . $e->getMessage());
+            Log::error('CSV Upload Error: ' . $e->getMessage());
+            Log::error('Stack Trace: ' . $e->getTraceAsString());
+            
             LivewireAlert::title('Error')
                 ->text('Failed to upload CSV: ' . $e->getMessage())
-                ->timer(3000)
+                ->timer(4000)
                 ->error()
                 ->toast()
                 ->position('top-end')
@@ -195,14 +252,25 @@ class EventDetailAdmin extends Component
                     ->error()
                     ->toast()
                     ->position('top-end')
-                    ->withOptions([
-                        'timerProgressBar' => true,
-                    ])
+                    ->withOptions(['timerProgressBar' => true])
                     ->show();
                 return;
             }
 
             $participant = $this->event->participantList()->where('id', $participantId)->first();
+            
+            if (!$participant) {
+                LivewireAlert::title('Error')
+                    ->text('Participant not found')
+                    ->timer(3000)
+                    ->error()
+                    ->toast()
+                    ->position('top-end')
+                    ->withOptions(['timerProgressBar' => true])
+                    ->show();
+                return;
+            }
+            
             $safeName = preg_replace('/[^A-Za-z0-9 _-]/', '', $participant->name);
             $filePath = public_path("barcodes/{$this->eventId}/{$safeName}.png");
 
@@ -213,14 +281,12 @@ class EventDetailAdmin extends Component
                     ->error()
                     ->toast()
                     ->position('top-end')
-                    ->withOptions([
-                        'timerProgressBar' => true,
-                    ])
+                    ->withOptions(['timerProgressBar' => true])
                     ->show();
                 return;
             }
 
-            return response()->download($filePath, $safeName.'.png');
+            return response()->download($filePath, $safeName . '.png');
         }
 
         // Batch download: Use queue job for both generate and zip
@@ -259,6 +325,8 @@ class EventDetailAdmin extends Component
             ]
         ]);
         
+        Log::info("Started zip generation job for event {$this->eventId}");
+        
         // Show processing toast
         LivewireAlert::title('Processing...')
             ->text('Generating all QR codes and creating zip file. You can navigate away, we\'ll notify you when ready.')
@@ -273,14 +341,19 @@ class EventDetailAdmin extends Component
 
     public function checkZipStatus()
     {
-        if (!$this->zipFileName) return false;
+        if (!$this->zipFileName) {
+            return false;
+        }
         
         $zipFilePath = public_path("barcodes/{$this->zipFileName}");
+        
         if (file_exists($zipFilePath)) {
             $this->zipStatus = 'ready';
             
             // Clear session job info
             session()->forget("zip_job_{$this->eventId}");
+            
+            Log::info("Zip file ready for event {$this->eventId}");
             
             LivewireAlert::title('Download Starting!')
                 ->text('QR codes zip file is ready. Download will start automatically in 2 seconds.')
@@ -294,6 +367,7 @@ class EventDetailAdmin extends Component
             $this->dispatch('zipReady', url: asset('barcodes/' . $this->zipFileName));
             return true;
         }
+        
         return false;
     }
 
@@ -301,16 +375,20 @@ class EventDetailAdmin extends Component
     {
         if ($this->zipStatus === 'ready' && $this->zipFileName) {
             $zipFilePath = public_path("barcodes/{$this->zipFileName}");
+            
             if (file_exists($zipFilePath)) {
+                Log::info("Downloading zip file for event {$this->eventId}");
                 return response()->download($zipFilePath)->deleteFileAfterSend(true);
             }
         }
+        
         return null;
     }
 
     private function generateBarcodes($eventId, $participantId = null)
     {
         $event = Event::find($eventId);
+        
         if (!$event) {
             return [
                 'success' => false,
@@ -332,20 +410,29 @@ class EventDetailAdmin extends Component
         }
 
         $folderPath = public_path("barcodes/{$eventId}/");
+        
         if (!File::exists($folderPath)) {
             File::makeDirectory($folderPath, 0755, true);
         }
 
         foreach ($participants as $participant) {
-            $filePath = "{$folderPath}{$participant->name}.png";
+            // Sanitize filename
+            $safeName = preg_replace('/[^A-Za-z0-9 _-]/', '', $participant->name);
+            $filePath = "{$folderPath}{$safeName}.png";
 
             if (!file_exists($filePath)) {
-                QrCode::format('png')
-                    ->color(20, 35, 50)
-                    ->backgroundColor(255, 255, 255)
-                    ->margin(1)
-                    ->size(200)
-                    ->generate($participant->id, $filePath);
+                try {
+                    QrCode::format('png')
+                        ->color(20, 35, 50)
+                        ->backgroundColor(255, 255, 255)
+                        ->margin(1)
+                        ->size(200)
+                        ->generate($participant->id, $filePath);
+                        
+                    Log::info("Generated QR code for participant: {$participant->name}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to generate QR code for participant {$participant->name}: " . $e->getMessage());
+                }
             }
         }
 
@@ -364,12 +451,17 @@ class EventDetailAdmin extends Component
     public function doMarkPresence($participantId)
     {
         $participant = $this->event->participantList()->where('id', $participantId)->first();
+        
         if ($participant) {
             $participant->is_presence = true;
             $participant->presence_at = now();
             $participant->save();
+            
+            Log::info("Marked presence for participant: {$participant->name}");
+            
             $this->loadEvent();
-            \Jantinnerezo\LivewireAlert\Facades\LivewireAlert::title('Success')
+            
+            LivewireAlert::title('Success')
                 ->text('Participant marked as present.')
                 ->timer(2000)
                 ->success()
@@ -388,12 +480,17 @@ class EventDetailAdmin extends Component
     public function doUnmarkPresence($participantId)
     {
         $participant = $this->event->participantList()->where('id', $participantId)->first();
+        
         if ($participant) {
             $participant->is_presence = false;
             $participant->presence_at = null;
             $participant->save();
+            
+            Log::info("Unmarked presence for participant: {$participant->name}");
+            
             $this->loadEvent();
-            \Jantinnerezo\LivewireAlert\Facades\LivewireAlert::title('Success')
+            
+            LivewireAlert::title('Success')
                 ->text('Presence status removed.')
                 ->timer(2000)
                 ->success()
@@ -406,48 +503,26 @@ class EventDetailAdmin extends Component
 
     public function downloadExcelPresence()
     {
-        $participants = $this->event->participantList()->get(['name', 'school', 'is_presence', 'presence_at']);
+        $participants = $this->event->participantList()
+            ->get(['name', 'school', 'email', 'is_presence', 'presence_at']);
+            
         $csvData = $participants->map(function ($p) {
             return [
-                'Name' => $p->name,
-                'School' => $p->school,
+                'Name' => $p->name ?? '-',
+                'School' => $p->school ?? '-',
+                'Email' => $p->email ?? '-',
                 'Presence' => $p->is_presence ? 'Present' : 'Absent',
-                'Presence At' => $p->presence_at ? \Carbon\Carbon::parse($p->presence_at)->format('d/m/Y H:i') : '-',
+                'Presence At' => $p->presence_at 
+                    ? \Carbon\Carbon::parse($p->presence_at)->format('d/m/Y H:i') 
+                    : '-',
             ];
         });
+        
         $filename = 'participants-presence-' . $this->event->id . '.xlsx';
-        return \Maatwebsite\Excel\Facades\Excel::download(new ParticipantsPresenceExport($csvData), $filename);
-    }
-
-    public function generateZip()
-    {
-        $this->zipStatus = 'processing';
-
-        // Dispatch job to generate QR code zip
-        GenerateQrZipJob::dispatch($this->eventId)
-            ->then(function ($job) {
-                $this->zipStatus = 'ready';
-                $this->zipFileName = "barcodes_{$this->eventId}.zip";
-                LivewireAlert::title('Success')
-                    ->text('QR code zip file is ready to download.')
-                    ->timer(3000)
-                    ->success()
-                    ->toast()
-                    ->position('top-end')
-                    ->withOptions(['timerProgressBar' => true])
-                    ->show();
-            })
-            ->catch(function ($exception) {
-                $this->zipStatus = 'error';
-                LivewireAlert::title('Error')
-                    ->text('Failed to generate zip file: ' . $exception->getMessage())
-                    ->timer(3000)
-                    ->error()
-                    ->toast()
-                    ->position('top-end')
-                    ->withOptions(['timerProgressBar' => true])
-                    ->show();
-            });
+        
+        Log::info("Downloading presence Excel for event {$this->eventId}");
+        
+        return Excel::download(new ParticipantsPresenceExport($csvData), $filename);
     }
 
     #[Layout('components.layouts.admin')]

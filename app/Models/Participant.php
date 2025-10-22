@@ -14,6 +14,7 @@ class Participant extends Model
         'event_id',
         'name',
         'school',
+        'email',
         'is_presence',
         'presence_at',
     ];

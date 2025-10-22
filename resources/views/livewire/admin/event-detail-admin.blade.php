@@ -159,6 +159,7 @@
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">No</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Name</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">School</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Email</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Presence</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Presence At</th>
                                     <th class="px-4 py-3 text-left text-sm font-semibold border-b border-gray-200">Action</th>
@@ -172,6 +173,7 @@
                                         </td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->name }}</td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->school }}</td>
+                                        <td class="px-4 py-3 border-b border-gray-200 text-sm">{{ $participant->email }}</td>
                                         <td class="px-4 py-3 border-b border-gray-200 text-sm">
                                             <span class="inline-flex items-center p-1 rounded-full text-xs font-semibold
                                                 {{ $participant->is_presence ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">

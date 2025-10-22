@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('event_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('school')->nullable();
+            $table->string('email')->nullable();
             $table->boolean('is_presence')->default(false);
             $table->dateTime('presence_at')->nullable();
             $table->timestamps();

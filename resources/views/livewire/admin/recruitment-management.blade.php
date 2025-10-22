@@ -27,8 +27,8 @@
     </div>
 
     {{-- Filters & Search --}}
-    <div class="px-4 pt-6 pb-6 sm:px-6 lg:px-10">
-        <div class="rounded-lg border bg-white p-6 shadow-sm">
+    <div class="px-4 pt-8 pb-6 sm:px-6 lg:px-10">
+        <div class="rounded-lg border bg-white p-6 pt-10 shadow-sm">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
                 {{-- Search --}}
                 <div class="lg:col-span-2">
@@ -39,7 +39,7 @@
                         <input
                             class="focus:ring-primary focus:border-primary w-full rounded-md border border-gray-300 py-2 pl-10 pr-4 focus:ring-2"
                             type="text" wire:model.live.debounce.300ms="search" placeholder="Nama, NIM, Email...">
-                    </div>
+                </div>
                 </div>
 
                 {{-- Status Filter --}}
