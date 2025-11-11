@@ -50,6 +50,10 @@ Route::group(['as' => 'client.'], function () {
 // ==========================
 Route::get('/admin/login', LoginForm::class)->name('login');
 
+// Google OAuth Routes
+Route::get('/auth/google', [\App\Http\Controllers\Auth\GoogleController::class, 'redirect'])->name('auth.google');
+Route::get('/auth/google/callback', [\App\Http\Controllers\Auth\GoogleController::class, 'callback'])->name('auth.google.callback');
+
 Route::group([
     'prefix' => 'admin',
     'middleware' => ['auth'],
