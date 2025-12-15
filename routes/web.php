@@ -20,6 +20,8 @@ use App\Livewire\Client\Recruitment;
 use App\Livewire\Client\RecruitmentEdit;
 use Illuminate\Support\Facades\Route;
 
+
+
 // Redirect /admin ke dashboard
 Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
@@ -83,3 +85,19 @@ Route::get('/admin/recruitments', function () {
 
 // Form recruitment client
 Route::get('/recruitments', Recruitment::class)->name('client.recruitments');
+
+// File Viewer Route to force inline display
+Route::get('/admin/file-viewer', function (\Illuminate\Http\Request $request) {
+    $path = $request->query('path');
+    if (!$path) abort(404);
+    
+    $fullPath = storage_path('app/public/' . $path);
+    
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
+    
+    return response()->file($fullPath, [
+        'Content-Disposition' => 'inline'
+    ]);
+})->name('admin.file.viewer')->middleware('auth');
