@@ -1,0 +1,1563 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "D-Form API Documentation",
+        "description": "Dokumentasi API lengkap untuk D-Form - Platform manajemen event dan recruitment DOSCOM",
+        "contact": {
+            "name": "DOSCOM - Dinus Open Source Community",
+            "email": "doscom@dinus.ac.id"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Development Server"
+        },
+        {
+            "url": "http://localhost:8000",
+            "description": "Local Development Server"
+        }
+    ],
+    "paths": {
+        "/api/ping": {
+            "get": {
+                "tags": [
+                    "System"
+                ],
+                "summary": "Ping test untuk Swagger",
+                "operationId": "a91be6f4adfe3c45b73aff0e7cd48b3d",
+                "responses": {
+                    "200": {
+                        "description": "Swagger aktif meski backend pakai Livewire"
+                    }
+                }
+            }
+        },
+        "/api/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get all events",
+                "description": "Retrieve a list of all events with optional filters",
+                "operationId": "e529c81e6aaec82f49950a87ed881f57",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filter by event type",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "division",
+                        "in": "query",
+                        "description": "Filter by division",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Event"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Create a new event",
+                "description": "Create a new event (requires authentication)",
+                "operationId": "e958e1c6c275d5f9b7ebcd837903d0ef",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "start_date",
+                                    "start_time",
+                                    "end_time",
+                                    "duration_days",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Workshop Laravel"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Workshop tentang Laravel framework"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 50000
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Gedung A Lantai 3"
+                                    },
+                                    "map_url": {
+                                        "type": "string",
+                                        "example": "https://maps.google.com/..."
+                                    },
+                                    "gform_url": {
+                                        "type": "string",
+                                        "example": "https://forms.google.com/..."
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-12-15"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "09:00:00"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "17:00:00"
+                                    },
+                                    "duration_days": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "participants": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "workshop"
+                                    },
+                                    "division": {
+                                        "type": "string",
+                                        "example": "Pemrograman"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Event created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Event"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/{id}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get event by ID",
+                "description": "Retrieve a single event by its ID",
+                "operationId": "c0f602d773798994c228d99dbd63b842",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Event ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Event"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Update an event",
+                "description": "Update an existing event by ID",
+                "operationId": "8b1dd7f57d8fbd2e85af2762950e0b1d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Event ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Workshop Laravel Updated"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Updated description"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 75000
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Gedung B Lantai 2"
+                                    },
+                                    "map_url": {
+                                        "type": "string",
+                                        "example": "https://maps.google.com/..."
+                                    },
+                                    "gform_url": {
+                                        "type": "string",
+                                        "example": "https://forms.google.com/..."
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-12-20"
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "10:00:00"
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "16:00:00"
+                                    },
+                                    "duration_days": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "participants": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "seminar"
+                                    },
+                                    "division": {
+                                        "type": "string",
+                                        "example": "Data"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Event updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Event"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Delete an event",
+                "description": "Delete an event by ID",
+                "operationId": "deca25daa2d423da0ff6b6677d92545b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Event ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Event deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Event deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found"
+                    }
+                }
+            }
+        },
+        "/api/participants": {
+            "get": {
+                "tags": [
+                    "Participants"
+                ],
+                "summary": "Get all participants",
+                "description": "Retrieve a list of all participants with optional event filter",
+                "operationId": "b56cc0b1479de99c053898dea57d2a59",
+                "parameters": [
+                    {
+                        "name": "event_id",
+                        "in": "query",
+                        "description": "Filter by event ID",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "is_presence",
+                        "in": "query",
+                        "description": "Filter by presence status",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Participant"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Participants"
+                ],
+                "summary": "Register a new participant",
+                "description": "Register a participant for an event",
+                "operationId": "700a91d1e48b221e6d27eb86f50a4dc7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "event_id",
+                                    "name",
+                                    "school",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "event_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "9d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Smith"
+                                    },
+                                    "school": {
+                                        "type": "string",
+                                        "example": "Universitas Dian Nuswantoro"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Participant registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Participant registered successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Participant"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Event not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/participants/{id}": {
+            "get": {
+                "tags": [
+                    "Participants"
+                ],
+                "summary": "Get participant by ID",
+                "description": "Retrieve a single participant by its ID",
+                "operationId": "022e40e8979c7d7a7f156a8c80aeaa5f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Participant ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Participant"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Participant not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Participants"
+                ],
+                "summary": "Update participant",
+                "description": "Update participant information",
+                "operationId": "c42492b70d7706860bae3c7f4966cfa4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Participant ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Smith Updated"
+                                    },
+                                    "school": {
+                                        "type": "string",
+                                        "example": "Universitas Dian Nuswantoro"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane.updated@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Participant updated successfully"
+                    },
+                    "404": {
+                        "description": "Participant not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Participants"
+                ],
+                "summary": "Delete participant",
+                "description": "Delete a participant registration",
+                "operationId": "2a2003f3c1c8a6b6164344f3bd5085ce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Participant ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Participant deleted successfully"
+                    },
+                    "404": {
+                        "description": "Participant not found"
+                    }
+                }
+            }
+        },
+        "/api/participants/{id}/presence": {
+            "patch": {
+                "tags": [
+                    "Participants"
+                ],
+                "summary": "Mark participant presence",
+                "description": "Mark a participant as present for an event",
+                "operationId": "0f530b00825b1e97749148e0f27bed1c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Participant ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Presence marked successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Presence marked successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Participant"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Participant not found"
+                    }
+                }
+            }
+        },
+        "/api/recruitments": {
+            "get": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Get all recruitments",
+                "description": "Retrieve a list of all recruitments with optional filters",
+                "operationId": "728a2201359a26b73fc0a09fd2b555f5",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by status (pending, approved, rejected)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "pending",
+                                "approved",
+                                "rejected"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "division",
+                        "in": "query",
+                        "description": "Filter by division",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Pemrograman",
+                                "Data",
+                                "Jaringan",
+                                "Medcrev"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "semester",
+                        "in": "query",
+                        "description": "Filter by semester",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "1",
+                                "3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name, NIM, email, or phone",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Recruitment"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Create a new recruitment",
+                "description": "Submit a new recruitment application",
+                "operationId": "1db26bbcac707d5e5bd244d070464ced",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama_lengkap",
+                                    "nim",
+                                    "semester",
+                                    "nomor_hp",
+                                    "email_pribadi",
+                                    "email_mahasiswa",
+                                    "divisi_utama"
+                                ],
+                                "properties": {
+                                    "nama_lengkap": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "nim": {
+                                        "type": "string",
+                                        "example": "A11.2023.12345"
+                                    },
+                                    "semester": {
+                                        "type": "string",
+                                        "enum": [
+                                            "1",
+                                            "3"
+                                        ],
+                                        "example": "3"
+                                    },
+                                    "nomor_hp": {
+                                        "type": "string",
+                                        "example": "081234567890"
+                                    },
+                                    "email_pribadi": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "email_mahasiswa": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "111202312345@mhs.dinus.ac.id"
+                                    },
+                                    "divisi_utama": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Pemrograman",
+                                            "Data",
+                                            "Jaringan",
+                                            "Medcrev"
+                                        ],
+                                        "example": "Pemrograman"
+                                    },
+                                    "divisi_tambahan": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Pemrograman",
+                                            "Data",
+                                            "Jaringan",
+                                            "Medcrev"
+                                        ],
+                                        "example": "Data"
+                                    },
+                                    "username_instagram": {
+                                        "type": "string",
+                                        "example": "@johndoe"
+                                    },
+                                    "portofolio": {
+                                        "type": "string",
+                                        "example": "https://github.com/johndoe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recruitment created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Recruitment created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Recruitment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/recruitments/statistics": {
+            "get": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Get recruitment statistics",
+                "description": "Retrieve overall recruitment statistics",
+                "operationId": "a378842d35cbb009e5511e279a24d4a1",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 150
+                                                },
+                                                "pending": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "approved": {
+                                                    "type": "integer",
+                                                    "example": 80
+                                                },
+                                                "rejected": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "today": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "this_week": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "this_month": {
+                                                    "type": "integer",
+                                                    "example": 100
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/recruitments/division-statistics": {
+            "get": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Get division-wise statistics",
+                "description": "Retrieve recruitment statistics grouped by division",
+                "operationId": "200d1bfa9affe3912848efe61e6c0f7b",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Pemrograman": {
+                                                    "properties": {
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 60
+                                                        },
+                                                        "approved": {
+                                                            "type": "integer",
+                                                            "example": 40
+                                                        },
+                                                        "pending": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "rejected": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/recruitments/{shortUuid}": {
+            "get": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Get recruitment by short UUID",
+                "description": "Retrieve a single recruitment by its short UUID",
+                "operationId": "b3a00c9e48701cbbb9d57a3ac0ac21ad",
+                "parameters": [
+                    {
+                        "name": "shortUuid",
+                        "in": "path",
+                        "description": "Recruitment short UUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Recruitment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recruitment not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Update recruitment",
+                "description": "Update an existing recruitment application",
+                "operationId": "6d2307c2a703a4593356bb2385c8f575",
+                "parameters": [
+                    {
+                        "name": "shortUuid",
+                        "in": "path",
+                        "description": "Recruitment short UUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama_lengkap": {
+                                        "type": "string",
+                                        "example": "John Doe Updated"
+                                    },
+                                    "nomor_hp": {
+                                        "type": "string",
+                                        "example": "081234567899"
+                                    },
+                                    "divisi_utama": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Pemrograman",
+                                            "Data",
+                                            "Jaringan",
+                                            "Medcrev"
+                                        ]
+                                    },
+                                    "divisi_tambahan": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Pemrograman",
+                                            "Data",
+                                            "Jaringan",
+                                            "Medcrev"
+                                        ]
+                                    },
+                                    "portofolio": {
+                                        "type": "string",
+                                        "example": "https://github.com/johndoe-updated"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recruitment updated successfully"
+                    },
+                    "404": {
+                        "description": "Recruitment not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Delete recruitment",
+                "description": "Soft delete a recruitment application",
+                "operationId": "7913eeb3a64e38f204971129e765e009",
+                "parameters": [
+                    {
+                        "name": "shortUuid",
+                        "in": "path",
+                        "description": "Recruitment short UUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recruitment deleted successfully"
+                    },
+                    "404": {
+                        "description": "Recruitment not found"
+                    }
+                }
+            }
+        },
+        "/api/recruitments/{shortUuid}/review": {
+            "patch": {
+                "tags": [
+                    "Recruitments"
+                ],
+                "summary": "Review recruitment application",
+                "description": "Approve or reject a recruitment application (admin only)",
+                "operationId": "7335373749803bc7dffe5ceb4757d53b",
+                "parameters": [
+                    {
+                        "name": "shortUuid",
+                        "in": "path",
+                        "description": "Recruitment short UUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "approved",
+                                            "rejected"
+                                        ],
+                                        "example": "approved"
+                                    },
+                                    "catatan": {
+                                        "type": "string",
+                                        "example": "Kandidat yang sangat baik"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recruitment reviewed successfully"
+                    },
+                    "404": {
+                        "description": "Recruitment not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Event": {
+                "title": "Event",
+                "description": "Event model",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "9d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Workshop Laravel"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Workshop tentang Laravel framework"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 50000
+                    },
+                    "cover_event": {
+                        "type": "string",
+                        "example": "http://localhost/storage/events/cover.jpg",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Gedung A Lantai 3"
+                    },
+                    "map_url": {
+                        "type": "string",
+                        "example": "https://maps.google.com/..."
+                    },
+                    "gform_url": {
+                        "type": "string",
+                        "example": "https://forms.google.com/..."
+                    },
+                    "start_time": {
+                        "type": "string",
+                        "format": "time",
+                        "example": "09:00:00"
+                    },
+                    "end_time": {
+                        "type": "string",
+                        "format": "time",
+                        "example": "17:00:00"
+                    },
+                    "duration_days": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "participants": {
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "workshop"
+                    },
+                    "division": {
+                        "type": "string",
+                        "example": "Pemrograman"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-12-15"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Recruitment": {
+                "title": "Recruitment",
+                "description": "Recruitment model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "short_uuid": {
+                        "type": "string",
+                        "example": "ABC12345"
+                    },
+                    "nama_lengkap": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "nim": {
+                        "type": "string",
+                        "example": "A11.2023.12345"
+                    },
+                    "semester": {
+                        "type": "string",
+                        "enum": [
+                            "1",
+                            "3"
+                        ],
+                        "example": "3"
+                    },
+                    "nomor_hp": {
+                        "type": "string",
+                        "example": "081234567890"
+                    },
+                    "email_pribadi": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "email_mahasiswa": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "111202312345@mhs.dinus.ac.id"
+                    },
+                    "divisi_utama": {
+                        "type": "string",
+                        "enum": [
+                            "Pemrograman",
+                            "Data",
+                            "Jaringan",
+                            "Medcrev"
+                        ],
+                        "example": "Pemrograman"
+                    },
+                    "divisi_tambahan": {
+                        "type": "string",
+                        "enum": [
+                            "Pemrograman",
+                            "Data",
+                            "Jaringan",
+                            "Medcrev"
+                        ],
+                        "example": "Data",
+                        "nullable": true
+                    },
+                    "cv": {
+                        "type": "string",
+                        "example": "recruitments/cv/file.pdf",
+                        "nullable": true
+                    },
+                    "portofolio": {
+                        "type": "string",
+                        "example": "https://github.com/johndoe",
+                        "nullable": true
+                    },
+                    "bukti_follow_instagram": {
+                        "type": "string",
+                        "example": "recruitments/instagram/proof.jpg",
+                        "nullable": true
+                    },
+                    "bukti_follow_linkedin": {
+                        "type": "string",
+                        "example": "recruitments/linkedin/proof.jpg",
+                        "nullable": true
+                    },
+                    "username_instagram": {
+                        "type": "string",
+                        "example": "@johndoe",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "approved",
+                            "rejected"
+                        ],
+                        "example": "pending"
+                    },
+                    "catatan": {
+                        "type": "string",
+                        "example": "Kandidat yang baik",
+                        "nullable": true
+                    },
+                    "reviewed_by": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "reviewed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z"
+                    },
+                    "deleted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": null,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Participant": {
+                "title": "Participant",
+                "description": "Participant model",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "9d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a"
+                    },
+                    "event_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "9d4e5f6a-7b8c-9d0e-1f2a-3b4c5d6e7f8a"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Jane Smith"
+                    },
+                    "school": {
+                        "type": "string",
+                        "example": "Universitas Dian Nuswantoro"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "jane@example.com"
+                    },
+                    "is_presence": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "presence_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": null,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-12-08T12:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "System",
+            "description": "System endpoints untuk testing dan health check"
+        },
+        {
+            "name": "Events",
+            "description": "Endpoints untuk manajemen event"
+        },
+        {
+            "name": "Recruitments",
+            "description": "Endpoints untuk manajemen recruitment/pendaftaran anggota"
+        },
+        {
+            "name": "Participants",
+            "description": "Endpoints untuk manajemen peserta event"
+        }
+    ]
+}
